@@ -111,6 +111,7 @@ async function main() {
 
   if (options.git !== false) {
     await execa('git', ['init'], { cwd: dest });
+    await execa('git', ['checkout', '-b', 'main'], { cwd: dest });
     await execa('git', ['add', '.'], { cwd: dest });
     await execa('git', ['commit', '-m', 'chore: initial commit'], { cwd: dest });
   }
