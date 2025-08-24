@@ -11,39 +11,64 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATE_DIR = path.join(__dirname, '..', 'templates', 'base'); // single base template
 
 async function addTailwindV4(dest) {
-  // 1) Merge Tailwind v4 devDeps (remove any old ones if present)
+  // 1) Merge Tailwind v4 devDeps
   const pkgPath = path.join(dest, 'package.json');
   const pkg = JSON.parse(await fs.readFile(pkgPath, 'utf8'));
-
-  // Ensure devDependencies object exists
   pkg.devDependencies = pkg.devDependencies || {};
-  // Remove v3-era keys if they exist
   delete pkg.devDependencies.autoprefixer;
-  // Add v4 deps
   pkg.devDependencies.tailwindcss = '^4.0.0';
   pkg.devDependencies['@tailwindcss/postcss'] = '^4.0.0';
   pkg.devDependencies.postcss = '^8.4.47';
-
   await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2));
 
-  // 2) Write PostCSS config for v4
+  // 2) PostCSS config
   await fs.outputFile(
     path.join(dest, 'postcss.config.mjs'),
     `export default { plugins: { '@tailwindcss/postcss': {} } };`
   );
 
-  // 3) Inject the v4 CSS entry at the TOP of globals.css
-  const globalsPath = path.join(dest, 'src', 'app', 'globals.css');
-  const css = (await fs.pathExists(globalsPath)) ? await fs.readFile(globalsPath, 'utf8') : '';
-  const hasImport = /@import\s+["']tailwindcss["'];?/.test(css);
-  const withImport = hasImport ? css : `@import "tailwindcss";\n${css}`;
-  await fs.outputFile(globalsPath, withImport);
+  // 3) Figure out app dir and globals path (supports src/app and app)
+  const appDir = (await fs.pathExists(path.join(dest, 'src', 'app')))
+    ? path.join(dest, 'src', 'app')
+    : path.join(dest, 'app');
+  const globalsPath = path.join(appDir, 'globals.css');
+  const layoutPath = path.join(appDir, 'layout.tsx');
 
-  // 4) Make sure there is NO tailwind.config.* (v4 is zero-config)
-  const tcfgTs = path.join(dest, 'tailwind.config.ts');
-  const tcfgJs = path.join(dest, 'tailwind.config.js');
-  if (await fs.pathExists(tcfgTs)) await fs.remove(tcfgTs);
-  if (await fs.pathExists(tcfgJs)) await fs.remove(tcfgJs);
+  // 4) Ensure globals.css exists and has Tailwind import at the TOP
+  const existingCss = (await fs.pathExists(globalsPath)) ? await fs.readFile(globalsPath, 'utf8') : '';
+  const hasTwImport = /^\s*@import\s+["']tailwindcss["'];?/m.test(existingCss);
+  const newCss = hasTwImport ? existingCss : `@import "tailwindcss";\n${existingCss}`;
+  await fs.outputFile(globalsPath, newCss);
+
+  // 5) Ensure layout imports globals.css
+  if (await fs.pathExists(layoutPath)) {
+    let src = await fs.readFile(layoutPath, 'utf8');
+    const hasImport =
+      /import\s+['"]\.\/globals\.css['"];?/.test(src) ||
+      /import\s+['"]@\/app\/globals\.css['"];?/.test(src) ||
+      /import\s+['"]~\/app\/globals\.css['"];?/.test(src);
+    if (!hasImport) {
+      // insert after the last import line, or at the top if none
+      const lines = src.split('\n');
+      let lastImport = -1;
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].startsWith('import ')) lastImport = i;
+      }
+      if (lastImport >= 0) {
+        lines.splice(lastImport + 1, 0, `import './globals.css';`);
+        src = lines.join('\n');
+      } else {
+        src = `import './globals.css';\n` + src;
+      }
+      await fs.writeFile(layoutPath, src, 'utf8');
+    }
+  }
+
+  // 6) Remove any tailwind.config.* (v4 zero-config)
+  for (const f of ['tailwind.config.ts', 'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs']) {
+    const p = path.join(dest, f);
+    if (await fs.pathExists(p)) await fs.remove(p);
+  }
 }
 
 async function installDeps(pm, cwd) {
