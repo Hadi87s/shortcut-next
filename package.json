@@ -1,10 +1,28 @@
 {
-  "name": "quickstart-next",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@hadi87s/quickstart-next",
+  "version": "1.0.1",
+  "description": "Scaffold Next.js apps with MUI base or Tailwind v4 preset.",
   "main": "index.js",
-   "bin": { "quickstart-next": "bin/quickstart-next.mjs" },
-   "files": ["bin", "src", "templates", "README.md"],
+  "bin": {
+    "quickstart-next": "bin/quickstart-next.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hadi87s/quickstart-next.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hadi87s/quickstart-next/issues"
+  },
+  "homepage": "https://github.com/hadi87s/quickstart-next#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "README.md"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
