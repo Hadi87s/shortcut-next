@@ -1,0 +1,23 @@
+{
+  "name": "quickstart-next",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+   "bin": { "quickstart-next": "bin/quickstart-next.mjs" },
+   "files": ["bin", "src", "templates", "README.md"],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "cac": "^6.7.14",
+    "execa": "^9.6.0",
+    "fs-extra": "^11.3.1",
+    "kolorist": "^1.8.0",
+    "ora": "^8.2.0"
+  }
+}
