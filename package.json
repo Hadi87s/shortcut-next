@@ -37,7 +37,18 @@
     "mui",
     "tailwind"
   ],
-  "author": "",
+  "author": {
+    "name": "Hadi Irshaid",
+    "email": "HadiIrshaid8722@gmail.com",
+    "url": "https://github.com/hadi87s"
+  },
+  "contributors": [
+    {
+      "name": "Imadeddin Salama",
+      "email": "ce.emad1999@gmail.com",
+      "url": "https://github.com/ImadSalama"
+    }
+  ],
   "license": "MIT",
   "type": "module",
   "dependencies": {

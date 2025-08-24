@@ -18,3 +18,4 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Fix .gitignore file.
 - Fix checking out to main branch when initializing the project.
+- Added author & contributor information in `package.json`.
