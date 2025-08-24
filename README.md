@@ -1,4 +1,4 @@
-# Quickstart Next ⚡
+# Shortcut Next ⚡
 
 > Scaffold modern **Next.js 15+ projects** in seconds — with **MUI**, **React Hook Form**, and **TanStack Query** built-in.  
 > Optionally add **Tailwind CSS v4** with a single command.
@@ -22,4 +22,5 @@
 You don’t need to install globally. Use `npx`:
 
 ```bash
-npx @hadi87s/quickstart-next@latest
+npx shortcut-next@latest
+
