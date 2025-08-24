@@ -1,10 +1,10 @@
 {
-  "name": "@hadi87s/quickstart-next",
-  "version": "1.0.2",
+  "name": "shortcut-next",
+  "version": "0.1.0",
   "description": "Scaffold Next.js apps with MUI base or Tailwind v4 preset.",
   "main": "index.js",
   "bin": {
-    "quickstart-next": "bin/quickstart-next.mjs"
+    "shortcut-next": "bin/quickstart-next.mjs"
   },
   "repository": {
     "type": "git",

@@ -9,21 +9,23 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@emotion/react": "latest",
+    "@emotion/styled": "latest",
+    "@iconify/react": "^6.0.0",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
+    "@tanstack/react-query": "latest",
+    "lucide-react": "^0.541.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "@mui/material": "latest",
-    "@mui/icons-material": "latest",
-    "@emotion/react": "latest",
-    "@emotion/styled": "latest",
-    "@tanstack/react-query": "latest",
     "react-hook-form": "latest"
   },
   "devDependencies": {
-    "typescript": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "eslint": "latest",
-    "eslint-config-next": "latest"
+    "eslint-config-next": "latest",
+    "typescript": "latest"
   }
 }
