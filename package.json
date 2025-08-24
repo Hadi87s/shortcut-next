@@ -4,16 +4,16 @@
   "description": "Scaffold Next.js apps with MUI base or Tailwind v4 preset.",
   "main": "index.js",
   "bin": {
-    "shortcut-next": "bin/quickstart-next.mjs"
+    "shortcut-next": "bin/shortcut-next.mjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hadi87s/quickstart-next.git"
+    "url": "git+https://github.com/hadi87s/shortcut-next.git"
   },
   "bugs": {
-    "url": "https://github.com/hadi87s/quickstart-next/issues"
+    "url": "https://github.com/hadi87s/shortcut-next/issues"
   },
-  "homepage": "https://github.com/hadi87s/quickstart-next#readme",
+  "homepage": "https://github.com/hadi87s/shortcut-next#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -26,9 +26,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "nextjs",
+    "cli",
+    "scaffold",
+    "starter",
+    "mui",
+    "tailwind"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
