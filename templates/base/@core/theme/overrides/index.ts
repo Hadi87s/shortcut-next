@@ -1,58 +1,113 @@
-import type { Components, Theme } from '@mui/material/styles'
+// ** MUI Imports
+import { Theme } from '@mui/material/styles'
+import { ComponentsPropsList } from '@mui/material'
 
-export function makeOverrides(theme: Theme): Components<Theme> {
-  const isDark = theme.palette.mode === 'dark'
+// ** Type Import
+import { Settings } from 'src/@core/context/settingsContext'
 
-  return {
-    MuiCssBaseline: {
-      styleOverrides: {
-        ':root': {
-          '--blob-1': 'radial-gradient(closest-side, #7C4DFF 0%, rgba(124,77,255,0) 70%)',
-          '--blob-2': 'radial-gradient(closest-side, #00E5FF 0%, rgba(0,229,255,0) 70%)'
-        },
-        body: {
-          backgroundImage: isDark
-            ? `radial-gradient(1200px 600px at 10% -10%, rgba(124,77,255,0.07), transparent),
-               radial-gradient(900px 500px at 110% 110%, rgba(0,229,255,0.06), transparent)`
-            : undefined
-        }
-      }
-    },
-
-    MuiContainer: { defaultProps: { maxWidth: 'lg' } },
-
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}`,
-          background: isDark
-            ? 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))'
-            : 'linear-gradient(180deg, #FFFFFF, #FAFBFF)'
-        }
-      }
-    },
-
-    MuiButton: {
-      defaultProps: { disableElevation: true },
-      styleOverrides: {
-        root: { borderRadius: 12, paddingInline: 16 },
-        containedPrimary: {
-          background: `linear-gradient(180deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`
-        }
-      }
-    },
-
-    MuiTextField: { defaultProps: { size: 'small', fullWidth: true } },
-    MuiInputLabel: { styleOverrides: { root: { fontWeight: 600 } } },
-    MuiChip: { styleOverrides: { root: { borderRadius: 10 } } },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: isDark ? 'rgba(16,19,26,0.72)' : 'rgba(255,255,255,0.72)',
-          backdropFilter: 'saturate(120%) blur(8px)'
-        }
-      }
-    }
-  }
+export type OwnerStateThemeType = {
+  theme: Theme
+  ownerState: ComponentsPropsList[keyof ComponentsPropsList] & Record<string, unknown>
 }
+
+// ** Overrides Imports
+import MuiFab from './fab'
+import MuiCard from './card'
+import MuiChip from './chip'
+import MuiLink from './link'
+import MuiList from './list'
+import MuiMenu from './menu'
+import MuiTabs from './tabs'
+import MuiInput from './input'
+import MuiPaper from './paper'
+import MuiTable from './table'
+import MuiAlerts from './alerts'
+import MuiButton from './button'
+import MuiDialog from './dialog'
+import MuiRating from './rating'
+import MuiSelect from './select'
+import MuiAvatar from './avatars'
+import Progress from './progress'
+import MuiDivider from './divider'
+import MuiPopover from './popover'
+import MuiTooltip from './tooltip'
+import MuiBackdrop from './backdrop'
+import MuiDataGrid from './dataGrid'
+import MuiSnackbar from './snackbar'
+import MuiSwitches from './switches'
+import MuiTimeline from './timeline'
+import MuiAccordion from './accordion'
+import MuiPagination from './pagination'
+import MuiTypography from './typography'
+import MuiBreadcrumb from './breadcrumbs'
+import MuiButtonGroup from './buttonGroup'
+import MuiAutocomplete from './autocomplete'
+import MuiToggleButton from './toggleButton'
+
+const Overrides = (settings: Settings) => {
+  const { skin, mode } = settings
+
+  const fab = MuiFab()
+  const chip = MuiChip()
+  const list = MuiList()
+  const tabs = MuiTabs()
+  const input = MuiInput()
+  const tables = MuiTable()
+  const menu = MuiMenu(skin)
+  const button = MuiButton()
+  const rating = MuiRating()
+  const select = MuiSelect()
+  const cards = MuiCard(skin)
+  const avatars = MuiAvatar()
+  const progress = Progress()
+  const divider = MuiDivider()
+  const tooltip = MuiTooltip()
+  const alerts = MuiAlerts(mode)
+  const dialog = MuiDialog(skin)
+  const backdrop = MuiBackdrop()
+  const dataGrid = MuiDataGrid()
+  const switches = MuiSwitches()
+  const timeline = MuiTimeline()
+  const popover = MuiPopover(skin)
+  const accordion = MuiAccordion()
+  const snackbar = MuiSnackbar(skin)
+  const pagination = MuiPagination()
+  const autocomplete = MuiAutocomplete(skin)
+
+  return Object.assign(
+    fab,
+    chip,
+    list,
+    menu,
+    tabs,
+    cards,
+    input,
+    select,
+    alerts,
+    button,
+    dialog,
+    rating,
+    tables,
+    avatars,
+    divider,
+    popover,
+    tooltip,
+    MuiLink,
+    backdrop,
+    dataGrid,
+    MuiPaper,
+    progress,
+    snackbar,
+    switches,
+    timeline,
+    accordion,
+    pagination,
+    autocomplete,
+    MuiTypography,
+    MuiBreadcrumb,
+    MuiButtonGroup,
+    MuiToggleButton
+  )
+}
+
+export default Overrides
