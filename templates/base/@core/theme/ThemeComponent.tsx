@@ -1,42 +1,52 @@
-'use client'
+// ** React Imports
+import { ReactNode } from 'react'
 
-import * as React from 'react'
-import { CssBaseline, PaletteMode, ThemeProvider, createTheme } from '@mui/material'
-import GlobalStyles from './globalStyles'
-import { buildThemeOptions } from './ThemeOptions'
+// ** MUI Imports
+import CssBaseline from '@mui/material/CssBaseline'
+import GlobalStyles from '@mui/material/GlobalStyles'
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles'
 
-type Ctx = { mode: PaletteMode; toggle: () => void; set: (m: PaletteMode) => void }
-export const ColorModeContext = React.createContext<Ctx>({ mode: 'dark', toggle: () => {}, set: () => {} })
+// ** Type Imports
+import { Settings } from 'src/@core/context/settingsContext'
 
-function getInitialMode(): PaletteMode {
-  if (typeof window === 'undefined') return 'dark'
-  const stored = window.localStorage.getItem('color-scheme') as PaletteMode | null
-  if (stored === 'light' || stored === 'dark') return stored
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+// ** Theme Config
+import themeConfig from 'src/configs/themeConfig'
+
+// ** Direction component for LTR or RTL
+import Direction from 'src/layouts/components/Direction'
+
+// ** Theme
+import themeOptions from './ThemeOptions'
+
+// ** Global Styles
+import GlobalStyling from './globalStyles'
+
+interface Props {
+  settings: Settings
+  children: ReactNode
 }
 
-export default function ThemeComponent({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = React.useState<PaletteMode>(getInitialMode)
+const ThemeComponent = (props: Props) => {
+  // ** Props
+  const { settings, children } = props
 
-  React.useEffect(() => {
-    document.documentElement.setAttribute('data-color-scheme', mode)
-    window.localStorage.setItem('color-scheme', mode)
-  }, [mode])
+  // ** Pass merged ThemeOptions (of core and user) to createTheme function
+  let theme = createTheme(themeOptions(settings, 'light'))
 
-  const ctx = React.useMemo<Ctx>(
-    () => ({ mode, toggle: () => setMode(m => (m === 'light' ? 'dark' : 'light')), set: setMode }),
-    [mode]
-  )
-
-  const theme = React.useMemo(() => createTheme(buildThemeOptions(mode)), [mode])
+  // ** Set responsive font sizes to true
+  if (themeConfig.responsiveFontSizes) {
+    theme = responsiveFontSizes(theme)
+  }
 
   return (
-    <ColorModeContext.Provider value={ctx}>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Direction direction={settings.direction}>
         <CssBaseline />
-        <GlobalStyles />
+        <GlobalStyles styles={() => GlobalStyling(theme) as any} />
         {children}
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+      </Direction>
+    </ThemeProvider>
   )
 }
+
+export default ThemeComponent
