@@ -1,21 +1,53 @@
-import { createTheme, PaletteMode, ThemeOptions } from '@mui/material'
-import { makePalette } from './palette'
+// ** MUI Theme Provider
+import { deepmerge } from '@mui/utils'
+import { PaletteMode, ThemeOptions } from '@mui/material'
+
+// ** Theme Override Imports
+import shadows from './shadows'
+import overrides from './overrides'
+import { spacing } from './spacing'
 import { makeTypography } from './typography'
-import { makeShadows } from './shadows'
-import { makeSpacing } from './spacing'
 import { makeBreakpoints } from './breakpoints'
-import { makeOverrides } from './overrides'
+import { makePalette } from './palette'
+import { Settings } from '../context/SettingsContext'
 
-export function buildThemeOptions(mode: PaletteMode): ThemeOptions {
-  const options: ThemeOptions = {
-    palette: makePalette(mode),
-    typography: makeTypography(),
-    spacing: makeSpacing(),
-    breakpoints: makeBreakpoints(),
-    shape: { borderRadius: 12 },
-    shadows: makeShadows(),
-    components: makeOverrides(createTheme({ palette: makePalette(mode) }))
-  }
+const themeOptions = (settings: Settings, overrideMode: PaletteMode): ThemeOptions => {
+  // ** Vars
+  const { mode, direction, themeColor } = settings
 
-  return options
+  // ** Create New object before removing user component overrides and typography objects from userThemeOptions
+  const userThemeConfig: ThemeOptions = Object.assign({})
+
+  const mergedThemeConfig: ThemeOptions = deepmerge(
+    {
+      breakpoints: makeBreakpoints(),
+      direction,
+      components: overrides(settings),
+      palette: makePalette(mode === 'semi-dark' ? overrideMode : mode),
+      spacing: spacing(2),
+      shape: {
+        borderRadius: 10
+      },
+      mixins: {
+        toolbar: {
+          minHeight: 64
+        }
+      },
+      shadows: shadows(mode === 'semi-dark' ? overrideMode : mode),
+      typography: makeTypography()
+    },
+    userThemeConfig
+  )
+
+  return deepmerge(mergedThemeConfig, {
+    palette: {
+      primary: {
+        ...(mergedThemeConfig.palette
+          ? mergedThemeConfig.palette[themeColor]
+          : makePalette(mode === 'semi-dark' ? overrideMode : mode)?.primary)
+      }
+    }
+  })
 }
+
+export default themeOptions

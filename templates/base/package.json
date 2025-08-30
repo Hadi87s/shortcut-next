@@ -13,13 +13,16 @@
     "@emotion/styled": "latest",
     "@iconify/react": "^6.0.0",
     "@mui/icons-material": "latest",
+    "@mui/lab": "^7.0.0-beta.16",
     "@mui/material": "latest",
+    "@mui/x-date-pickers": "^8.10.2",
     "@tanstack/react-query": "latest",
     "lucide-react": "^0.541.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-hook-form": "latest"
+    "react-hook-form": "latest",
+    "stylis-plugin-rtl": "^2.1.1"
   },
   "devDependencies": {
     "@types/node": "latest",

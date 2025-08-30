@@ -20,7 +20,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { Github, Package, LayoutDashboard, FormInput, Sun, Moon } from 'lucide-react'
 import { Icon } from '@iconify/react'
-import { ColorModeContext } from '@/@core/theme/ThemeComponent'
+import { useToggleMode } from '@/@core/hooks/useToggleMode'
 
 const Code = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -43,8 +43,7 @@ const Code = ({ children }: { children: React.ReactNode }) => (
 )
 
 function HeroSection({}: { copied: boolean; handleCopy: (text: string) => void }) {
-  const colorMode = React.useContext(ColorModeContext)
-  const { mode, toggle } = colorMode || { mode: 'light', toggle: () => {} }
+  const { mode, toggleMode } = useToggleMode()
 
   return (
     <Stack spacing={3} alignItems='center' textAlign='center' sx={{ mb: { xs: 6, md: 10 } }}>
@@ -82,7 +81,7 @@ function HeroSection({}: { copied: boolean; handleCopy: (text: string) => void }
         <Button
           size='large'
           variant='contained'
-          onClick={toggle}
+          onClick={toggleMode}
           startIcon={mode === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
         >
           Toggle Theme ({mode === 'dark' ? 'Dark' : 'Light'})
@@ -115,7 +114,7 @@ function WhatsIncludedCard({ copied, handleCopy }: { copied: boolean; handleCopy
     >
       <CardContent>
         <Typography variant='h6' fontWeight={700} gutterBottom>
-          What’s included
+          What&apos;s included
         </Typography>
         <Stack spacing={1.25} sx={{ opacity: 0.9 }}>
           <Typography>• Next.js 15 (App Router) + TypeScript</Typography>
@@ -242,7 +241,7 @@ function Footer() {
           target='_blank'
           rel='noopener'
         >
-          Hadi
+          Hadi & Imad
         </MuiLink>{' '}
         using MUI. Ready for Tailwind v4, React Query, and more.
       </Typography>

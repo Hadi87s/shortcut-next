@@ -1,5 +1,5 @@
 import type { ThemeOptions } from '@mui/material'
 
-export function makeSpacing(): ThemeOptions['spacing'] {
-  return 8 // 8px grid
+export function spacing(factor: number): ThemeOptions['spacing'] {
+  return `${0.25 * factor}rem`
 }

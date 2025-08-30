@@ -20,3 +20,4 @@ All notable changes to this project will be documented in this file.
 - Fix checking out to main branch when initializing the project.
 - Add author & contributor information in `package.json`.
 - Fix tailwind style is not applied.
+- Add MUI Custom Theme Control
