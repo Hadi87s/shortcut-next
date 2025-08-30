@@ -7,19 +7,17 @@ import GlobalStyles from '@mui/material/GlobalStyles'
 import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles'
 
 // ** Type Imports
-import { Settings } from 'src/@core/context/settingsContext'
-
-// ** Theme Config
-import themeConfig from 'src/configs/themeConfig'
+import { Settings } from '../context/SettingsContext'
 
 // ** Direction component for LTR or RTL
-import Direction from 'src/layouts/components/Direction'
+import Direction from '../components/Direction'
 
 // ** Theme
 import themeOptions from './ThemeOptions'
 
 // ** Global Styles
 import GlobalStyling from './globalStyles'
+import themeConfig from '../configs/themeConfig'
 
 interface Props {
   settings: Settings
@@ -42,7 +40,7 @@ const ThemeComponent = (props: Props) => {
     <ThemeProvider theme={theme}>
       <Direction direction={settings.direction}>
         <CssBaseline />
-        <GlobalStyles styles={() => GlobalStyling(theme) as any} />
+        <GlobalStyles styles={() => GlobalStyling(theme)} />
         {children}
       </Direction>
     </ThemeProvider>

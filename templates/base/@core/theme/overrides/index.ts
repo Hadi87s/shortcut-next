@@ -3,7 +3,7 @@ import { Theme } from '@mui/material/styles'
 import { ComponentsPropsList } from '@mui/material'
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from '@/@core/context/SettingsContext'
 
 export type OwnerStateThemeType = {
   theme: Theme
@@ -45,7 +45,7 @@ import MuiAutocomplete from './autocomplete'
 import MuiToggleButton from './toggleButton'
 
 const Overrides = (settings: Settings) => {
-  const { skin, mode } = settings
+  const { mode } = settings
 
   const fab = MuiFab()
   const chip = MuiChip()
@@ -53,26 +53,26 @@ const Overrides = (settings: Settings) => {
   const tabs = MuiTabs()
   const input = MuiInput()
   const tables = MuiTable()
-  const menu = MuiMenu(skin)
+  const menu = MuiMenu()
   const button = MuiButton()
   const rating = MuiRating()
   const select = MuiSelect()
-  const cards = MuiCard(skin)
+  const cards = MuiCard()
   const avatars = MuiAvatar()
   const progress = Progress()
   const divider = MuiDivider()
   const tooltip = MuiTooltip()
   const alerts = MuiAlerts(mode)
-  const dialog = MuiDialog(skin)
+  const dialog = MuiDialog()
   const backdrop = MuiBackdrop()
   const dataGrid = MuiDataGrid()
   const switches = MuiSwitches()
   const timeline = MuiTimeline()
-  const popover = MuiPopover(skin)
+  const popover = MuiPopover()
   const accordion = MuiAccordion()
-  const snackbar = MuiSnackbar(skin)
+  const snackbar = MuiSnackbar()
   const pagination = MuiPagination()
-  const autocomplete = MuiAutocomplete(skin)
+  const autocomplete = MuiAutocomplete()
 
   return Object.assign(
     fab,

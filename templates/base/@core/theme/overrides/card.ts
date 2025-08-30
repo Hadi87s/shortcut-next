@@ -1,13 +1,11 @@
 // ** Type Imports
 import { OwnerStateThemeType } from '.'
-import { Skin } from 'src/@core/layouts/types'
 
-const Card = (skin: Skin) => {
+const Card = () => {
   return {
     MuiCard: {
       styleOverrides: {
         root: ({ theme }: OwnerStateThemeType) => ({
-          ...(skin === 'bordered' && { border: `1px solid ${theme.palette.divider}` }),
           '& .card-more-options': {
             marginTop: theme.spacing(-1),
             marginRight: theme.spacing(-3)
@@ -18,7 +16,7 @@ const Card = (skin: Skin) => {
         })
       },
       defaultProps: {
-        elevation: skin === 'bordered' ? 0 : 6
+        elevation: 1
       }
     },
     MuiCardHeader: {

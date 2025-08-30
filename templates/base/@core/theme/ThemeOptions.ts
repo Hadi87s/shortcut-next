@@ -2,12 +2,6 @@
 import { deepmerge } from '@mui/utils'
 import { PaletteMode, ThemeOptions } from '@mui/material'
 
-// ** User Theme Options
-import UserThemeOptions from 'src/layouts/UserThemeOptions'
-
-// ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
-
 // ** Theme Override Imports
 import shadows from './shadows'
 import overrides from './overrides'
@@ -15,20 +9,21 @@ import { spacing } from './spacing'
 import { makeTypography } from './typography'
 import { makeBreakpoints } from './breakpoints'
 import { makePalette } from './palette'
+import { Settings } from '../context/SettingsContext'
 
 const themeOptions = (settings: Settings, overrideMode: PaletteMode): ThemeOptions => {
   // ** Vars
-  const { skin, mode, direction, themeColor } = settings
+  const { mode, direction, themeColor } = settings
 
   // ** Create New object before removing user component overrides and typography objects from userThemeOptions
-  const userThemeConfig: ThemeOptions = Object.assign({}, UserThemeOptions())
+  const userThemeConfig: ThemeOptions = Object.assign({})
 
   const mergedThemeConfig: ThemeOptions = deepmerge(
     {
       breakpoints: makeBreakpoints(),
       direction,
       components: overrides(settings),
-      palette: makePalette(mode === 'semi-dark' ? overrideMode : mode, skin),
+      palette: makePalette(mode === 'semi-dark' ? overrideMode : mode),
       ...spacing,
       shape: {
         borderRadius: 10
@@ -49,7 +44,7 @@ const themeOptions = (settings: Settings, overrideMode: PaletteMode): ThemeOptio
       primary: {
         ...(mergedThemeConfig.palette
           ? mergedThemeConfig.palette[themeColor]
-          : makePalette(mode === 'semi-dark' ? overrideMode : mode, skin).primary)
+          : makePalette(mode === 'semi-dark' ? overrideMode : mode)?.primary)
       }
     }
   })

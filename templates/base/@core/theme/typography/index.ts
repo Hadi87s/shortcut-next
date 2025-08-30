@@ -4,7 +4,7 @@ import type { ThemeOptions } from '@mui/material'
 export function makeTypography(): ThemeOptions['typography'] {
   const english = 'var(--font-poppins), Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial'
 
-  // TODO: Include with i18n is setup
+  // TODO: Include when i18n is setup
   const arabic = 'var(--font-cairo), "Segoe UI", Tahoma, Geneva, sans-serif'
 
   return {
@@ -54,8 +54,7 @@ export function makeTypography(): ThemeOptions['typography'] {
       letterSpacing: 0,
       fontWeight: 400,
       fontSize: '16px',
-      lineHeight: 1,
-      fontFamily: 'Work Sans, Poppins, sans-serif'
+      lineHeight: 1
     },
     body2: {
       letterSpacing: '0px',

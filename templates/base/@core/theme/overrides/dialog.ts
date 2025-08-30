@@ -1,14 +1,12 @@
 // ** Type Imports
 import { OwnerStateThemeType } from '.'
-import { Skin } from 'src/@core/layouts/types'
 
-const Dialog = (skin: Skin) => {
+const Dialog = () => {
   return {
     MuiDialog: {
       styleOverrides: {
         paper: ({ theme }: OwnerStateThemeType) => ({
-          boxShadow: theme.shadows[skin === 'bordered' ? 0 : 10],
-          ...(skin === 'bordered' && { border: `1px solid ${theme.palette.divider}` }),
+          boxShadow: theme.shadows[10],
           '&:not(.MuiDialog-paperFullScreen)': {
             [theme.breakpoints.down('sm')]: {
               margin: theme.spacing(4),
