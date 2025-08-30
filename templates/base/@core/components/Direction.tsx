@@ -1,7 +1,7 @@
 'use client'
 
 // ** React Imports
-import { useEffect, ReactNode } from 'react'
+import { useEffect, ReactNode, useMemo } from 'react'
 
 // ** MUI Imports
 import { Direction as MuiDirection } from '@mui/material'
@@ -18,7 +18,7 @@ interface DirectionProps {
   direction: MuiDirection
 }
 
-const styleCache = () =>
+const createRtlCache = () =>
   createCache({
     key: 'rtl',
     prepend: true,
@@ -32,8 +32,10 @@ const Direction = (props: DirectionProps) => {
     document.dir = direction
   }, [direction])
 
+  const cache = useMemo(() => createRtlCache(), [])
+
   if (direction === 'rtl') {
-    return <CacheProvider value={styleCache()}>{children}</CacheProvider>
+    return <CacheProvider value={cache}>{children}</CacheProvider>
   }
 
   return <>{children}</>

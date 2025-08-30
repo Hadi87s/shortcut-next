@@ -24,7 +24,7 @@ const themeOptions = (settings: Settings, overrideMode: PaletteMode): ThemeOptio
       direction,
       components: overrides(settings),
       palette: makePalette(mode === 'semi-dark' ? overrideMode : mode),
-      ...spacing,
+      spacing: spacing(2),
       shape: {
         borderRadius: 10
       },

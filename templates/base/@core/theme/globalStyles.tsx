@@ -1,21 +1,8 @@
-// ** MUI Imports
 import { Theme } from '@mui/material/styles'
 
-// ** Hook Import
-import { useSettings } from '../hooks/useSettings'
-
 const GlobalStyles = (theme: Theme) => {
-  // ** Hook & Var
-  const { settings } = useSettings()
-  const { mode } = settings
-
-  const perfectScrollbarThumbBgColor = () => {
-    if (mode === 'light') {
-      return '#BFBFD5 !important'
-    } else {
-      return '#57596C !important'
-    }
-  }
+  const perfectScrollbarThumbBgColor = () =>
+    theme.palette.mode === 'light' ? '#BFBFD5 !important' : '#57596C !important'
 
   return {
     '.demo-space-x > *': {

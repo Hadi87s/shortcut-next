@@ -36,7 +36,7 @@ const Accordion = () => {
             borderBottomRightRadius: 0
           }),
           '& + .MuiCollapse-root': {
-            '& .MuiAccordionDetails-root::first-of-type': {
+            '& .MuiAccordionDetails-root:first-of-type': {
               paddingTop: 0
             }
           }

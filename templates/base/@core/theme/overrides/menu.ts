@@ -1,5 +1,5 @@
 // ** Type Imports
-import { OwnerStateThemeType } from '.'
+import type { OwnerStateThemeType } from '.'
 
 const Menu = () => {
   const boxShadow = (theme: OwnerStateThemeType['theme']) => {

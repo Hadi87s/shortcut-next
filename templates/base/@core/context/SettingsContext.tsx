@@ -82,16 +82,14 @@ export const SettingsProvider = ({ children, pageSettings }: SettingsProviderPro
   const [settings, setSettings] = useState<Settings>({ ...initialSettings })
 
   useEffect(() => {
-    const restoredSettings = restoreSettings()
+    const restored = restoreSettings()
+    const next = restored || initialSettings
 
-    if (restoredSettings) {
-      setSettings({ ...restoredSettings })
-    }
     if (pageSettings) {
-      setSettings({ ...settings, ...pageSettings })
+      setSettings({ ...next, ...pageSettings })
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSettings(next)
   }, [pageSettings])
 
   const saveSettings = (updatedSettings: Settings) => {
