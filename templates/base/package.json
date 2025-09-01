@@ -17,11 +17,15 @@
     "@mui/material": "latest",
     "@mui/x-date-pickers": "^8.10.2",
     "@tanstack/react-query": "latest",
+    "i18next": "^25.4.2",
+    "i18next-resources-to-backend": "^1.2.1",
     "lucide-react": "^0.541.0",
+    "negotiator": "^1.0.0",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-hook-form": "latest",
+    "react-i18next": "^15.7.3",
     "stylis-plugin-rtl": "^2.1.1"
   },
   "devDependencies": {

@@ -21,6 +21,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { Github, Package, LayoutDashboard, FormInput, Sun, Moon } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useToggleMode } from '@/@core/hooks/useToggleMode'
+import LanguageDropdown from '@/@core/components/LanguageDropdown'
 
 const Code = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -86,17 +87,7 @@ function HeroSection({}: { copied: boolean; handleCopy: (text: string) => void }
         >
           Toggle Theme ({mode === 'dark' ? 'Dark' : 'Light'})
         </Button>
-        <Button
-          size='large'
-          variant='outlined'
-          endIcon={<OpenInNewIcon />}
-          component={Link}
-          href='#'
-          target='_blank'
-          rel='noopener'
-        >
-          View Docs
-        </Button>
+        <LanguageDropdown />
       </Stack>
     </Stack>
   )
