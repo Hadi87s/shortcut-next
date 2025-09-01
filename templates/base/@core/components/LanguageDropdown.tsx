@@ -1,105 +1,79 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { locales } from '@/@core/configs/i18n'
-import { Box, IconButton, Menu, MenuItem, ListItemIcon, ListItemText, Tooltip } from '@mui/material'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { Select, MenuItem, FormControl, SelectChangeEvent, Box } from '@mui/material'
 import { Languages } from 'lucide-react'
+import type { Locale } from '@/lib/i18n/locales'
+import { Settings } from '../context/SettingsContext'
 
-const languageIcons: Record<string, React.ReactNode> = {
-  en: (
-    <Box
-      component='span'
-      sx={{
-        fontFamily: 'Arial',
-        fontWeight: 'bold',
-        fontSize: '1rem',
-        lineHeight: 1
-      }}
-    >
-      EN
-    </Box>
-  ),
-  ar: (
-    <Box
-      component='span'
-      sx={{
-        fontFamily: 'Arial',
-        fontWeight: 'bold',
-        fontSize: '1rem',
-        lineHeight: 1
-      }}
-    >
-      AR
-    </Box>
-  )
-}
+export default function LanguageDropdown({
+  settings,
+  saveSettings
+}: {
+  settings: Settings
+  saveSettings: (settings: Settings) => void
+}) {
+  const { i18n, t } = useTranslation()
+  const pathname = usePathname()
+  const router = useRouter()
+  const search = useSearchParams()
 
-const languageNames: Record<string, string> = {
-  en: 'English',
-  ar: 'Arabic (العربية)'
-}
+  const [language, setLanguage] = useState<Locale>((i18n.language as Locale) || 'en')
 
-const LanguageDropdown = () => {
-  const { i18n } = useTranslation()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
+  const handleLanguageChange = (event: SelectChangeEvent) => {
+    const lang = event.target.value as Locale
+    setLanguage(lang)
+    i18n.changeLanguage(lang)
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
+    const parts = pathname.split('/')
+    parts[1] = lang
+    const nextPath = parts.join('/')
+    const q = search.toString()
+    router.replace(q ? `${nextPath}?${q}` : nextPath)
+    saveSettings({ ...settings, direction: lang === 'ar' ? 'rtl' : 'ltr' })
   }
 
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
-
-  const handleLanguageChange = async (lang: string) => {
-    await i18n.changeLanguage(lang)
-    // Update document direction for RTL support
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
-    // Close menu
-    handleClose()
-  }
+  useEffect(() => {
+    document.documentElement.setAttribute('lang', language)
+  }, [language])
 
   return (
-    <Box>
-      <Tooltip title='Change Language'>
-        <IconButton
-          onClick={handleClick}
-          size='medium'
-          aria-controls={open ? 'language-menu' : undefined}
-          aria-haspopup='true'
-          aria-expanded={open ? 'true' : undefined}
-          color='inherit'
-        >
-          {i18n.language && languageIcons[i18n.language] ? languageIcons[i18n.language] : <Languages size={22} />}
-        </IconButton>
-      </Tooltip>
-      <Menu
-        id='language-menu'
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'language-button'
+    <FormControl size='medium' sx={{ minWidth: 150 }}>
+      <Select
+        value={language}
+        size='medium'
+        onChange={handleLanguageChange}
+        displayEmpty
+        renderValue={() => (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Languages size={20} />
+            {language === 'en' ? t('common.english') : t('common.arabic')}
+          </Box>
+        )}
+        sx={{
+          height: 57,
+          padding: '8px 14px'
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {locales.map(lang => (
-          <MenuItem
-            key={lang}
-            onClick={() => handleLanguageChange(lang)}
-            selected={i18n.language === lang}
-            sx={{ minWidth: 160 }}
-          >
-            <ListItemIcon>{languageIcons[lang] || <Languages size={18} />}</ListItemIcon>
-            <ListItemText>{languageNames[lang]}</ListItemText>
-          </MenuItem>
-        ))}
-      </Menu>
-    </Box>
+        <MenuItem value='en'>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 0.5 }}>
+            <Box component='span' sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: 'primary.main' }}>
+              EN
+            </Box>
+            {t('common.english')}
+          </Box>
+        </MenuItem>
+        <MenuItem value='ar'>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 0.5 }}>
+            <Box component='span' sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: 'primary.main' }}>
+              AR
+            </Box>
+            {t('common.arabic')}
+          </Box>
+        </MenuItem>
+      </Select>
+    </FormControl>
   )
 }
-
-export default LanguageDropdown

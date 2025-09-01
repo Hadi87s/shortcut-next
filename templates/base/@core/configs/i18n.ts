@@ -23,15 +23,4 @@ if (!i18next.isInitialized) {
     })
 }
 
-export async function getT(lng?: string, ns = 'translation') {
-  if (lng && i18next.resolvedLanguage !== lng) {
-    await i18next.changeLanguage(lng)
-  }
-  if (!i18next.hasLoadedNamespace(ns)) {
-    await i18next.loadNamespaces(ns)
-  }
-
-  return i18next.getFixedT(lng ?? (i18next.resolvedLanguage as string), ns)
-}
-
 export default i18next

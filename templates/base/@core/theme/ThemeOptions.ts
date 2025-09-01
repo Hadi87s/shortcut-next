@@ -11,7 +11,7 @@ import { makeBreakpoints } from './breakpoints'
 import { makePalette } from './palette'
 import { Settings } from '../context/SettingsContext'
 
-const themeOptions = (settings: Settings, overrideMode: PaletteMode): ThemeOptions => {
+const themeOptions = (settings: Settings, overrideMode: PaletteMode, lang: string): ThemeOptions => {
   // ** Vars
   const { mode, direction, themeColor } = settings
 
@@ -34,7 +34,7 @@ const themeOptions = (settings: Settings, overrideMode: PaletteMode): ThemeOptio
         }
       },
       shadows: shadows(mode === 'semi-dark' ? overrideMode : mode),
-      typography: makeTypography()
+      typography: makeTypography(lang)
     },
     userThemeConfig
   )
