@@ -10,7 +10,6 @@ import { Github, Package, FormInput, Sun, Moon } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useToggleMode } from '@/@core/hooks/useToggleMode'
 import { useTranslation } from 'react-i18next'
-import '../../lib/i18n/client'
 import LanguageDropdown from '@/@core/components/LanguageDropdown'
 import { useSettings } from '@/@core/hooks/useSettings'
 import GradientText from '@/components/ui/GradientText'
@@ -50,43 +49,43 @@ function HeroSection({}: { copied: boolean; handleCopy: (text: string) => void }
       </Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} useFlexGap flexWrap='wrap' justifyContent='center'>
         {[
-          { 
-            icon: 'simple-icons:mui', 
+          {
+            icon: 'simple-icons:mui',
             translationKey: 'HomePage.chips.mui',
             variant: 'filled',
             iconStyle: { borderRadius: 4 }
           },
-          { 
-            icon: null, 
+          {
+            icon: null,
             lucideIcon: <FormInput size={18} />,
             translationKey: 'HomePage.chips.reactHookForm',
             variant: 'outlined'
           },
-          { 
-            icon: 'devicon:tailwindcss', 
+          {
+            icon: 'devicon:tailwindcss',
             translationKey: 'HomePage.chips.tailwind',
             variant: 'filled'
           },
-          { 
-            icon: 'devicon:typescript', 
+          {
+            icon: 'devicon:typescript',
             translationKey: 'HomePage.chips.typescript',
             variant: 'outlined',
             iconStyle: { borderRadius: 4 }
           },
-          { 
-            icon: 'devicon:nextjs', 
+          {
+            icon: 'devicon:nextjs',
             translationKey: 'HomePage.chips.appRouter',
             variant: 'outlined'
           }
         ].map((chip, index) => (
           <Chip
             key={index}
-            icon={chip.lucideIcon || (chip.icon ? 
-              <Icon icon={chip.icon} width={18} height={18} style={chip.iconStyle || {}} /> : 
-              undefined
-            )}
+            icon={
+              chip.lucideIcon ||
+              (chip.icon ? <Icon icon={chip.icon} width={18} height={18} style={chip.iconStyle || {}} /> : undefined)
+            }
             label={t(chip.translationKey)}
-            color="primary"
+            color='primary'
             variant={chip.variant as 'filled' | 'outlined'}
           />
         ))}

@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Select, MenuItem, FormControl, SelectChangeEvent, Box, Stack } from '@mui/material'
 import { Languages } from 'lucide-react'
-import type { Locale } from '@/lib/i18n/locales'
 import { Settings } from '../context/SettingsContext'
+import { Locale } from '../configs/i18n'
 
 export default function LanguageDropdown({
   settings,
@@ -16,9 +15,6 @@ export default function LanguageDropdown({
   saveSettings: (settings: Settings) => void
 }) {
   const { i18n, t } = useTranslation()
-  const pathname = usePathname()
-  const router = useRouter()
-  const search = useSearchParams()
 
   const [language, setLanguage] = useState<Locale>((i18n.language as Locale) || 'en')
 
@@ -27,12 +23,7 @@ export default function LanguageDropdown({
     setLanguage(lang)
     i18n.changeLanguage(lang)
 
-    const parts = pathname.split('/')
-    parts[1] = lang
-    const nextPath = parts.join('/')
-    const q = search.toString()
-    router.replace(q ? `${nextPath}?${q}` : nextPath)
-    saveSettings({ ...settings, direction: lang === 'ar' ? 'rtl' : 'ltr' })
+    saveSettings({ ...settings, direction: lang === 'ar' ? 'rtl' : 'ltr', language: lang })
   }
 
   useEffect(() => {

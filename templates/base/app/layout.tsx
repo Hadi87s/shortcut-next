@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import { Poppins, Cairo } from 'next/font/google'
-import '../globals.css'
+import './globals.css'
 import AppProviders from '@/providers/AppProviders'
-import { isRTL, Locale, SUPPORTED_LOCALES } from '@/lib/i18n/locales'
-import { notFound } from 'next/navigation'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -22,21 +20,14 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({
-  children,
-  params
+  children
 }: Readonly<{
   children: React.ReactNode
-  params: Promise<{ locale: Locale }>
 }>) {
-  const { locale } = await params
-  if (!(SUPPORTED_LOCALES as unknown as string[]).includes(locale)) notFound()
-
-  const dir = isRTL(locale) ? 'rtl' : 'ltr'
-
   return (
-    <html lang={locale} dir={dir}>
+    <html lang='en' dir='ltr'>
       <body className={`${poppins.variable} ${cairo.variable} antialiased`}>
-        <AppProviders locale={locale}>{children}</AppProviders>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   )

@@ -11,11 +11,13 @@ import themeConfig from '../configs/themeConfig'
 
 // ** Types Import
 import { Mode, ThemeColor } from '../layouts/types'
+import { Locale } from '../configs/i18n'
 
 export type Settings = {
   mode: Mode
   direction: Direction
   themeColor: ThemeColor
+  language: Locale
   toastPosition?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 }
 
@@ -25,6 +27,7 @@ export type PageSpecificSettings = {
   themeColor?: ThemeColor
   toastPosition?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 }
+
 export type SettingsContextValue = {
   settings: Settings
   saveSettings: (updatedSettings: Settings) => void
@@ -39,6 +42,7 @@ const initialSettings: Settings = {
   themeColor: 'primary',
   mode: themeConfig.mode,
   direction: themeConfig.direction,
+  language: 'en',
   toastPosition: themeConfig.toastPosition
 }
 
@@ -46,25 +50,16 @@ const staticSettings = {
   toastPosition: initialSettings.toastPosition
 }
 
-const restoreSettings = (): Settings | null => {
-  let settings = null
-
+const restoreSettings = (): Settings => {
   try {
-    const storedData: string | null = window.localStorage.getItem('settings')
-
-    if (storedData) {
-      settings = { ...JSON.parse(storedData), ...staticSettings }
-    } else {
-      settings = initialSettings
+    if (typeof window !== 'undefined') {
+      const stored = window.localStorage.getItem('settings')
+      if (stored) return { ...JSON.parse(stored), ...staticSettings }
     }
-  } catch (err) {
-    console.error(err)
-  }
-
-  return settings
+  } catch {}
+  return initialSettings
 }
 
-// set settings in localStorage
 const storeSettings = (settings: Settings) => {
   const initSettings = Object.assign({}, settings)
 
@@ -79,7 +74,7 @@ export const SettingsContext = createContext<SettingsContextValue>({
 })
 
 export const SettingsProvider = ({ children, pageSettings }: SettingsProviderProps) => {
-  const [settings, setSettings] = useState<Settings>({ ...initialSettings })
+  const [settings, setSettings] = useState<Settings>(() => restoreSettings())
 
   useEffect(() => {
     const restored = restoreSettings()

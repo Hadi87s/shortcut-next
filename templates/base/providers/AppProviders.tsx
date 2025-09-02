@@ -13,23 +13,14 @@ import { SettingsProvider } from '@/@core/context/SettingsContext'
 import ThemeComponent from '@/@core/theme/ThemeComponent'
 import I18nProvider from '@/providers/I18nProvider'
 import HydrationGate from '@/components/HydrationGate'
-import { isRTL } from '@/lib/i18n/locales'
 import { useSettings } from '@/@core/hooks/useSettings'
 import Spinner from '@/components/loaders/Spinner'
 
-function ThemedProviders({
-  children,
-  locale,
-  client
-}: {
-  children: React.ReactNode
-  locale: 'en' | 'ar'
-  client: QueryClient
-}) {
+function ThemedProviders({ children, client }: { children: React.ReactNode; client: QueryClient }) {
   const { settings } = useSettings()
 
   // Direction SHOULD follow the URL locale for Pattern C
-  const rtl = isRTL(locale)
+  const rtl = settings.direction === 'rtl'
   const cache = useMemo(
     () =>
       createCache({
@@ -43,7 +34,7 @@ function ThemedProviders({
     <CacheProvider key={rtl ? 'rtl' : 'ltr'} value={cache}>
       <ThemeComponent settings={{ ...settings, direction: rtl ? 'rtl' : 'ltr' }}>
         <QueryClientProvider client={client}>
-          <I18nProvider locale={locale}>
+          <I18nProvider>
             <HydrationGate fallback={<Spinner />}>{children}</HydrationGate>
           </I18nProvider>
         </QueryClientProvider>
@@ -52,14 +43,12 @@ function ThemedProviders({
   )
 }
 
-export default function AppProviders({ children, locale }: { children: React.ReactNode; locale: 'en' | 'ar' }) {
+export default function AppProviders({ children }: { children: React.ReactNode }) {
   const [client] = useState(() => new QueryClient())
 
   return (
     <SettingsProvider>
-      <ThemedProviders locale={locale} client={client}>
-        {children}
-      </ThemedProviders>
+      <ThemedProviders client={client}>{children}</ThemedProviders>
     </SettingsProvider>
   )
 }

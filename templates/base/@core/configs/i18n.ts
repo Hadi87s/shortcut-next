@@ -1,26 +1,26 @@
-import i18next from 'i18next'
+import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next/initReactI18next'
 import resourcesToBackend from 'i18next-resources-to-backend'
+import LanguageDetector from 'i18next-browser-languagedetector'
 
-export const locales = ['en', 'ar'] as const
-export const defaultLocale = 'en'
-export const headerName = 'x-current-locale'
+if (!i18n.isInitialized) {
+  if (typeof window !== 'undefined') i18n.use(LanguageDetector)
 
-const runsOnServer = typeof window === 'undefined'
-
-if (!i18next.isInitialized) {
-  i18next
+  i18n
     .use(initReactI18next)
-    // one-file-per-language (namespace = "translation")
-    .use(resourcesToBackend((lng: string) => import(`../../public/locale/${lng}.json`)))
+    .use(resourcesToBackend((lng: string) => import(`@/public/locale/${lng}.json`)))
     .init({
-      supportedLngs: locales as unknown as string[],
-      fallbackLng: defaultLocale,
-      ns: ['translation'],
-      defaultNS: 'translation',
+      fallbackLng: 'en',
+      load: 'languageOnly',
+      nonExplicitSupportedLngs: true,
+      detection: {
+        order: ['localStorage'],
+        caches: ['localStorage']
+      },
       interpolation: { escapeValue: false },
-      preload: runsOnServer ? (locales as unknown as string[]) : []
+      react: { useSuspense: false }
     })
 }
+export default i18n
 
-export default i18next
+export type Locale = 'ar' | 'en'
