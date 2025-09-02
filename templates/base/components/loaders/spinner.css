@@ -5,6 +5,8 @@
   flex-direction: column;
   gap: 36px;
   height: 100vh;
+  width:100%;
+  position:relative;
 }
 
 .spinner {
@@ -89,7 +91,6 @@
   height: 16px;
 }
 
-/* Default LTR animation (left-to-right) */
 .animated-dots::after {
   content: '';
   color: #5B74FF;
@@ -98,14 +99,12 @@
   left: 0;
 }
 
-/* RTL animation (right-to-left) */
 [dir="rtl"] .animated-dots::after {
   animation: dots-animation-rtl 1.5s infinite steps(4, end);
   right: 0;
   left: auto;
 }
 
-/* Left-to-right animation (English) */
 @keyframes dots-animation-ltr {
   0%, 20% {
     content: '';
@@ -121,7 +120,6 @@
   }
 }
 
-/* Right-to-left animation (Arabic) */
 @keyframes dots-animation-rtl {
   0%, 20% {
     content: '';

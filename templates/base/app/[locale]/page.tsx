@@ -2,17 +2,18 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Link as MuiLink } from '@mui/material'
+import { Link as MuiLink, useTheme } from '@mui/material'
 import { Box, Button, Card, CardContent, Chip, Container, Divider, Stack, Tooltip, Typography } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import { Github, Package, LayoutDashboard, FormInput, Sun, Moon } from 'lucide-react'
+import { Github, Package, FormInput, Sun, Moon } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useToggleMode } from '@/@core/hooks/useToggleMode'
 import { useTranslation } from 'react-i18next'
 import '../../lib/i18n/client'
 import LanguageDropdown from '@/@core/components/LanguageDropdown'
 import { useSettings } from '@/@core/hooks/useSettings'
+import GradientText from '@/components/ui/GradientText'
 
 const Code = ({ children }: { children: React.ReactNode }) => (
   <Box
@@ -42,37 +43,53 @@ function HeroSection({}: { copied: boolean; handleCopy: (text: string) => void }
   return (
     <Stack spacing={4} alignItems='center' textAlign='center' mb={{ xs: 6, md: 10 }}>
       <Stack direction='row' spacing={1} alignItems='center'>
-        <LayoutDashboard size={28} />
-        <Typography variant='h4' fontWeight={800} letterSpacing={0.2}>
-          {t('HomePage.heroTitle')}
-        </Typography>
+        <GradientText textKey='HomePage.heroTitle' variant='h1' />
       </Stack>
-      <Typography variant='h6' sx={{ maxWidth: 860, opacity: 0.9 }}>
+      <Typography variant='h4' lineHeight={1.25} sx={{ maxWidth: 860, opacity: 0.9 }}>
         {t('HomePage.heroDescription')}
       </Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} useFlexGap flexWrap='wrap' justifyContent='center'>
-        <Chip
-          icon={<Icon icon='simple-icons:mui' width={18} height={18} style={{ borderRadius: 4 }} />}
-          label={t('HomePage.chips.mui')}
-          color='primary'
-          variant='filled'
-        />
-        <Chip icon={<FormInput size={18} />} label={t('HomePage.chips.reactHookForm')} variant='outlined' />
-        <Chip
-          icon={<Icon icon='devicon:tailwindcss' width={18} height={18} />}
-          label={t('HomePage.chips.tailwind')}
-          variant='outlined'
-        />
-        <Chip
-          icon={<Icon icon='devicon:typescript' width={18} height={18} style={{ borderRadius: 4 }} />}
-          label={t('HomePage.chips.typescript')}
-          variant='outlined'
-        />
-        <Chip
-          icon={<Icon icon='devicon:nextjs' width={18} height={18} />}
-          label={t('HomePage.chips.appRouter')}
-          variant='outlined'
-        />
+        {[
+          { 
+            icon: 'simple-icons:mui', 
+            translationKey: 'HomePage.chips.mui',
+            variant: 'filled',
+            iconStyle: { borderRadius: 4 }
+          },
+          { 
+            icon: null, 
+            lucideIcon: <FormInput size={18} />,
+            translationKey: 'HomePage.chips.reactHookForm',
+            variant: 'outlined'
+          },
+          { 
+            icon: 'devicon:tailwindcss', 
+            translationKey: 'HomePage.chips.tailwind',
+            variant: 'filled'
+          },
+          { 
+            icon: 'devicon:typescript', 
+            translationKey: 'HomePage.chips.typescript',
+            variant: 'outlined',
+            iconStyle: { borderRadius: 4 }
+          },
+          { 
+            icon: 'devicon:nextjs', 
+            translationKey: 'HomePage.chips.appRouter',
+            variant: 'outlined'
+          }
+        ].map((chip, index) => (
+          <Chip
+            key={index}
+            icon={chip.lucideIcon || (chip.icon ? 
+              <Icon icon={chip.icon} width={18} height={18} style={chip.iconStyle || {}} /> : 
+              undefined
+            )}
+            label={t(chip.translationKey)}
+            color="primary"
+            variant={chip.variant as 'filled' | 'outlined'}
+          />
+        ))}
       </Stack>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={1}>
         <Button
@@ -254,6 +271,7 @@ function Footer() {
 }
 export default function Page() {
   const [copied, setCopied] = React.useState(false)
+  const theme = useTheme()
 
   const handleCopy = async (text: string) => {
     try {
@@ -269,55 +287,47 @@ export default function Page() {
     <Box
       sx={{
         minHeight: '100dvh',
+        width: '100%',
         position: 'relative',
         overflow: 'hidden',
         bgcolor: 'background.default',
         color: 'text.primary'
       }}
     >
-      {/* Gradient background */}
-      <Box
-        aria-hidden
-        sx={{
-          pointerEvents: 'none',
-          position: 'absolute',
-          inset: 0,
-          '&::before, &::after': {
-            content: "''",
+      {theme.palette.mode === 'dark' ? (
+        <Box
+          aria-hidden
+          sx={{
             position: 'absolute',
-            width: 520,
-            height: 520,
-            borderRadius: '50%',
-            filter: 'blur(80px)',
-            opacity: 0.22,
-            transform: 'translate(-30%, -20%)',
-            background: 'radial-gradient(closest-side, #7C4DFF, transparent 70%)',
-            animation: 'float1 16s ease-in-out infinite'
-          },
-          '&::after': {
-            right: -120,
-            bottom: -120,
-            left: 'auto',
-            top: 'auto',
-            width: 620,
-            height: 620,
-            opacity: 0.18,
-            transform: 'translate(20%, 10%)',
-            background: 'radial-gradient(closest-side, #00E5FF, transparent 70%)',
-            animation: 'float2 18s ease-in-out infinite'
-          },
-          '@keyframes float1': {
-            '0%, 100%': { transform: 'translate(-30%, -20%) scale(1)' },
-            '50%': { transform: 'translate(-10%, -10%) scale(1.08)' }
-          },
-          '@keyframes float2': {
-            '0%, 100%': { transform: 'translate(20%, 10%) scale(1)' },
-            '50%': { transform: 'translate(10%, 20%) scale(0.95)' }
-          }
-        }}
-      />
+            inset: 0,
+            zIndex: 0,
+            bgcolor: '#020617',
+            backgroundImage: `
+            linear-gradient(to right, rgba(71,85,105,0.3) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(71,85,105,0.3) 1px, transparent 1px),
+            radial-gradient(circle at 50% 50%, rgba(139,92,246,0.15) 0%, transparent 70%)
+          `,
+            backgroundSize: '32px 32px, 32px 32px, 100% 100%'
+          }}
+        />
+      ) : (
+        <Box
+          aria-hidden
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            backgroundImage: `
+            linear-gradient(to right, #d1d5db 1px, transparent 1px),
+            linear-gradient(to bottom, #d1d5db 1px, transparent 1px)
+          `,
+            backgroundSize: '32px 32px',
+            WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 100% 0%, #000 50%, transparent 90%)',
+            maskImage: 'radial-gradient(ellipse 80% 80% at 100% 0%, #000 50%, transparent 90%)'
+          }}
+        />
+      )}
 
-      {/* Main content */}
       <Container maxWidth='lg' sx={{ position: 'relative', zIndex: 1, py: { xs: 6, md: 10 } }}>
         <Stack spacing={4}>
           <HeroSection copied={copied} handleCopy={handleCopy} />

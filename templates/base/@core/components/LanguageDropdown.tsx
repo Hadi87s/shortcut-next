@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { Select, MenuItem, FormControl, SelectChangeEvent, Box } from '@mui/material'
+import { Select, MenuItem, FormControl, SelectChangeEvent, Box, Stack } from '@mui/material'
 import { Languages } from 'lucide-react'
 import type { Locale } from '@/lib/i18n/locales'
 import { Settings } from '../context/SettingsContext'
@@ -40,38 +40,35 @@ export default function LanguageDropdown({
   }, [language])
 
   return (
-    <FormControl size='medium' sx={{ minWidth: 150 }}>
+    <FormControl size='medium'>
       <Select
         value={language}
         size='medium'
+        variant='filled'
         onChange={handleLanguageChange}
         displayEmpty
         renderValue={() => (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Stack flexDirection='row' alignItems='center' gap={1}>
             <Languages size={20} />
             {language === 'en' ? t('common.english') : t('common.arabic')}
-          </Box>
+          </Stack>
         )}
-        sx={{
-          height: 57,
-          padding: '8px 14px'
-        }}
       >
         <MenuItem value='en'>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 0.5 }}>
+          <Stack flexDirection='row' alignItems='center' gap={1.5}>
             <Box component='span' sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: 'primary.main' }}>
               EN
             </Box>
             {t('common.english')}
-          </Box>
+          </Stack>
         </MenuItem>
         <MenuItem value='ar'>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, py: 0.5 }}>
+          <Stack flexDirection='row' alignItems='center' gap={1.5}>
             <Box component='span' sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: 'primary.main' }}>
               AR
             </Box>
             {t('common.arabic')}
-          </Box>
+          </Stack>
         </MenuItem>
       </Select>
     </FormControl>
