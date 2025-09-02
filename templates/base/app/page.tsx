@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Link as MuiLink, useTheme } from '@mui/material'
+import { Grid, Link as MuiLink, useTheme } from '@mui/material'
 import { Box, Button, Card, CardContent, Chip, Container, Divider, Stack, Tooltip, Typography } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
@@ -331,14 +331,14 @@ export default function Page() {
         <Stack spacing={4}>
           <HeroSection copied={copied} handleCopy={handleCopy} />
 
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '7fr 5fr' }, gap: 3 }}>
-            <Box>
+          <Grid container spacing={4}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <WhatsIncludedCard copied={copied} handleCopy={handleCopy} />
-            </Box>
-            <Box>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TechLogosCard />
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
 
           <Footer />
         </Stack>

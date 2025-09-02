@@ -25,7 +25,8 @@ const GradientText = ({ textKey, variant }: GradientTextProps) => {
         backgroundClip: 'text',
         WebkitBackgroundClip: 'text',
         color: 'transparent',
-        WebkitTextFillColor: 'transparent'
+        WebkitTextFillColor: 'transparent',
+        p: 1
       }}
     >
       {t(textKey)}
