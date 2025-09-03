@@ -1,0 +1,51 @@
+{
+  "HomePage": {
+    "title": "Hello world!",
+    "cta": "Get started",
+    "heroTitle": "Shortcut Next",
+    "heroDescription": "A modern Next.js boilerplate powered by MUI with room for React Query, React Hook Form, and optional Tailwind v4.",
+    "toggleTheme": "Toggle Theme",
+    "chips": {
+      "mui": "MUI",
+      "reactHookForm": "React Hook Form",
+      "tailwind": "Tailwind v4 (optional)",
+      "typescript": "TypeScript",
+      "appRouter": "App Router"
+    },
+    "features": {
+      "title": "What's included",
+      "list": [
+        "Next.js 15 (App Router) + TypeScript",
+        "MUI ThemeProvider + dark-ready UI",
+        "RHF starter form at /sample-form",
+        "Easy opt-in Tailwind v4 (via CLI preset)"
+      ]
+    },
+    "scaffold": {
+      "title": "Scaffold via npx",
+      "copy": "Copy",
+      "copied": "Copied!"
+    },
+    "techStack": {
+      "title": "Current Tech",
+      "description": "These are the core technologies powering this template. Hover over each logo to see its name.",
+      "items": [
+        { "name": "MUI", "icon": "simple-icons:mui" },
+        { "name": "Tailwind CSS", "icon": "devicon:tailwindcss" },
+        { "name": "React", "icon": "devicon:react" },
+        { "name": "Next.js", "icon": "devicon:nextjs" },
+        { "name": "React Hook Form", "icon": "simple-icons:reacthookform" },
+        { "name": "TypeScript", "icon": "devicon:typescript" }
+      ]
+    },
+    "footer": "Built with ❤️ by {{name}} using MUI. Ready for Tailwind v4, React Query, and more."
+  },
+  "common": {
+    "dark": "Dark",
+    "light": "Light",
+    "language": "Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "loading": "Loading"
+  }
+}

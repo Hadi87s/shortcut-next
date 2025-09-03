@@ -19,6 +19,9 @@ import themeOptions from './ThemeOptions'
 import GlobalStyling from './globalStyles'
 import themeConfig from '../configs/themeConfig'
 
+// ** Third Party Import
+import { useTranslation } from 'react-i18next'
+
 interface Props {
   settings: Settings
   children: ReactNode
@@ -27,9 +30,14 @@ interface Props {
 const ThemeComponent = (props: Props) => {
   // ** Props
   const { settings, children } = props
+  const { i18n } = useTranslation()
+
+  // ** Map custom mode to MUI PaletteMode
+  const paletteMode: 'light' | 'dark' = settings.mode === 'dark' ? 'dark' : 'light'
+  const lang = i18n.language
 
   // ** Pass merged ThemeOptions (of core and user) to createTheme function
-  let theme = createTheme(themeOptions(settings, 'light'))
+  let theme = createTheme(themeOptions(settings, paletteMode, lang))
 
   // ** Set responsive font sizes to true
   if (themeConfig.responsiveFontSizes) {

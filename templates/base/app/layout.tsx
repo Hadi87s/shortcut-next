@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Poppins, Cairo } from 'next/font/google'
 import './globals.css'
-import AppProviders from '@/@core/context/AppProviders'
+import AppProviders from '@/providers/AppProviders'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -19,13 +19,13 @@ export const metadata: Metadata = {
   description: 'Stop starting projects from scratch, start in the middle and save time!'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en'>
+    <html lang='en' dir='ltr'>
       <body className={`${poppins.variable} ${cairo.variable} antialiased`}>
         <AppProviders>{children}</AppProviders>
       </body>

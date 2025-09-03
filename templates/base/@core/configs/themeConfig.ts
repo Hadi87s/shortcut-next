@@ -28,7 +28,7 @@ type ThemeConfig = {
 const themeConfig: ThemeConfig = {
   // ** Layout Configs
   templateName: 'MePlus' /* App Name */,
-  mode: 'dark' as PaletteMode /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
+  mode: 'light' as PaletteMode /* light | dark | semi-dark /*! Note: semi-dark value will only work for Vertical Layout */,
   direction: 'ltr' /* ltr | rtl */,
 
   // ** Routing Configs
@@ -45,7 +45,7 @@ const themeConfig: ThemeConfig = {
   responsiveFontSizes: true /* true | false */,
   disableRipple: false /* true | false */,
   disableCustomizer: false /* true | false */,
-  toastPosition: 'top-right' /* top-left | top-center | top-right | bottom-left | bottom-center | bottom-right */
+  toastPosition: 'bottom-right' /* top-left | top-center | top-right | bottom-left | bottom-center | bottom-right */
 }
 
 export default themeConfig

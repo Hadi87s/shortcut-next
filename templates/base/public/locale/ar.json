@@ -1,0 +1,51 @@
+{
+  "HomePage": {
+    "title": "مرحباً بالعالم!",
+    "cta": "ابدأ الآن",
+    "heroTitle": "نيكست شورتكت",
+    "heroDescription": "قالب حديث لنيكست جي إس مدعوم بواجهة مستخدم MUI مع مساحة لـ React Query و React Hook Form و Tailwind v4 اختيارياً.",
+    "toggleTheme": "تبديل السمة",
+    "chips": {
+      "mui": "MUI",
+      "reactHookForm": "React Hook Form",
+      "tailwind": "Tailwind v4 (اختياري)",
+      "typescript": "TypeScript",
+      "appRouter": "App Router"
+    },
+    "features": {
+      "title": "ماذا يتضمن",
+      "list": [
+        "Next.js 15 (App Router) + TypeScript",
+        "MUI ThemeProvider + واجهة مستخدم جاهزة للوضع الداكن",
+        "نموذج RHF في /sample-form",
+        "إضافة Tailwind v4 بسهولة (عبر واجهة سطر الأوامر)"
+      ]
+    },
+    "scaffold": {
+      "title": "البدء عبر npx",
+      "copy": "نسخ",
+      "copied": "تم النسخ!"
+    },
+    "techStack": {
+      "title": "التقنيات الحالية",
+      "description": "هذه هي التقنيات الأساسية التي تدعم هذا القالب. مرر المؤشر فوق كل شعار لمعرفة اسمه.",
+      "items": [
+        { "name": "MUI", "icon": "simple-icons:mui" },
+        { "name": "Tailwind CSS", "icon": "devicon:tailwindcss" },
+        { "name": "React", "icon": "devicon:react" },
+        { "name": "Next.js", "icon": "devicon:nextjs" },
+        { "name": "React Hook Form", "icon": "simple-icons:reacthookform" },
+        { "name": "TypeScript", "icon": "devicon:typescript" }
+      ]
+    },
+    "footer": "مبني بكل ❤️ بواسطة {{name}} باستخدام MUI. جاهز لـ Tailwind v4 و React Query والمزيد."
+  },
+  "common": {
+    "dark": "داكن",
+    "light": "فاتح",
+    "language": "اللغة",
+    "english": "الإنجليزية",
+    "arabic": "العربية",
+    "loading": "جار التحميل"
+  }
+}
