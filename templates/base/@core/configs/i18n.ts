@@ -12,9 +12,11 @@ if (!i18n.isInitialized) {
     .init({
       fallbackLng: 'en',
       load: 'languageOnly',
+      debug: false,
+      keySeparator: false,
       nonExplicitSupportedLngs: true,
       detection: {
-        order: ['localStorage'],
+        order: ['localStorage', 'navigator'],
         caches: ['localStorage']
       },
       interpolation: { escapeValue: false },
