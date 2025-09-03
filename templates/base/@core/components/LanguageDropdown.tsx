@@ -1,30 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Select, MenuItem, FormControl, SelectChangeEvent, Box, Stack } from '@mui/material'
+import { Select, MenuItem, FormControl, Box, Stack } from '@mui/material'
 import { Languages } from 'lucide-react'
-import { Settings } from '../context/SettingsContext'
 import { Locale } from '../configs/i18n'
+import useLanguage from '../hooks/useLanguage'
 
-export default function LanguageDropdown({
-  settings,
-  saveSettings
-}: {
-  settings: Settings
-  saveSettings: (settings: Settings) => void
-}) {
-  const { i18n, t } = useTranslation()
-
-  const [language, setLanguage] = useState<Locale>((i18n.language as Locale) || 'en')
-
-  const handleLanguageChange = (event: SelectChangeEvent) => {
-    const lang = event.target.value as Locale
-    setLanguage(lang)
-    i18n.changeLanguage(lang)
-
-    saveSettings({ ...settings, direction: lang === 'ar' ? 'rtl' : 'ltr', language: lang })
-  }
+export default function LanguageDropdown() {
+  const { t } = useTranslation()
+  const { language, handleLanguageChange } = useLanguage()
 
   useEffect(() => {
     document.documentElement.setAttribute('lang', language)
@@ -36,7 +21,7 @@ export default function LanguageDropdown({
         value={language}
         size='medium'
         variant='filled'
-        onChange={handleLanguageChange}
+        onChange={e => handleLanguageChange(e.target.value as Locale)}
         displayEmpty
         renderValue={() => (
           <Stack flexDirection='row' alignItems='center' gap={1}>

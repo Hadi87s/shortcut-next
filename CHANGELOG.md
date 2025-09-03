@@ -21,3 +21,4 @@ All notable changes to this project will be documented in this file.
 - Add author & contributor information in `package.json`.
 - Fix tailwind style is not applied.
 - Add MUI Custom Theme Control
+- Support i18n for English and Arabic

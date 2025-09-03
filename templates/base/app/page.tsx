@@ -11,7 +11,6 @@ import { Icon } from '@iconify/react'
 import { useToggleMode } from '@/@core/hooks/useToggleMode'
 import { useTranslation } from 'react-i18next'
 import LanguageDropdown from '@/@core/components/LanguageDropdown'
-import { useSettings } from '@/@core/hooks/useSettings'
 import GradientText from '@/components/ui/GradientText'
 
 const Code = ({ children }: { children: React.ReactNode }) => (
@@ -37,7 +36,6 @@ const Code = ({ children }: { children: React.ReactNode }) => (
 function HeroSection({}: { copied: boolean; handleCopy: (text: string) => void }) {
   const { mode, toggleMode } = useToggleMode()
   const { t } = useTranslation()
-  const { settings, saveSettings } = useSettings()
 
   return (
     <Stack spacing={4} alignItems='center' textAlign='center' mb={{ xs: 6, md: 10 }}>
@@ -100,7 +98,7 @@ function HeroSection({}: { copied: boolean; handleCopy: (text: string) => void }
           {t('HomePage.toggleTheme')} ({mode === 'dark' ? t('common.dark') : t('common.light')})
         </Button>
         <Box>
-          <LanguageDropdown settings={settings} saveSettings={saveSettings} />
+          <LanguageDropdown />
         </Box>
       </Stack>
     </Stack>
@@ -225,7 +223,7 @@ function TechLogosCard() {
               component={Link}
               href='https://github.com/Hadi87s/shortcut-next'
               target='_blank'
-              rel='noopener'
+              rel='noopener noreferrer'
             >
               GitHub
             </Button>
@@ -237,7 +235,7 @@ function TechLogosCard() {
               component={Link}
               href='https://www.npmjs.com/package/shortcut-next'
               target='_blank'
-              rel='noopener'
+              rel='noopener noreferrer'
             >
               npm
             </Button>
@@ -255,12 +253,12 @@ function Footer() {
     <Stack alignItems='center' mt={8} sx={{ opacity: 0.65 }}>
       <Typography variant='body2'>
         <MuiLink
-          href='https://github.com/hadi87s/quickstart-next'
+          href='https://github.com/hadi87s/shortcut-next'
           underline='none'
           color='primary'
           sx={{ fontWeight: 600 }}
           target='_blank'
-          rel='noopener'
+          rel='noopener noreferrer'
         >
           {t('HomePage.footer', { name: 'Hadi & Imad' })}
         </MuiLink>
