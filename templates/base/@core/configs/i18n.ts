@@ -1,28 +1,32 @@
 import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next/initReactI18next'
-import resourcesToBackend from 'i18next-resources-to-backend'
+import Backend from 'i18next-http-backend'
+import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
-if (!i18n.isInitialized) {
-  if (typeof window !== 'undefined') i18n.use(LanguageDetector)
+i18n
+  .use(Backend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    backend: {
+      loadPath: '/locales/{{lng}}.json'
+    },
+    fallbackLng: 'en',
+    debug: true,
+    react: {
+      useSuspense: false
+    },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage']
+    },
+    supportedLngs: ['en', 'ar'],
+    interpolation: {
+      escapeValue: false,
+      formatSeparator: ','
+    }
+  })
 
-  i18n
-    .use(initReactI18next)
-    .use(resourcesToBackend((lng: string) => import(`@/public/locale/${lng}.json`)))
-    .init({
-      fallbackLng: 'en',
-      load: 'languageOnly',
-      debug: false,
-      keySeparator: false,
-      nonExplicitSupportedLngs: true,
-      detection: {
-        order: ['localStorage', 'navigator'],
-        caches: ['localStorage']
-      },
-      interpolation: { escapeValue: false },
-      react: { useSuspense: false }
-    })
-}
 export default i18n
 
 export type Locale = 'ar' | 'en'
