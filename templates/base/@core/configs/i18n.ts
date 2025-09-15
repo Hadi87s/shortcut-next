@@ -11,8 +11,6 @@ i18n
     backend: {
       loadPath: '/locales/{{lng}}.json'
     },
-    fallbackLng: 'en',
-    debug: true,
     react: {
       useSuspense: false
     },
@@ -21,6 +19,9 @@ i18n
       caches: ['localStorage']
     },
     supportedLngs: ['en', 'ar'],
+    nonExplicitSupportedLngs: true,
+    fallbackLng: 'en',
+    load: 'languageOnly',
     interpolation: {
       escapeValue: false,
       formatSeparator: ','
