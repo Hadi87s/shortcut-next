@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
-import { accessToken, baseURL, refreshToken as refresh, refreshAPI } from '../configs/clientConfig'
+import { accessToken, baseURL, refreshToken as refresh, refreshAPI, fallbackPage } from '../configs/clientConfig'
 
 interface RefreshResponse {
   token: string
@@ -31,17 +31,15 @@ const processQueue = (error: AxiosError | null, token: string | null = null): vo
   failedQueue = []
 }
 
-// Request Interceptor
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = localStorage.getItem(accessToken)
-  if (token && !config.url?.includes('/refresh-token')) {
+  if (token && !config.url?.includes(refreshAPI)) {
     config.headers.Authorization = `Bearer ${token}`
   }
 
   return config
 })
 
-// Response Interceptor
 apiClient.interceptors.response.use(
   res => res,
   async (error: AxiosError) => {
@@ -91,18 +89,16 @@ apiClient.interceptors.response.use(
   }
 )
 
-// Refresh Token Call
 const refreshToken = () => {
   return axios.post<RefreshResponse>(`${baseURL}${refreshAPI}`, {
     refreshToken: localStorage.getItem(refresh)
   })
 }
 
-// Logout handler
 const logoutUser = () => {
   localStorage.removeItem(accessToken)
   localStorage.removeItem(refresh)
-  window.location.href = '/login'
+  window.location.href = fallbackPage
 }
 
 export default apiClient
