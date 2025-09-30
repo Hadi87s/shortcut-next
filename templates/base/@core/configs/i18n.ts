@@ -3,6 +3,7 @@ import Backend from 'i18next-http-backend'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
+if(!i18n.isInitialized) {
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -15,7 +16,7 @@ i18n
       useSuspense: false
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage', 'htmlTag', 'navigator'],
       caches: ['localStorage']
     },
     supportedLngs: ['en', 'ar'],
@@ -27,6 +28,7 @@ i18n
       formatSeparator: ','
     }
   })
+}
 
 export default i18n
 
