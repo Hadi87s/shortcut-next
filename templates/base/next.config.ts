@@ -2,6 +2,7 @@ import type { NextConfig } from 'next'
 import { baseURL } from './@core/configs/clientConfig'
 
 const nextConfig: NextConfig = {
+  reactStrictMode: false,
   images: {
     domains: ['images.unsplash.com', 'source.unsplash.com']
   },

@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Select, MenuItem, FormControl, Box, Stack } from '@mui/material'
 import { Languages } from 'lucide-react'
@@ -10,10 +9,6 @@ import useLanguage from '../hooks/useLanguage'
 export default function LanguageDropdown() {
   const { t } = useTranslation()
   const { language, handleLanguageChange } = useLanguage()
-
-  useEffect(() => {
-    document.documentElement.setAttribute('lang', language)
-  }, [language])
 
   return (
     <FormControl size='medium'>
