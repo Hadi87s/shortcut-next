@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
-import { accessToken, baseURL, refreshAPI, logoutAPI, fallbackPage, requestTimeout } from '../configs/clientConfig'
+import { baseURL, fallbackPage, requestTimeout, authConfig } from '../configs/clientConfig'
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
@@ -37,8 +37,8 @@ const processQueue = (error: AxiosError | null, token: string | null = null) => 
 // ** --- Request Interceptor
 apiClient.interceptors.request.use((config: CustomAxiosRequestConfig) => {
   if (typeof window !== 'undefined') {
-    const token = localStorage.getItem(accessToken)
-    if (token && !config.url?.includes(refreshAPI)) {
+    const token = localStorage.getItem(authConfig.storageTokenKeyName)
+    if (token && !config.url?.includes(authConfig.refreshEndpoint)) {
       config.headers.Authorization = `Bearer ${token}`
     }
   }
@@ -74,7 +74,7 @@ apiClient.interceptors.response.use(
         const { token } = refreshRes.data
 
         if (typeof window !== 'undefined') {
-          localStorage.setItem(accessToken, token)
+          localStorage.setItem(authConfig.storageTokenKeyName, token)
         }
 
         processQueue(null, token)
@@ -101,20 +101,27 @@ apiClient.interceptors.response.use(
 
 // ** --- Refresh function (uses cookies)
 const refreshToken = () => {
-  return axios.post<RefreshResponse>(`${baseURL}${refreshAPI}`, {}, { withCredentials: true })
+  return axios.post<RefreshResponse>(`${baseURL}${authConfig.refreshEndpoint}`, {}, { withCredentials: true })
 }
 
 // ** --- Logout function
 const logoutUser = async () => {
-  try {
-    await axios.post(`${baseURL}${logoutAPI}`, {}, { withCredentials: true })
-  } catch (error) {
-    console.error(error)
-  }
   if (typeof window !== 'undefined') {
-    localStorage.removeItem(accessToken)
+    // Clear all auth-related storage
+    localStorage.removeItem(authConfig.storageTokenKeyName)
+    localStorage.removeItem(authConfig.storageUserDataKeyName)
+    localStorage.removeItem(authConfig.storageRefreshTokenKeyName)
+
+    // Clear cookies
+    document.cookie = `${authConfig.cookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
+    document.cookie = `${authConfig.storageRefreshTokenKeyName}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
+
+    // Redirect to login page
     window.location.href = fallbackPage
   }
 }
 
 export default apiClient
+
+// ** Export utilities for external use
+export { logoutUser }

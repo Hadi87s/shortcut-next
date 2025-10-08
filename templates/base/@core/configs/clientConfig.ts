@@ -1,22 +1,33 @@
-// ** Base API path (rewritten to backend in next.config.ts)
-const baseURL = '/api'
+// ** Auth Configuration - Easily customizable for different apps
+const authConfig = {
+  // ** API Configuration
+  baseURL: '/api',
+  loginEndpoint: '/auth/login',
+  signupEndpoint: '/auth/signup',
+  refreshEndpoint: '/auth/refresh',
 
-// ** Keys for localStorage/session
-const accessToken = 'accessToken'
-const refreshAPI = '/refresh-token'
-const logoutAPI = '/logout'
+  // ** Storage Keys
+  storageTokenKeyName: 'accessToken',
+  storageRefreshTokenKeyName: 'refreshToken',
+  storageUserDataKeyName: 'userData',
 
-// ** Where to redirect after logout
-const fallbackPage = '/login'
+  // ** Routes
+  loginPageURL: '/login',
+  homePageURL: '/',
 
-// ** Axios defaults
-const requestTimeout = 15000 // 15 seconds
+  // ** Request Configuration
+  requestTimeout: 15000, // 15 seconds
 
-export {
-  baseURL,
-  accessToken,
-  refreshAPI,
-  logoutAPI,
-  fallbackPage,
-  requestTimeout
+  // ** Cookie Configuration
+  cookieName: 'accessToken',
+  cookieMaxAge: 60 * 60 * 24 * 7, // 7 days
+  cookieSecure: typeof window !== 'undefined' ? window.location.protocol === 'https:' : true,
+  cookieSameSite: 'Strict' as const
 }
+
+// ** Legacy exports for backward compatibility
+const baseURL = authConfig.baseURL
+const fallbackPage = authConfig.loginPageURL
+const requestTimeout = authConfig.requestTimeout
+
+export { authConfig, baseURL, fallbackPage, requestTimeout }
