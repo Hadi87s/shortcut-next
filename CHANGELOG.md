@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- fix package version
+- fix package version.
 
 ## [0.1.2] - 2025-08-24
 
@@ -24,6 +24,13 @@ All notable changes to this project will be documented in this file.
 - Fix checking out to main branch when initializing the project.
 - Add author & contributor information in `package.json`.
 - Fix tailwind style is not applied.
-- Add MUI Custom Theme Control
-- Support i18n for English and Arabic
-- Create Axios instance with refresh-token logic
+
+## [0.2.0]
+
+- Add MUI Custom Theme Control.
+- Support i18n for English and Arabic.
+- Create Axios instance with refresh-token logic.
+
+## [0.2.1]
+
+- Add Auth Provider with generic `authConfig` file.
