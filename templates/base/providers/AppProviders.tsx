@@ -13,7 +13,7 @@ import { AuthProvider } from '@/@core/context/AuthContext'
 function ThemedProviders({ children, client }: { children: React.ReactNode; client: QueryClient }) {
   const { settings } = useSettings()
   return (
-    <ThemeComponent settings={{ ...settings }}>
+    <ThemeComponent settings={settings}>
       <QueryClientProvider client={client}>
         <I18nProvider>
           <HydrationGate fallback={<Spinner />}>{children}</HydrationGate>
