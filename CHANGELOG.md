@@ -35,3 +35,7 @@ All notable changes to this project will be documented in this file.
 
 - Add Auth Provider with generic `authConfig` file.
 - Add `Cookies-js` package.
+
+## [0.2.2]
+
+- Fix excessive re-rendering due to `{{...settings}}` in the `AppProvider.tsx` -> `{settings`.
