@@ -11,18 +11,17 @@ function UnauthorizedContent() {
   const router = useRouter()
   const { t } = useTranslation()
 
-  const from = searchParams.get('from') || '/dashboard'
   const resource = searchParams.get('resource')
   const action = searchParams.get('action')
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth='sm'>
       <Box
         sx={{
           minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'center'
         }}
       >
         <Paper
@@ -33,7 +32,7 @@ function UnauthorizedContent() {
             bgcolor: 'background.paper',
             border: '1px solid',
             borderColor: 'divider',
-            borderRadius: 2,
+            borderRadius: 2
           }}
         >
           <Box
@@ -46,49 +45,42 @@ function UnauthorizedContent() {
               alignItems: 'center',
               justifyContent: 'center',
               mx: 'auto',
-              mb: 3,
+              mb: 3
             }}
           >
-            <ShieldX size={40} color="var(--mui-palette-error-main)" />
+            <ShieldX size={40} color='var(--mui-palette-error-main)' />
           </Box>
 
-          <Typography variant="h4" fontWeight={700} gutterBottom>
+          <Typography variant='h4' fontWeight={700} gutterBottom>
             {t('errors.unauthorized.title', 'Access Denied')}
           </Typography>
 
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-            {t(
-              'errors.unauthorized.message',
-              "You don't have permission to access this page."
-            )}
+          <Typography variant='body1' color='text.secondary' sx={{ mb: 1 }}>
+            {t('errors.unauthorized.message', "You don't have permission to access this page.")}
           </Typography>
 
           {(resource || action) && (
-            <Typography variant="body2" color="text.disabled" sx={{ mb: 4 }}>
+            <Typography variant='body2' color='text.disabled' sx={{ mb: 4 }}>
               {resource && action
                 ? t('errors.unauthorized.resourceAction', {
                     resource,
                     action,
-                    defaultValue: `Required: ${action} access to ${resource}`,
+                    defaultValue: `Required: ${action} access to ${resource}`
                   })
                 : resource
                   ? t('errors.unauthorized.resource', {
                       resource,
-                      defaultValue: `Required access to: ${resource}`,
+                      defaultValue: `Required access to: ${resource}`
                     })
                   : null}
             </Typography>
           )}
 
-          <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 4 }}>
-            <Button variant="outlined" startIcon={<ArrowLeft size={18} />} onClick={() => router.back()}>
+          <Stack direction='row' spacing={2} justifyContent='center' sx={{ mt: 4 }}>
+            <Button variant='outlined' startIcon={<ArrowLeft size={18} />} onClick={() => router.back()}>
               {t('common.goBack', 'Go Back')}
             </Button>
-            <Button
-              variant="contained"
-              startIcon={<Home size={18} />}
-              onClick={() => router.push('/dashboard')}
-            >
+            <Button variant='contained' startIcon={<Home size={18} />} onClick={() => router.push('/dashboard')}>
               {t('common.goHome', 'Go to Dashboard')}
             </Button>
           </Stack>
@@ -108,13 +100,13 @@ export default function UnauthorizedPage() {
   return (
     <Suspense
       fallback={
-        <Container maxWidth="sm">
+        <Container maxWidth='sm'>
           <Box
             sx={{
               minHeight: '100vh',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'center'
             }}
           >
             <Typography>Loading...</Typography>
