@@ -13,7 +13,7 @@ const authConfig = {
 
   // ** Routes
   loginPageURL: '/login',
-  homePageURL: '/',
+  homePageURL: '/dashboard',
 
   // ** Request Configuration
   requestTimeout: 15000, // 15 seconds

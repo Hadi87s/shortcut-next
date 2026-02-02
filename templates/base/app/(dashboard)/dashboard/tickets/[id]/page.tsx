@@ -1,11 +1,8 @@
+'use client'
+
+import { useParams } from 'next/navigation'
 import { Box, Container, Typography, Paper, Chip } from '@mui/material'
 import { Ticket } from 'lucide-react'
-
-interface TicketDetailPageProps {
-  params: Promise<{
-    id: string
-  }>
-}
 
 /**
  * Ticket Detail Page
@@ -13,11 +10,12 @@ interface TicketDetailPageProps {
  * Access: admin, manager, agent
  * This page displays details for a specific ticket.
  */
-export default async function TicketDetailPage({ params }: TicketDetailPageProps) {
-  const { id } = await params
+export default function TicketDetailPage() {
+  const params = useParams()
+  const id = params.id as string
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth='lg' sx={{ py: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
         <Box
           sx={{
@@ -27,26 +25,26 @@ export default async function TicketDetailPage({ params }: TicketDetailPageProps
             bgcolor: 'secondary.lighter',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'center'
           }}
         >
           <Ticket size={24} />
         </Box>
         <Box>
-          <Typography variant="h4" fontWeight={700}>
+          <Typography variant='h4' fontWeight={700}>
             Ticket Details
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant='body2' color='text.secondary'>
               Viewing ticket
             </Typography>
-            <Chip label={`#${id}`} size="small" color="secondary" />
+            <Chip label={`#${id}`} size='small' color='secondary' />
           </Box>
         </Box>
       </Box>
 
       <Paper sx={{ p: 4 }}>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant='body1' color='text.secondary'>
           Ticket details for #{id} will be displayed here.
         </Typography>
       </Paper>

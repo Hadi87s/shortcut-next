@@ -1,3 +1,5 @@
+'use client'
+
 import { Box, Container, Typography, Paper } from '@mui/material'
 import { Ticket } from 'lucide-react'
 
@@ -9,7 +11,7 @@ import { Ticket } from 'lucide-react'
  */
 export default function TicketsPage() {
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container maxWidth='lg' sx={{ py: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
         <Box
           sx={{
@@ -19,23 +21,23 @@ export default function TicketsPage() {
             bgcolor: 'secondary.lighter',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'center'
           }}
         >
           <Ticket size={24} />
         </Box>
         <Box>
-          <Typography variant="h4" fontWeight={700}>
+          <Typography variant='h4' fontWeight={700}>
             Tickets
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant='body2' color='text.secondary'>
             View and manage support tickets
           </Typography>
         </Box>
       </Box>
 
       <Paper sx={{ p: 4 }}>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant='body1' color='text.secondary'>
           Ticket list will be displayed here. This page requires agent, manager, or admin role.
         </Typography>
       </Paper>
