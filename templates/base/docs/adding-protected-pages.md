@@ -118,6 +118,13 @@ case 'agent':
   action: 'update',
   subject: 'Invoices',
 },
+
+// For all nested pages under /invoices, including the page itself
+{
+  pattern: '/dashboard/invoices/*',
+  action: 'update',
+  subject: 'Invoices',
+},
 ```
 
 ---
