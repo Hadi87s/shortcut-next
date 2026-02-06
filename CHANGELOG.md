@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/hadi87s/shortcut-next/compare/v0.2.6...v1.0.0) (2026-02-06)
+
+
+### Code Refactoring
+
+* clean up codebase and remove deprecated comments ([e3e4ff1](https://github.com/hadi87s/shortcut-next/commit/e3e4ff1a2bec737335e3ead756e64a5346d08566))
+
+
+### BREAKING CHANGES
+
+* automated release pipeline now manages all versioning
+
 ## [0.2.6](https://github.com/hadi87s/shortcut-next/compare/v0.2.5...v0.2.6) (2026-02-06)
 
 
