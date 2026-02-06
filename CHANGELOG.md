@@ -1,3 +1,10 @@
+## [0.2.4](https://github.com/hadi87s/shortcut-next/compare/v0.2.3...v0.2.4) (2026-02-06)
+
+
+### Bug Fixes
+
+* ensure semantic-release workflow runs correctly ([c7bc9af](https://github.com/hadi87s/shortcut-next/commit/c7bc9af849a2e11a287443780e3d3454559f50da))
+
 ## [0.2.3](https://github.com/hadi87s/shortcut-next/compare/v0.2.2...v0.2.3) (2026-02-06)
 
 
