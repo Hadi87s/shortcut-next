@@ -1,3 +1,11 @@
+## [0.2.5](https://github.com/hadi87s/shortcut-next/compare/v0.2.4...v0.2.5) (2026-02-06)
+
+
+### Bug Fixes
+
+* replace npm access token ([4f1b41c](https://github.com/hadi87s/shortcut-next/commit/4f1b41c7390f2db517157d21f3c7caad677755d4))
+* replace npm access token ([1d4d177](https://github.com/hadi87s/shortcut-next/commit/1d4d17732f153e8e38afb0074b779cff6fdab00e))
+
 ## [0.2.4](https://github.com/hadi87s/shortcut-next/compare/v0.2.3...v0.2.4) (2026-02-06)
 
 
