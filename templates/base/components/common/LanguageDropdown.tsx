@@ -3,8 +3,8 @@
 import { useTranslation } from 'react-i18next'
 import { Select, MenuItem, FormControl, Box, Stack } from '@mui/material'
 import { Languages } from 'lucide-react'
-import { Locale } from '../configs/i18n'
-import useLanguage from '../hooks/useLanguage'
+import { Locale } from '../../core/configs/i18n'
+import useLanguage from '../../core/hooks/useLanguage'
 
 export default function LanguageDropdown() {
   const { t } = useTranslation()

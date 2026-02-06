@@ -3,8 +3,8 @@ import { lighten, darken } from '@mui/material/styles'
 
 // ** Type Import
 import { OwnerStateThemeType } from '.'
-import { Mode } from '@/@core/layouts/types'
-import { hexToRGBA } from '@/@core/utils/hex-to-rgba'
+import { Mode } from '@/core/layouts/types'
+import { hexToRGBA } from '@/core/utils/hex-to-rgba'
 
 // ** Util Import
 

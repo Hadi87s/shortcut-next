@@ -10,7 +10,7 @@ import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/s
 import { Settings } from '../context/SettingsContext'
 
 // ** Direction component for LTR or RTL
-import Direction from '../components/Direction'
+import Direction from '../../components/common/Direction'
 
 // ** Theme
 import themeOptions from './ThemeOptions'
