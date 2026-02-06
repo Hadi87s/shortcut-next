@@ -75,11 +75,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       setIsLoading(true)
 
-      const response = await axios.post<AuthResponse>(
-        `${authConfig.baseURL}${authConfig.loginEndpoint}`,
-        credentials,
-        { timeout: authConfig.requestTimeout }
-      )
+      const response = await axios.post<AuthResponse>(`${authConfig.baseURL}${authConfig.loginEndpoint}`, credentials, {
+        timeout: authConfig.requestTimeout
+      })
 
       const { user: userData, accessToken, refreshToken } = response.data
 
@@ -98,12 +96,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       // Redirect to home page
       router.push(authConfig.homePageURL)
-
     } catch (error) {
       console.error('Login failed:', error)
-      const message = axios.isAxiosError(error) && error.response?.data?.message
-        ? error.response.data.message
-        : 'Login failed. Please try again.'
+      const message =
+        axios.isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : 'Login failed. Please try again.'
 
       onError?.(message)
     } finally {
@@ -139,12 +137,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       // Redirect to home page
       router.push(authConfig.homePageURL)
-
     } catch (error) {
       console.error('Signup failed:', error)
-      const message = axios.isAxiosError(error) && error.response?.data?.message
-        ? error.response.data.message
-        : 'Signup failed. Please try again.'
+      const message =
+        axios.isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : 'Signup failed. Please try again.'
 
       onError?.(message)
     } finally {
@@ -154,18 +152,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // ** Logout function
   const logout = async (): Promise<void> => {
-      // Clear all auth data regardless of API call result
-      setUser(null)
-      localStorage.removeItem(authConfig.storageTokenKeyName)
-      localStorage.removeItem(authConfig.storageUserDataKeyName)
-      localStorage.removeItem(authConfig.storageRefreshTokenKeyName)
+    // Clear all auth data regardless of API call result
+    setUser(null)
+    localStorage.removeItem(authConfig.storageTokenKeyName)
+    localStorage.removeItem(authConfig.storageUserDataKeyName)
+    localStorage.removeItem(authConfig.storageRefreshTokenKeyName)
 
-      // Clear cookie
-      document.cookie = `${authConfig.cookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
+    // Clear cookie
+    document.cookie = `${authConfig.cookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT`
 
-      // Redirect to login page
-      router.push(authConfig.loginPageURL)
-
+    // Redirect to login page
+    router.push(authConfig.loginPageURL)
   }
 
   // ** Context value
@@ -180,11 +177,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setLoading: setIsLoading
   }
 
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
 }
 
 // ** Auth Hook
