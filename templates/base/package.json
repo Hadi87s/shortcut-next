@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md,mdx}\""
   },
   "dependencies": {
     "@casl/ability": "^6.7.1",
@@ -17,7 +18,10 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "^7.0.0-beta.16",
     "@mui/material": "latest",
-    "@mui/x-date-pickers": "^8.10.2",
+    "@mui/x-charts": "^8.27.0",
+    "@mui/x-data-grid": "^8.25.0",
+    "@mui/x-date-pickers": "^8.27.0",
+    "@mui/x-tree-view": "^8.27.0",
     "@tanstack/react-query": "latest",
     "axios": "^1.12.2",
     "framer-motion": "^12.33.0",
@@ -28,9 +32,9 @@
     "jose": "^5.2.0",
     "lucide-react": "^0.541.0",
     "negotiator": "^1.0.0",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-hook-form": "latest",
     "react-i18next": "^15.7.3",
     "stylis-plugin-rtl": "^2.1.1",
@@ -38,13 +42,13 @@
   },
   "devDependencies": {
     "@types/i18next-browser-languagedetector": "^2.0.2",
-    "msw": "^2.7.0",
     "@types/negotiator": "^0.6.4",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/stylis": "^4.2.7",
     "eslint": "latest",
-    "eslint-config-next": "latest",
+    "eslint-config-next": "^16.1.6",
+    "msw": "^2.7.0",
     "typescript": "latest"
   },
   "msw": {
