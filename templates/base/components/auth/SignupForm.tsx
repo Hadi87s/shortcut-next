@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { Eye, EyeOff } from 'lucide-react'
 import FormFieldWrapper from '@/components/ui/FormFieldWrapper'
 import ErrorMessage from '@/components/ui/ErrorMessage'
-import { useAuth } from '@/@core/context/AuthContext'
+import { useAuth } from '@/core/context/AuthContext'
 import type { UserRole } from '@/lib/abilities'
 
 interface SignupFormData {

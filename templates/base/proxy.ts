@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { decodeJwt } from 'jose'
 import { checkAuthorization, isPublicRoute } from '@/lib/abilities'
 import type { UserRole } from '@/lib/abilities'
-import { authConfig } from './@core/configs/clientConfig'
+import { authConfig } from './core/configs/clientConfig'
 
 /**
  * Cookie name for access token
@@ -80,7 +80,7 @@ function getUserRoleFromToken(token: string): UserRole | null {
  * 4. Check authorization
  * 5. Redirect if unauthorized
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Skip middleware for static assets and API routes

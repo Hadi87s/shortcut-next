@@ -1,5 +1,5 @@
 import { Actions, Subjects } from '@/lib/abilities'
-import { useCan } from '../hooks/useAbility'
+import { useCan } from '../../core/hooks/useAbility'
 import { ReactNode } from 'react'
 
 interface CanProps {

@@ -2,8 +2,8 @@
 
 import { Container, Typography, Paper, Box, Chip, Button } from '@mui/material'
 import { LogOut } from 'lucide-react'
-import { useAuth } from '@/@core/context/AuthContext'
-import { useCan } from '@/@core/hooks/useAbility'
+import { useAuth } from '@/core/context/AuthContext'
+import { useCan } from '@/core/hooks/useAbility'
 
 // Role-specific home components
 function AdminHome() {

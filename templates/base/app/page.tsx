@@ -8,9 +8,9 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { Github, Package, FormInput, Sun, Moon } from 'lucide-react'
 import { Icon } from '@iconify/react'
-import { useToggleMode } from '@/@core/hooks/useToggleMode'
+import { useToggleMode } from '@/core/hooks/useToggleMode'
 import { useTranslation } from 'react-i18next'
-import LanguageDropdown from '@/@core/components/LanguageDropdown'
+import LanguageDropdown from '@/components/common/LanguageDropdown'
 import GradientText from '@/components/ui/GradientText'
 
 const Code = ({ children }: { children: React.ReactNode }) => (

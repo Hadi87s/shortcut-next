@@ -1,6 +1,6 @@
 'use client'
 
-import i18n from '@/@core/configs/i18n'
+import i18n from '@/core/configs/i18n'
 import { I18nextProvider } from 'react-i18next'
 
 export default function I18nProvider({ children }: { children: React.ReactNode }) {

@@ -1,5 +1,5 @@
 import type { NextConfig } from 'next'
-import { baseURL } from './@core/configs/clientConfig'
+import { baseURL } from './core/configs/clientConfig'
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,

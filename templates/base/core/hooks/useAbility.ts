@@ -1,10 +1,9 @@
 'use client'
 
 import { useMemo } from 'react'
-import { useAuth } from '@/@core/context/AuthContext'
+import { useAuth } from '@/core/context/AuthContext'
 import { defineAbilitiesFor } from '@/lib/abilities'
 import type { Actions, AppAbility, Subjects, UserRole } from '@/lib/abilities'
-
 
 /**
  * Hook to get CASL ability instance for the current user
@@ -50,10 +49,7 @@ export function useAbility(): AppAbility {
  * @param subject - The subject to check against
  * @returns boolean indicating if the user can perform the action
  */
-export function useCan(
-  action: Actions,
-  subject: Subjects
-): boolean {
+export function useCan(action: Actions, subject: Subjects): boolean {
   const ability = useAbility()
   return ability.can(action, subject)
 }

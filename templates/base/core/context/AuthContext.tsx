@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { authConfig } from '@/@core/configs/clientConfig'
+import { authConfig } from '@/core/configs/clientConfig'
 import type {
   User,
   LoginCredentials,
@@ -11,7 +11,7 @@ import type {
   AuthResponse,
   AuthContextType,
   ErrorCallback
-} from '@/@core/configs/authConfig'
+} from '@/core/configs/authConfig'
 
 // ** Default context value
 const defaultProvider: AuthContextType = {
