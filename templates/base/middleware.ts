@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 import { decodeJwt } from 'jose'
 import { checkAuthorization, isPublicRoute } from '@/lib/abilities'
 import type { UserRole } from '@/lib/abilities'
+import { authConfig } from './@core/configs/clientConfig'
 
 /**
  * Cookie name for access token
@@ -83,18 +84,24 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Skip middleware for static assets and API routes
-  if (SKIP_ROUTES.some((route) => pathname.startsWith(route))) {
+  if (SKIP_ROUTES.some(route => pathname.startsWith(route))) {
     return NextResponse.next()
   }
 
-  // Quick check: allow public routes without token lookup
+  // Get token from cookie (needed for both public and protected route checks)
+  const token = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value
+  const userRole = token ? getUserRoleFromToken(token) : null
+
+  // Redirect authenticated users away from login page
+  if (token && userRole && pathname === '/login') {
+    const homeUrl = new URL(authConfig.homePageURL, request.url)
+    return NextResponse.redirect(homeUrl)
+  }
+
+  // Allow public routes without further checks
   if (isPublicRoute(pathname)) {
     return NextResponse.next()
   }
-
-  // Get token from cookie
-  const token = request.cookies.get(ACCESS_TOKEN_COOKIE)?.value
-  const userRole = token ? getUserRoleFromToken(token) : null
 
   // Check authorization
   const result = checkAuthorization(pathname, userRole)
@@ -136,5 +143,5 @@ export function middleware(request: NextRequest) {
  * - favicon.ico, sitemap.xml, robots.txt (metadata files)
  */
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|mockServiceWorker.js).*)']
 }

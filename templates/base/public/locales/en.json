@@ -47,5 +47,78 @@
     "english": "English",
     "arabic": "Arabic",
     "loading": "Loading"
+  },
+  "validation": {
+    "invalidEmail": "Invalid email address",
+    "emailRequired": "Email is required",
+    "passwordMin6": "Password must be at least 6 characters",
+    "passwordMin8": "Password must be at least 8 characters",
+    "passwordRequired": "Password is required",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "phoneRequired": "Phone is required",
+    "roleRequired": "Role is required",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "confirmPasswordRequired": "Please confirm your password"
+  },
+  "login": {
+    "brand": "Welcome Back",
+    "subtitle": "Sign in to continue to your account",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithMicrosoft": "Sign in with Microsoft",
+    "or": "or",
+    "signInWithEmail": "Sign in with Email",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "password": "Password",
+    "signIn": "Sign In",
+    "backToSocial": "Back to social login",
+    "heroBefore": {
+      "overline": "Welcome Back",
+      "title": "Sign in to your account",
+      "subtitle": "Access your dashboard and manage your business",
+      "card1": {
+        "title": "Analytics Dashboard",
+        "desc": "Track your performance with real-time insights"
+      },
+      "card2": {
+        "title": "Secure Access",
+        "desc": "Your data is protected with enterprise-grade security"
+      }
+    },
+    "heroAfter": {
+      "overline": "Get Started",
+      "title": "Create your account",
+      "subtitle": "Join thousands of businesses already using our platform",
+      "card1": {
+        "title": "Quick Setup",
+        "desc": "Get started in minutes with our simple onboarding"
+      },
+      "card2": {
+        "title": "Team Collaboration",
+        "desc": "Invite your team and work together seamlessly"
+      }
+    }
+  },
+  "signup": {
+    "title": "Create Account",
+    "subtitle": "Sign up to get started",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Doe",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+1 234 567 8900",
+    "role": "Role",
+    "roleHelp": "Select a role for testing authorization",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "create": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign In"
   }
 }

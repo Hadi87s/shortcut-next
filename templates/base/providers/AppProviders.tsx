@@ -9,6 +9,7 @@ import HydrationGate from '@/components/HydrationGate'
 import { useSettings } from '@/@core/hooks/useSettings'
 import Spinner from '@/components/loaders/Spinner'
 import { AuthProvider } from '@/@core/context/AuthContext'
+import MSWProvider from '@/components/MSWProvider'
 
 function ThemedProviders({ children, client }: { children: React.ReactNode; client: QueryClient }) {
   const { settings } = useSettings()
@@ -27,10 +28,12 @@ export default function AppProviders({ children }: { children: React.ReactNode }
   const [client] = useState(() => new QueryClient())
 
   return (
-    <AuthProvider>
-      <SettingsProvider>
-        <ThemedProviders client={client}>{children}</ThemedProviders>
-      </SettingsProvider>
-    </AuthProvider>
+    <MSWProvider>
+      <AuthProvider>
+        <SettingsProvider>
+          <ThemedProviders client={client}>{children}</ThemedProviders>
+        </SettingsProvider>
+      </AuthProvider>
+    </MSWProvider>
   )
 }

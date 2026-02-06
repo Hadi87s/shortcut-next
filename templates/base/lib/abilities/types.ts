@@ -5,6 +5,7 @@ import type { MongoAbility } from '@casl/ability'
  * These represent resource areas in the application
  */
 export type Subjects =
+  | 'Home'
   | 'Dashboard'
   | 'Users'
   | 'Settings'

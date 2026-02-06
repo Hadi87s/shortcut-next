@@ -30,7 +30,8 @@ export function defineAbilitiesFor(role: UserRole): AppAbility {
       break
 
     case 'agent':
-      // Agent can read Dashboard, Tickets, and Reports
+      // Agent can read Home, Dashboard, Tickets, and Reports
+      can('read', 'Home')
       can('read', 'Dashboard')
       can('read', 'Tickets')
       can('read', 'Reports')
@@ -42,7 +43,8 @@ export function defineAbilitiesFor(role: UserRole): AppAbility {
       break
 
     case 'viewer':
-      // Viewer can only read Dashboard and Reports
+      // Viewer can read Home, Dashboard and Reports
+      can('read', 'Home')
       can('read', 'Dashboard')
       can('read', 'Reports')
       // Viewer cannot access anything else

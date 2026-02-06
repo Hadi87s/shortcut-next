@@ -246,6 +246,98 @@ case 'viewer':
 
 ---
 
+## Understanding Roles
+
+### Default Roles
+
+The authorization system includes four roles with hierarchical permissions. Find them in `lib/abilities/roles.ts`:
+
+| Role | Description | Access Level |
+|------|-------------|--------------|
+| `admin` | Full system access | `can('manage', 'all')` - everything |
+| `manager` | Team management | Read all, manage Users/Tickets/Reports |
+| `agent` | Operational user | Read Dashboard/Tickets/Reports, manage Tickets |
+| `viewer` | Read-only access | Read Dashboard/Reports only |
+
+### Where Roles are Defined
+
+**Role types:** `lib/abilities/types.ts`
+```ts
+export type UserRole = 'admin' | 'manager' | 'agent' | 'viewer'
+```
+
+**Role permissions:** `lib/abilities/roles.ts`
+```ts
+export function defineAbilitiesFor(role: UserRole): AppAbility {
+  const { can, cannot, build } = new AbilityBuilder<AppAbility>(createMongoAbility)
+
+  switch (role) {
+    case 'admin':
+      can('manage', 'all')
+      break
+    case 'manager':
+      can('read', 'all')
+      can('manage', 'Users')
+      can('manage', 'Tickets')
+      can('manage', 'Reports')
+      cannot('manage', 'Settings')
+      break
+    // ... other roles
+  }
+
+  return build()
+}
+```
+
+### Adding a New Role
+
+1. **Add the role type** in `lib/abilities/types.ts`:
+```ts
+export type UserRole = 'admin' | 'manager' | 'agent' | 'viewer' | 'support'
+```
+
+2. **Define permissions** in `lib/abilities/roles.ts`:
+```ts
+case 'support':
+  can('read', 'Dashboard')
+  can('read', 'Tickets')
+  can('create', 'Tickets')
+  break
+```
+
+3. **Update your JWT** - ensure the backend includes the new role in the token payload.
+
+### Modifying Existing Role Permissions
+
+Open `lib/abilities/roles.ts` and modify the `switch` cases:
+
+```ts
+// Example: Give agents access to create invoices
+case 'agent':
+  can('read', 'Dashboard')
+  can('read', 'Tickets')
+  can('manage', 'Tickets')
+  can('read', 'Reports')
+  can('create', 'Invoices')  // Added new permission
+  break
+```
+
+### Role Permission Matrix
+
+Current default permissions:
+
+| Subject | admin | manager | agent | viewer |
+|---------|-------|---------|-------|--------|
+| Dashboard | manage | read | read | read |
+| Users | manage | manage | - | - |
+| Tickets | manage | manage | manage | - |
+| Reports | manage | manage | read | read |
+| Settings | manage | - | - | - |
+
+> **Tip:** Use `can('manage', 'Subject')` to grant all actions (read, create, update, delete) at once.
+
+---
+
 ## Summary
 
 1. **Create page** in `app/(dashboard)/dashboard/`
