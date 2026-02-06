@@ -1,3 +1,10 @@
+## [0.2.6](https://github.com/hadi87s/shortcut-next/compare/v0.2.5...v0.2.6) (2026-02-06)
+
+
+### Bug Fixes
+
+* configure npm token for automated publishing ([0e50147](https://github.com/hadi87s/shortcut-next/commit/0e50147dac81b0e82e7d72092eac8447ec076bf8))
+
 ## [0.2.5](https://github.com/hadi87s/shortcut-next/compare/v0.2.4...v0.2.5) (2026-02-06)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "shortcut-next",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Scaffold Next.js apps with MUI base or Tailwind v4 preset.",
   "main": "index.js",
   "bin": {
