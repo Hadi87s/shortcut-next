@@ -1,3 +1,10 @@
+## [0.2.3](https://github.com/hadi87s/shortcut-next/compare/v0.2.2...v0.2.3) (2026-02-06)
+
+
+### Bug Fixes
+
+* update node version to 22 for semantic-release compatibility ([627627d](https://github.com/hadi87s/shortcut-next/commit/627627d5fad9b997d477ce19f54d42e58ddde101))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
