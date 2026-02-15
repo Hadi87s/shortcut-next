@@ -1,9 +1,25 @@
-// ** Type Import
-import { OwnerStateThemeType } from '.'
+
+import Icon from '@/components/icon/Icon'
+import { OwnerStateThemeType } from './'
+
+const createIconSlot = (iconName: string) => () => Icon({ icon: iconName, fontSize: 14 })
 
 const DataGrid = () => {
   return {
     MuiDataGrid: {
+      defaultProps: {
+        slots: {
+          columnSortedAscendingIcon: createIconSlot('lucide:arrow-up'),
+          columnSortedDescendingIcon: createIconSlot('lucide:arrow-down'),
+          columnUnsortedIcon: createIconSlot('lucide:arrow-up-down'),
+          columnMenuIcon: createIconSlot('lucide:more-vertical'),
+          openFilterButtonIcon: createIconSlot('lucide:filter'),
+          columnSelectorIcon: createIconSlot('lucide:columns-3'),
+          filterPanelDeleteIcon: createIconSlot('lucide:x'),
+          quickFilterIcon: createIconSlot('lucide:search'),
+          quickFilterClearIcon: createIconSlot('lucide:x')
+        }
+      },
       styleOverrides: {
         root: ({ theme }: OwnerStateThemeType) => ({
           border: 0,

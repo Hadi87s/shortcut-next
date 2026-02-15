@@ -1,5 +1,5 @@
-// ** Type Imports
-import { OwnerStateThemeType } from '.'
+import themeConfig from '@/core/configs/themeConfig'
+import { OwnerStateThemeType } from './'
 
 const Card = () => {
   return {
@@ -12,11 +12,12 @@ const Card = () => {
           },
           '& .MuiTableContainer-root, & .MuiDataGrid-root, & .MuiDataGrid-columnHeaders': {
             borderRadius: 0
-          }
+          },
+          borderRadius: themeConfig.borderRadius
         })
       },
       defaultProps: {
-        elevation: 1
+        elevation: 6
       }
     },
     MuiCardHeader: {

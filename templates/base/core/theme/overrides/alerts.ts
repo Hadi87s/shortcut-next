@@ -1,21 +1,26 @@
-// ** MUI Imports
 import { lighten, darken } from '@mui/material/styles'
-
-// ** Type Import
-import { OwnerStateThemeType } from '.'
+import { OwnerStateThemeType } from './'
+import themeConfig from '@/core/configs/themeConfig'
 import { Mode } from '@/core/layouts/types'
 import { hexToRGBA } from '@/core/utils/hex-to-rgba'
-
-// ** Util Import
+import Icon from '@/components/icon/Icon'
 
 const Alert = (mode: Mode) => {
   const getColor = mode === 'dark' ? lighten : darken
 
   return {
     MuiAlert: {
+      defaultProps: {
+        iconMapping: {
+          success: Icon({ icon: 'lucide:circle-check' }),
+          info: Icon({ icon: 'lucide:info' }),
+          warning: Icon({ icon: 'lucide:triangle-alert' }),
+          error: Icon({ icon: 'lucide:circle-x' })
+        }
+      },
       styleOverrides: {
         root: ({ theme }: OwnerStateThemeType) => ({
-          borderRadius: 8,
+          borderRadius: themeConfig.borderRadius,
           '& .MuiAlertTitle-root': {
             marginBottom: theme.spacing(1)
           },

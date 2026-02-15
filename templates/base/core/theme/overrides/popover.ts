@@ -1,5 +1,4 @@
-// ** Type Imports
-import { OwnerStateThemeType } from '.'
+import { OwnerStateThemeType } from './'
 
 const Popover = () => {
   return {
@@ -7,7 +6,8 @@ const Popover = () => {
       styleOverrides: {
         root: ({ theme }: OwnerStateThemeType) => ({
           '& .MuiPopover-paper': {
-            boxShadow: theme.shadows[6]
+            boxShadow: theme.shadows[0],
+            border: `1px solid ${theme.palette.divider}`
           }
         })
       }

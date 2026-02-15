@@ -1,8 +1,6 @@
-// ** MUI Imports
 import { Theme } from '@mui/material/styles'
 import { ComponentsPropsList } from '@mui/material'
 
-// ** Type Import
 import { Settings } from '@/core/context/SettingsContext'
 
 export type OwnerStateThemeType = {
@@ -10,7 +8,6 @@ export type OwnerStateThemeType = {
   ownerState: ComponentsPropsList[keyof ComponentsPropsList] & Record<string, unknown>
 }
 
-// ** Overrides Imports
 import MuiFab from './fab'
 import MuiCard from './card'
 import MuiChip from './chip'
@@ -43,12 +40,15 @@ import MuiBreadcrumb from './breadcrumbs'
 import MuiButtonGroup from './buttonGroup'
 import MuiAutocomplete from './autocomplete'
 import MuiToggleButton from './toggleButton'
+import MuiIconButton from './iconButton'
+import MuiTextFields from './textFields'
 
 const Overrides = (settings: Settings) => {
   const { mode } = settings
 
   const fab = MuiFab()
   const chip = MuiChip()
+  const textFields = MuiTextFields()
   const list = MuiList()
   const tabs = MuiTabs()
   const input = MuiInput()
@@ -73,7 +73,7 @@ const Overrides = (settings: Settings) => {
   const snackbar = MuiSnackbar()
   const pagination = MuiPagination()
   const autocomplete = MuiAutocomplete()
-
+  const iconButton = MuiIconButton()
   return Object.assign(
     fab,
     chip,
@@ -106,7 +106,9 @@ const Overrides = (settings: Settings) => {
     MuiTypography,
     MuiBreadcrumb,
     MuiButtonGroup,
-    MuiToggleButton
+    MuiToggleButton,
+    MuiIconButton,
+    textFields
   )
 }
 

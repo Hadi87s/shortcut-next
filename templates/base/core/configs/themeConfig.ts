@@ -15,6 +15,7 @@ type ThemeConfig = {
   responsiveFontSizes: boolean
   disableRipple: boolean
   toastPosition: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+  borderRadius: number
 }
 
 const themeConfig: ThemeConfig = {
@@ -26,7 +27,8 @@ const themeConfig: ThemeConfig = {
   // ** Other Configs
   responsiveFontSizes: true /* true | false */,
   disableRipple: true /* true | false */,
-  toastPosition: 'bottom-center' /* top-left | top-center | top-right | bottom-left | bottom-center | bottom-right */
+  toastPosition: 'bottom-center' /* top-left | top-center | top-right | bottom-left | bottom-center | bottom-right */,
+  borderRadius: 10
 }
 
 export default themeConfig

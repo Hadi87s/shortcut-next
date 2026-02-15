@@ -1,20 +1,38 @@
-// ** Type Imports
-import type { OwnerStateThemeType } from '.'
+import themeConfig from '@/core/configs/themeConfig'
+import { OwnerStateThemeType } from './'
 
 const Menu = () => {
-  const boxShadow = (theme: OwnerStateThemeType['theme']) => {
-    if (theme.palette.mode === 'light') {
-      return theme.shadows[8]
-    } else return theme.shadows[9]
-  }
-
   return {
     MuiMenu: {
       styleOverrides: {
+        root: ({ theme }: OwnerStateThemeType) => {
+          return {
+            padding: 1,
+            marginTop: theme.spacing(2),
+            '& .MuiMenu-paper': {
+              borderRadius: themeConfig.borderRadius,
+              boxShadow: `0 0 0 5px ${theme.palette.primary.dark}20`,
+              padding: theme.spacing(1),
+              backgroundColor: `${theme.palette.background.paper}99`,
+              backdropFilter: 'blur(6px)'
+            }
+          }
+        }
+      }
+    },
+    MuiMenuItem: {
+      styleOverrides: {
         root: ({ theme }: OwnerStateThemeType) => ({
-          '& .MuiMenu-paper': {
-            borderRadius: 5,
-            boxShadow: boxShadow(theme)
+          fontSize: 14,
+          borderRadius: theme.shape.borderRadius,
+          transition: 'all 0.1s ease-in-out',
+          '&.Mui-selected': {
+            borderRadius: theme.shape.borderRadius,
+            margin: theme.spacing(1, 0),
+            backgroundColor: theme.palette.action.selected
+          },
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover
           }
         })
       }

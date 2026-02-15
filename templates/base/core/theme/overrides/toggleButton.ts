@@ -1,15 +1,17 @@
+import themeConfig from '@/core/configs/themeConfig'
+
 export default {
   MuiToggleButtonGroup: {
     styleOverrides: {
       root: {
-        borderRadius: 8
+        borderRadius: themeConfig.borderRadius
       }
     }
   },
   MuiToggleButton: {
     styleOverrides: {
       root: {
-        borderRadius: 8
+        borderRadius: themeConfig.borderRadius
       }
     }
   }

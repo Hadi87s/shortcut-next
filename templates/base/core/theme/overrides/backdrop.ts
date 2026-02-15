@@ -1,8 +1,5 @@
-// ** Type Import
-import { OwnerStateThemeType } from '.'
-
-// ** Util Import
 import { hexToRGBA } from '@/core/utils/hex-to-rgba'
+import { OwnerStateThemeType } from './'
 
 const Backdrop = () => {
   return {
@@ -12,7 +9,7 @@ const Backdrop = () => {
           backgroundColor:
             theme.palette.mode === 'light'
               ? `rgba(${theme.palette.customColors.main}, 0.5)`
-              : hexToRGBA('#101121', 0.87)
+              : hexToRGBA(theme.palette.background.default, 0.7)
         }),
         invisible: {
           backgroundColor: 'transparent'

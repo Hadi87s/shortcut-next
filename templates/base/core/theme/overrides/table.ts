@@ -1,5 +1,4 @@
-// ** Type Import
-import { OwnerStateThemeType } from '.'
+import { OwnerStateThemeType } from './'
 
 const Table = () => {
   return {
@@ -7,24 +6,7 @@ const Table = () => {
       styleOverrides: {
         root: ({ theme }: OwnerStateThemeType) => ({
           boxShadow: theme.shadows[0],
-          borderTopColor: theme.palette.divider,
-          '&': {
-            '&::-webkit-scrollbar': {
-              width: 10,
-              height: 10
-            },
-            '&::-webkit-scrollbar-track': {
-              background: theme.palette.background.paper,
-              borderRadius: 8
-            },
-            '&::-webkit-scrollbar-thumb': {
-              background: theme.palette.background.default,
-              borderRadius: 8,
-              border: `2px solid ${theme.palette.background.paper}`
-            },
-            scrollbarColor: `${theme.palette.primary.main + '50'} ${theme.palette.background.paper}`,
-            scrollbarWidth: 'thin'
-          }
+          borderTopColor: theme.palette.divider
         })
       }
     },
@@ -60,7 +42,7 @@ const Table = () => {
     MuiTableRow: {
       styleOverrides: {
         root: ({ theme }: OwnerStateThemeType) => ({
-          '& .MuiTableCell-head:not(.MuiTableCell-paddingCheckbox)::first-of-type, & .MuiTableCell-root:not(.MuiTableCell-paddingCheckbox):first-of-type ':
+          '& .MuiTableCell-head:not(.MuiTableCell-paddingCheckbox):first-child, & .MuiTableCell-root:not(.MuiTableCell-paddingCheckbox):first-child ':
             {
               paddingLeft: theme.spacing(5)
             },

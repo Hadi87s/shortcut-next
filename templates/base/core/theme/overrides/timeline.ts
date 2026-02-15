@@ -1,8 +1,5 @@
-// ** Type Import
-import { OwnerStateThemeType } from '.'
-
-// ** Util Import
 import { hexToRGBA } from '@/core/utils/hex-to-rgba'
+import { OwnerStateThemeType } from './'
 
 const Timeline = () => {
   return {

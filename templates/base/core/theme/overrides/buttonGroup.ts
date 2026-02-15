@@ -1,8 +1,10 @@
+import themeConfig from '@/core/configs/themeConfig'
+
 export default {
   MuiButtonGroup: {
     styleOverrides: {
       root: {
-        borderRadius: 8
+        borderRadius: themeConfig.borderRadius
       }
     }
   }

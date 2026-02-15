@@ -1,16 +1,19 @@
-// ** Type Import
-import { OwnerStateThemeType } from '.'
+import themeConfig from '@/core/configs/themeConfig'
+import { OwnerStateThemeType } from './'
 
 const Avatar = () => {
   return {
     MuiAvatar: {
       styleOverrides: {
+        root: {
+          fontSize: '14px'
+        },
         colorDefault: ({ theme }: OwnerStateThemeType) => ({
-          color: theme.palette.text.secondary,
+          color: theme.palette.text.primary,
           backgroundColor: theme.palette.customColors.avatarBg
         }),
         rounded: {
-          borderRadius: 8
+          borderRadius: themeConfig.borderRadius
         }
       }
     },

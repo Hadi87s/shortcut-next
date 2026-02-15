@@ -1,11 +1,6 @@
-// ** Type Import
-import { OwnerStateThemeType } from '.'
-
-// ** Theme Config Imports
-import themeConfig from '@/core/configs/themeConfig'
-
-// ** Util Import
 import { hexToRGBA } from '@/core/utils/hex-to-rgba'
+import { OwnerStateThemeType } from './'
+import themeConfig from '@/core/configs/themeConfig'
 
 const Button = () => {
   return {
@@ -13,9 +8,10 @@ const Button = () => {
       styleOverrides: {
         root: ({ ownerState, theme }: OwnerStateThemeType) => ({
           fontWeight: 500,
-          borderRadius: 14,
-          lineHeight: 1.715,
           textTransform: 'none',
+          borderRadius: themeConfig.borderRadius,
+          lineHeight: 1.715,
+          transition: 'all 0.15s ease-in-out',
           ...(ownerState.size === 'medium' &&
             ownerState.variant === 'text' && {
               padding: `${theme.spacing(1.75, 3)}`
@@ -39,53 +35,57 @@ const Button = () => {
             backgroundColor: hexToRGBA(theme.palette.info.main, 0.08)
           }
         }),
-        contained: ({ theme, ownerState }: OwnerStateThemeType) => {
-          const isDark = theme.palette.mode === 'dark'
-
-          const sharedStyles = {
-            boxShadow: theme.shadows[3],
-            padding: `${theme.spacing(1.75, 5.5)}`
+        contained: ({ theme }: OwnerStateThemeType) => ({
+          boxShadow: theme.shadows[3],
+          padding: `${theme.spacing(1, 5.25)}`,
+          '&:hover': {
+            boxShadow: theme.shadows[6]
+          },
+          '&.MuiButton-containedPrimary:hover': {
+            boxShadow: `${theme.shadows[6]}, 0 0 0 2px ${hexToRGBA(theme.palette.primary.main, 0.16)}`
+          },
+          '&.MuiButton-containedSecondary:hover': {
+            boxShadow: `${theme.shadows[6]}, 0 0 0 2px ${hexToRGBA(theme.palette.secondary.main, 0.16)}`
+          },
+          '&.MuiButton-containedSuccess:hover': {
+            boxShadow: `${theme.shadows[6]}, 0 0 0 2px ${hexToRGBA(theme.palette.success.main, 0.16)}`
+          },
+          '&.MuiButton-containedError:hover': {
+            boxShadow: `${theme.shadows[6]}, 0 0 0 2px ${hexToRGBA(theme.palette.error.main, 0.16)}`
+          },
+          '&.MuiButton-containedWarning:hover': {
+            boxShadow: `${theme.shadows[6]}, 0 0 0 2px ${hexToRGBA(theme.palette.warning.main, 0.16)}`
+          },
+          '&.MuiButton-containedInfo:hover': {
+            boxShadow: `${theme.shadows[6]}, 0 0 0 2px ${hexToRGBA(theme.palette.info.main, 0.16)}`
           }
-
-          // Only apply color override if it's a primary button
-          if (ownerState.color === 'primary') {
-            return {
-              ...sharedStyles,
-              backgroundColor: isDark ? theme.palette.primary.light : theme.palette.primary.main,
-              color: theme.palette.primary.contrastText,
-              '&:hover': {
-                backgroundColor: isDark ? theme.palette.primary.main : theme.palette.primary.dark
-              },
-              '&.Mui-disabled': {
-                backgroundColor: theme.palette.action.disabledBackground,
-                color: theme.palette.action.disabled
-              }
-            }
-          }
-
-          return sharedStyles
-        },
-
+        }),
         outlined: ({ theme }: OwnerStateThemeType) => ({
           lineHeight: 1.572,
-          padding: `${theme.spacing(1.75, 5.25)}`,
+          padding: `${theme.spacing(1, 5.25)}`,
           '&.MuiButton-outlinedPrimary:hover': {
-            backgroundColor: hexToRGBA(theme.palette.primary.main, 0.08)
+            backgroundColor: hexToRGBA(theme.palette.primary.main, 0.08),
+            boxShadow: `0 0 0 2px ${hexToRGBA(theme.palette.primary.main, 0.16)}`
           },
           '&.MuiButton-outlinedSecondary:hover': {
-            backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.08)
+            backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.08),
+            boxShadow: `0 0 0 2px ${hexToRGBA(theme.palette.secondary.main, 0.16)}`
           },
           '&.MuiButton-outlinedSuccess:hover': {
-            backgroundColor: hexToRGBA(theme.palette.success.main, 0.08)
+            backgroundColor: hexToRGBA(theme.palette.success.main, 0.08),
+            boxShadow: `0 0 0 2px ${hexToRGBA(theme.palette.success.main, 0.16)}`
           },
           '&.MuiButton-outlinedError:hover': {
-            backgroundColor: hexToRGBA(theme.palette.error.main, 0.08)
+            backgroundColor: hexToRGBA(theme.palette.error.main, 0.08),
+            boxShadow: `0 0 0 2px ${hexToRGBA(theme.palette.error.main, 0.16)}`
           },
           '&.MuiButton-outlinedWarning:hover': {
-            backgroundColor: hexToRGBA(theme.palette.warning.main, 0.08)
+            backgroundColor: hexToRGBA(theme.palette.warning.main, 0.08),
+            boxShadow: `0 0 0 2px ${hexToRGBA(theme.palette.warning.main, 0.16)}`
           },
           '&.MuiButton-outlinedInfo:hover': {
-            backgroundColor: hexToRGBA(theme.palette.info.main, 0.08)
+            backgroundColor: hexToRGBA(theme.palette.info.main, 0.08),
+            boxShadow: `0 0 0 2px ${hexToRGBA(theme.palette.info.main, 0.16)}`
           }
         }),
         sizeSmall: ({ ownerState, theme }: OwnerStateThemeType) => ({
@@ -113,22 +113,7 @@ const Button = () => {
             lineHeight: 1.6,
             padding: `${theme.spacing(2, 6.25)}`
           })
-        }),
-        text: ({ theme }: OwnerStateThemeType) => {
-          const isDark = theme.palette.mode === 'dark'
-          const color = isDark ? theme.palette.text.primary : theme.palette.primary.main
-
-          return {
-            color,
-            backgroundColor: 'transparent',
-            '&:hover': {
-              backgroundColor: theme.palette.text.primary
-            },
-            '&.Mui-disabled': {
-              color: theme.palette.text.disabled
-            }
-          }
-        }
+        })
       }
     },
     MuiButtonBase: {

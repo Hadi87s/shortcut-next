@@ -1,4 +1,3 @@
-// ** Type Imports
 import type { OwnerStateThemeType } from '.'
 
 const Autocomplete = () => {

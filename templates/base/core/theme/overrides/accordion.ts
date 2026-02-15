@@ -1,5 +1,4 @@
-// ** Type Import
-import { OwnerStateThemeType } from '.'
+import { OwnerStateThemeType } from './'
 
 const Accordion = () => {
   return {
@@ -36,7 +35,7 @@ const Accordion = () => {
             borderBottomRightRadius: 0
           }),
           '& + .MuiCollapse-root': {
-            '& .MuiAccordionDetails-root:first-of-type': {
+            '& .MuiAccordionDetails-root:first-child': {
               paddingTop: 0
             }
           }
