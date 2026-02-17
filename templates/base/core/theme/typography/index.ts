@@ -2,8 +2,8 @@ import type { ThemeOptions } from '@mui/material'
 
 export function makeTypography(lang: string): ThemeOptions['typography'] {
   const english =
-    'var(--font-montserrat-arabic), Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial'
-  const arabic = 'var(--font-montserrat-arabic), "Segoe UI", Tahoma, Geneva, sans-serif'
+    'var(--font-montserrat), Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial'
+  const arabic = 'var(--font-montserrat), "Segoe UI", Tahoma, Geneva, sans-serif'
 
   return {
     fontFamily: lang === 'ar' ? arabic : english,
