@@ -1,0 +1,96 @@
+import themeConfig from '@/core/configs/themeConfig'
+import { OwnerStateThemeType } from './'
+
+const textFields = () => {
+  return {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }: OwnerStateThemeType) => ({
+          color: theme.palette.text.secondary,
+          backgroundColor: theme.palette.background.paper,
+          paddingLeft: theme.spacing(1),
+          paddingRight: theme.spacing(1),
+          '&.MuiInputLabel-shrink': {
+            backgroundColor: theme.palette.background.paper
+          }
+        })
+      }
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: ({ theme }: OwnerStateThemeType) => ({
+          lineHeight: '1.5rem',
+          '&:before': {
+            borderBottom: `1px solid rgba(${theme.palette.customColors.main}, 0.22)`
+          },
+          '&:hover:not(.Mui-disabled):before': {
+            borderBottom: `1px solid rgba(${theme.palette.customColors.main}, 0.32)`
+          },
+          '&.Mui-disabled:before': {
+            borderBottomStyle: 'solid'
+          }
+        })
+      }
+    },
+    MuiFilledInput: {
+      styleOverrides: {
+        root: ({ theme }: OwnerStateThemeType) => ({
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          backgroundColor: `rgba(${theme.palette.customColors.main}, 0.05)`,
+          transition: theme.transitions.create(['background-color', 'box-shadow'], {
+            duration: theme.transitions.duration.shorter
+          }),
+          '&:hover:not(.Mui-disabled)': {
+            backgroundColor: `rgba(${theme.palette.customColors.main}, 0.08)`
+          },
+          '&:before': {
+            borderBottom: `1px solid rgba(${theme.palette.customColors.main}, 0.22)`
+          },
+          '&:hover:not(.Mui-disabled):before': {
+            borderBottom: `1px solid rgba(${theme.palette.customColors.main}, 0.32)`
+          },
+          '&.Mui-focused': {
+            boxShadow: `0 0 0 3px ${theme.palette.primary.main}33`
+          },
+          '&.Mui-disabled': {
+            backgroundColor: `rgba(${theme.palette.customColors.main}, 0.05)`,
+            '&:before': {
+              borderBottomStyle: 'solid'
+            }
+          }
+        })
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }: OwnerStateThemeType) => ({
+          borderRadius: themeConfig.borderRadius,
+          transition: theme.transitions.create(['border-color', 'box-shadow'], {
+            duration: theme.transitions.duration.shorter
+          }),
+          '&:hover:not(.Mui-focused):not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline': {
+            borderColor: `rgba(${theme.palette.customColors.main}, 0.32)`
+          },
+          '&:hover.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.error.main
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: `rgba(${theme.palette.customColors.main}, 0.22)`
+          },
+          '&.Mui-focused': {
+            boxShadow: `0 0 0 3px ${theme.palette.primary.main}33`,
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderWidth: '1px !important'
+            }
+          },
+          '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+            borderColor: theme.palette.text.disabled
+          }
+        })
+      }
+    }
+  }
+}
+
+export default textFields

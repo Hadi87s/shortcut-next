@@ -12,8 +12,8 @@ import { Eye, EyeOff, ArrowLeft, Mail } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import FormFieldWrapper from '@/components/ui/FormFieldWrapper'
 import ErrorMessage from '@/components/ui/ErrorMessage'
-import { useAuth } from '@/@core/context/AuthContext'
-import useLanguage from '@/@core/hooks/useLanguage'
+import { useAuth } from '@/core/context/AuthContext'
+import useLanguage from '@/core/hooks/useLanguage'
 
 interface LoginFormData {
   email: string
