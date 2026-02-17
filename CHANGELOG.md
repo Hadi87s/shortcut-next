@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/hadi87s/shortcut-next/compare/v1.0.0...v1.1.0) (2026-02-17)
+
+
+### Features
+
+* Add Can wrapper for conditional role based ([65bff4c](https://github.com/hadi87s/shortcut-next/commit/65bff4c4d7f53e1adf684d1aa8b4b9802740f3af))
+
 # [1.0.0](https://github.com/hadi87s/shortcut-next/compare/v0.2.6...v1.0.0) (2026-02-06)
 
 
