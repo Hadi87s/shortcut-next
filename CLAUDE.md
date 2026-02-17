@@ -40,7 +40,7 @@ The single template gets copied to user projects. Tailwind preset augments this 
 - `I18nProvider.tsx` - i18next initialization
 
 **`app/` - Next.js App Router:**
-- `layout.tsx` - Root layout with Google Fonts (Poppins/Cairo for RTL)
+- `layout.tsx` - Root layout with a Custom san serif font.(Montserrat)
 - `(dashboard)/` - Protected route group with example pages
 - `unauthorized/` - Access denied error page
 
