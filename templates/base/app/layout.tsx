@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { Poppins, Cairo } from 'next/font/google'
+import { Poppins } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import AppProviders from '@/providers/AppProviders'
 
@@ -9,10 +10,19 @@ const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700']
 })
 
-const cairo = Cairo({
-  subsets: ['arabic'],
-  variable: '--font-cairo',
-  weight: ['300', '400', '500', '600', '700']
+const montserratArabic = localFont({
+  src: [
+    { path: '../public/fonts/Montserrat-Arabic-Thin.ttf', weight: '100' },
+    { path: '../public/fonts/Montserrat-Arabic-ExtraLight.ttf', weight: '200' },
+    { path: '../public/fonts/Montserrat-Arabic-Light.ttf', weight: '300' },
+    { path: '../public/fonts/Montserrat-Arabic-Regular.ttf', weight: '400' },
+    { path: '../public/fonts/Montserrat-Arabic-Medium.ttf', weight: '500' },
+    { path: '../public/fonts/Montserrat-Arabic-SemiBold.ttf', weight: '600' },
+    { path: '../public/fonts/Montserrat-Arabic-Bold.ttf', weight: '700' },
+    { path: '../public/fonts/Montserrat-Arabic-ExtraBold.ttf', weight: '800' },
+    { path: '../public/fonts/Montserrat-Arabic-Black.ttf', weight: '900' }
+  ],
+  variable: '--font-montserrat-arabic'
 })
 export const metadata: Metadata = {
   title: 'Shortcut Nextjs Template',
@@ -26,7 +36,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='en' dir='ltr'>
-      <body className={`${poppins.variable} ${cairo.variable} antialiased`}>
+      <body className={`${poppins.variable} ${montserratArabic.variable} antialiased`}>
         <AppProviders>{children}</AppProviders>
       </body>
     </html>
