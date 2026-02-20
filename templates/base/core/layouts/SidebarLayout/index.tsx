@@ -12,17 +12,20 @@ import type { SidebarNavItems } from '@/core/layouts/types'
 interface SidebarLayoutProps {
   children: ReactNode
   navItems: SidebarNavItems
+  dynamicNavItems?: SidebarNavItems
   logo?: ReactNode
   appName?: string
   footer?: ReactNode
 }
 
-function SidebarLayoutInner({ children, navItems, logo, appName, footer }: SidebarLayoutProps) {
+function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName, footer }: SidebarLayoutProps) {
   const { isCollapsed, isMobileOpen, toggleMobileOpen, setIsCollapsed, setIsMobileOpen } = useSidebar()
   const { settings } = useSettings()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const isRtl = settings.direction === 'rtl'
+
+  const mergedNavItems = [...navItems, ...(dynamicNavItems ?? [])]
 
   // Reset sidebar states when switching between mobile and desktop
   useEffect(() => {
@@ -43,7 +46,7 @@ function SidebarLayoutInner({ children, navItems, logo, appName, footer }: Sideb
         bgcolor: 'background.default'
       }}
     >
-      <Sidebar navItems={navItems} logo={logo} appName={appName} footer={footer} />
+      <Sidebar navItems={mergedNavItems} logo={logo} appName={appName} footer={footer} />
 
       {/* Mobile hamburger — only show when the drawer is closed */}
       {isMobile && !isMobileOpen && (
