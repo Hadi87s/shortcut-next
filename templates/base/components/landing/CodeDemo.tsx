@@ -5,9 +5,9 @@ import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
 
 const bullets = [
-  'Pre-configured MUI theme system',
-  'Authentication & authorization ready',
-  'i18n with RTL support included'
+  'JWT auth context with token refresh built in',
+  'CASL middleware guards routes before they render',
+  'Arabic + English i18n with automatic RTL layout'
 ]
 
 export default function CodeDemo() {
@@ -21,70 +21,161 @@ export default function CodeDemo() {
     if (prefersReduced) return
 
     const ctx = gsap.context(() => {
-      /* Entrance animations */
+      // Apply will-change before animations
+      if (leftRef.current) leftRef.current.style.willChange = 'transform, opacity'
+      if (rightRef.current) rightRef.current.style.willChange = 'transform, opacity'
+
+      /* Entrance animations with depth */
       gsap.from(leftRef.current, {
-        x: -40,
+        x: -60,
         autoAlpha: 0,
-        duration: 0.8,
+        rotationY: -5,
+        duration: 1,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
-          once: true
+          once: true,
+          onComplete: () => {
+            if (leftRef.current) leftRef.current.style.willChange = 'auto'
+          }
         }
       })
 
       gsap.from(rightRef.current, {
-        x: 40,
+        x: 60,
         autoAlpha: 0,
-        duration: 0.8,
+        rotationY: 5,
+        duration: 1,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
-          once: true
+          once: true,
+          onComplete: () => {
+            if (rightRef.current) rightRef.current.style.willChange = 'auto'
+          }
         }
       })
 
-      /* Code line-by-line reveal */
+      /* Code line-by-line reveal with cursor effect */
       const codeLines = codeLinesRef.current?.querySelectorAll('.code-line')
       if (codeLines && codeLines.length > 0) {
-        gsap.set(codeLines, { autoAlpha: 0, y: 10 })
-        gsap.to(codeLines, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.12,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: codeLinesRef.current,
-            start: 'top 80%',
-            once: true
-          }
+        gsap.set(codeLines, { autoAlpha: 0, x: -10 })
+
+        // Typing effect simulation
+        codeLines.forEach((line, i) => {
+          gsap.to(line, {
+            autoAlpha: 1,
+            x: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: codeLinesRef.current,
+              start: 'top 75%',
+              once: true
+            },
+            delay: i * 0.15,
+            onStart: () => {
+              // Add typing sound effect feel with scale pulse
+              gsap.from(line, {
+                scale: 0.98,
+                duration: 0.1,
+                ease: 'power1.out'
+              })
+            }
+          })
         })
+
+        // Cursor blink effect on last line
+        const lastLine = codeLines[codeLines.length - 1]
+        if (lastLine) {
+          ScrollTrigger.create({
+            trigger: lastLine,
+            start: 'top 80%',
+            once: true,
+            onEnter: () => {
+              const cursor = document.createElement('span')
+              cursor.textContent = '▊'
+              cursor.style.color = 'var(--primary)'
+              cursor.style.marginLeft = '4px'
+              lastLine.appendChild(cursor)
+
+              gsap.to(cursor, {
+                opacity: 0,
+                duration: 0.5,
+                repeat: 3,
+                yoyo: true,
+                ease: 'steps(1)',
+                delay: (codeLines.length - 1) * 0.15 + 0.5
+              })
+            }
+          })
+        }
       }
 
-      /* Parallax split — left at 0.8x, right at 1.2x */
+      /* Enhanced parallax split — opposite directions with rotation */
       if (leftRef.current) {
         gsap.to(leftRef.current, {
-          y: -30,
+          y: -40,
+          rotationY: -2,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: true
+            scrub: 1.5
           }
         })
       }
 
       if (rightRef.current) {
         gsap.to(rightRef.current, {
-          y: 30,
+          y: 40,
+          rotationY: 2,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: true
+            scrub: 1.5
+          }
+        })
+      }
+
+      // Bullet points stagger animation
+      const bullets = leftRef.current?.querySelectorAll('li')
+      if (bullets) {
+        gsap.from(bullets, {
+          x: -20,
+          autoAlpha: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: leftRef.current,
+            start: 'top 70%',
+            once: true
+          }
+        })
+      }
+
+      // Terminal window glow effect
+      const terminal = rightRef.current?.querySelector('[style*="background: var(--surface)"]')
+      if (terminal instanceof HTMLElement) {
+        ScrollTrigger.create({
+          trigger: terminal,
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.from(terminal, {
+              boxShadow: '0 0 0 rgba(91,116,255,0)',
+              duration: 1,
+              ease: 'power2.out'
+            })
+            gsap.to(terminal, {
+              boxShadow: '0 20px 60px rgba(91,116,255,0.15)',
+              duration: 1,
+              ease: 'power2.out'
+            })
           }
         })
       }
@@ -111,7 +202,7 @@ export default function CodeDemo() {
           alignItems: 'flex-start',
           marginTop: '32px'
         }}
-        className="code-demo-layout"
+        className='code-demo-layout'
       >
         {/* Left panel */}
         <div
@@ -131,7 +222,7 @@ export default function CodeDemo() {
               lineHeight: 1.1
             }}
           >
-            Up and running in three lines
+            From zero to dashboard in under 30 seconds
           </h2>
           <p
             style={{
@@ -142,7 +233,7 @@ export default function CodeDemo() {
               fontSize: '1rem'
             }}
           >
-            No boilerplate. No configuration hell. Just run the command, pick your options, and start building with a production-grade stack.
+            The CLI asks three questions: project name, template preset, and package manager. Auth middleware, theme, providers, forms, and i18n — all configured and wired before you open your editor.
           </p>
           <ul
             style={{
@@ -154,7 +245,7 @@ export default function CodeDemo() {
               gap: '14px'
             }}
           >
-            {bullets.map((item) => (
+            {bullets.map(item => (
               <li
                 key={item}
                 style={{
@@ -226,35 +317,29 @@ export default function CodeDemo() {
                 overflowX: 'auto'
               }}
             >
-              <div className="code-line" style={{ visibility: 'hidden' }}>
+              <div className='code-line' style={{ visibility: 'hidden' }}>
                 <span style={{ color: 'var(--muted)' }}># Install and scaffold</span>
               </div>
-              <div className="code-line" style={{ visibility: 'hidden' }}>
+              <div className='code-line' style={{ visibility: 'hidden' }}>
                 <span style={{ color: 'var(--muted)' }}>$ </span>
-                <span style={{ color: 'var(--primary)' }}>npx</span>
-                {' '}
-                <span style={{ color: 'var(--text)' }}>shortcut-next@latest</span>
-                {' '}
+                <span style={{ color: 'var(--primary)' }}>npx</span>{' '}
+                <span style={{ color: 'var(--text)' }}>shortcut-next@latest</span>{' '}
                 <span style={{ color: 'var(--secondary)' }}>my-app</span>
               </div>
-              <div className="code-line" style={{ visibility: 'hidden', height: '1.8em' }} />
-              <div className="code-line" style={{ visibility: 'hidden' }}>
+              <div className='code-line' style={{ visibility: 'hidden', height: '1.8em' }} />
+              <div className='code-line' style={{ visibility: 'hidden' }}>
                 <span style={{ color: 'var(--muted)' }}># Start developing</span>
               </div>
-              <div className="code-line" style={{ visibility: 'hidden' }}>
+              <div className='code-line' style={{ visibility: 'hidden' }}>
                 <span style={{ color: 'var(--muted)' }}>$ </span>
-                <span style={{ color: 'var(--primary)' }}>cd</span>
-                {' '}
-                <span style={{ color: 'var(--secondary)' }}>my-app</span>
-                {' '}
-                <span style={{ color: 'var(--muted)' }}>&amp;&amp;</span>
-                {' '}
-                <span style={{ color: 'var(--primary)' }}>npm</span>
-                {' '}
+                <span style={{ color: 'var(--primary)' }}>cd</span>{' '}
+                <span style={{ color: 'var(--secondary)' }}>my-app</span>{' '}
+                <span style={{ color: 'var(--muted)' }}>&amp;&amp;</span>{' '}
+                <span style={{ color: 'var(--primary)' }}>npm</span>{' '}
                 <span style={{ color: 'var(--text)' }}>run dev</span>
               </div>
-              <div className="code-line" style={{ visibility: 'hidden', height: '1.8em' }} />
-              <div className="code-line" style={{ visibility: 'hidden' }}>
+              <div className='code-line' style={{ visibility: 'hidden', height: '1.8em' }} />
+              <div className='code-line' style={{ visibility: 'hidden' }}>
                 <span style={{ color: 'var(--muted)' }}># Your app is ready at </span>
                 <span style={{ color: 'var(--secondary)' }}>localhost:3000</span>
               </div>

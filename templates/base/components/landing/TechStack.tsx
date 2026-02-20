@@ -4,40 +4,50 @@ import { useEffect, useRef, useCallback } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
 
-const features = [
+const stackItems = [
   {
-    num: '01',
-    name: 'MUI v7 Design System',
-    desc: 'Dark mode, light mode, RTL, and per-component theme overrides in /theme/. Switch palette tokens globally without touching component code.'
+    role: 'FRAMEWORK',
+    name: 'Next.js 15',
+    desc: 'App Router, Server Components, Layouts, and middleware — the full feature set, not a pages-directory fallback.'
   },
   {
-    num: '02',
-    name: 'CASL Role-Based Auth',
-    desc: 'Four roles: admin, manager, agent, viewer. Middleware enforces permissions on every route. Add a protected route by editing one file.'
+    role: 'COMPONENT LIBRARY',
+    name: 'Material UI v7',
+    desc: 'Theming, dark mode, RTL layout, and per-component overrides all pre-configured. Use the design system immediately.'
   },
   {
-    num: '03',
-    name: 'Protected Dashboard Layout',
-    desc: 'Collapsible sidebar, nested route groups, responsive layout shell — wired to auth so only permitted roles see each page.'
+    role: 'AUTHORIZATION',
+    name: 'CASL',
+    desc: 'Attribute-based access control with a four-role hierarchy. Middleware enforces it. Client hooks expose it.'
   },
   {
-    num: '04',
-    name: 'i18n with RTL Support',
-    desc: 'English and Arabic out of the box. Language auto-detected from the browser; layout direction flips automatically.'
+    role: 'SERVER STATE',
+    name: 'TanStack Query v5',
+    desc: 'Caching, background refetch, and loading states configured with sensible defaults. No manual fetch boilerplate.'
   },
   {
-    num: '05',
-    name: 'TanStack Query + Axios',
-    desc: 'Server state and caching configured with sensible defaults. Axios interceptors handle JWT refresh and auto-logout on 401/403.'
+    role: 'FORMS',
+    name: 'React Hook Form',
+    desc: 'Strongly-typed, performant forms. Used on the login and signup pages out of the box with full validation wiring.'
   },
   {
-    num: '06',
-    name: 'React Hook Form + TypeScript',
-    desc: 'Strongly-typed forms throughout. Full TypeScript coverage including CASL types, role enums, and API response shapes.'
+    role: 'INTERNATIONALIZATION',
+    name: 'i18next',
+    desc: 'English and Arabic with automatic RTL detection. Language preference is persisted to localStorage.'
+  },
+  {
+    role: 'HTTP CLIENT',
+    name: 'Axios',
+    desc: 'Interceptors handle JWT injection, 401 token refresh, and auto-logout. One Axios instance, fully configured.'
+  },
+  {
+    role: 'TYPE SAFETY',
+    name: 'TypeScript',
+    desc: 'Full coverage: CASL ability types, role enums, API response shapes, and Next.js 15 server component props.'
   }
 ]
 
-export default function Features() {
+export default function TechStack() {
   const sectionRef = useRef<HTMLElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -47,7 +57,7 @@ export default function Features() {
     if (prefersReduced) return
 
     const ctx = gsap.context(() => {
-      const cards = gridRef.current?.querySelectorAll('.feature-card')
+      const cards = gridRef.current?.querySelectorAll('.tech-card')
       if (!cards || cards.length === 0) return
 
       // Apply will-change before animation
@@ -57,7 +67,7 @@ export default function Features() {
         }
       })
 
-      // Animate section title first
+      // Animate section title
       const title = sectionRef.current?.querySelector('h2')
       if (title) {
         gsap.from(title, {
@@ -73,7 +83,7 @@ export default function Features() {
         })
       }
 
-      /* Clean stagger entrance - all from bottom */
+      // Stagger entrance for all cards
       gsap.from(cards, {
         y: 60,
         autoAlpha: 0,
@@ -109,6 +119,22 @@ export default function Features() {
           scrub: 1.5
         }
       })
+
+      // Callout entrance
+      const callout = sectionRef.current?.querySelector('.tech-callout')
+      if (callout) {
+        gsap.from(callout, {
+          y: 20,
+          autoAlpha: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: callout,
+            start: 'top 90%',
+            once: true
+          }
+        })
+      }
     }, sectionRef)
 
     return () => ctx.revert()
@@ -200,7 +226,7 @@ export default function Features() {
           alignItems: 'center'
         }}
       >
-        <SectionLabel>FEATURES</SectionLabel>
+        <SectionLabel>TECH STACK</SectionLabel>
         <h2
           style={{
             fontFamily: 'var(--font)',
@@ -212,30 +238,42 @@ export default function Features() {
             marginTop: '8px'
           }}
         >
-          A complete app, not a starter kit.
+          Nine libraries. One command.
         </h2>
+        <p
+          style={{
+            fontFamily: 'var(--font)',
+            color: 'var(--muted)',
+            fontSize: '1rem',
+            lineHeight: 1.7,
+            maxWidth: '520px',
+            marginTop: '16px'
+          }}
+        >
+          Every dependency in the generated project is chosen for real production use. Here&apos;s what you get and why it&apos;s there.
+        </p>
       </div>
 
       <div
         ref={gridRef}
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: 'repeat(4, 1fr)',
           gap: '20px'
         }}
       >
-        {features.map((f, i) => (
+        {stackItems.map((item, i) => (
           <div
-            key={f.num}
+            key={item.name}
             ref={el => {
               cardRefs.current[i] = el
             }}
-            className='feature-card'
+            className='tech-card'
             style={{
               background: 'var(--surface)',
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius)',
-              padding: '32px',
+              padding: '28px',
               position: 'relative',
               overflow: 'hidden',
               cursor: 'default',
@@ -264,56 +302,80 @@ export default function Features() {
             <span
               style={{
                 fontFamily: 'var(--font)',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '0.06em',
-                fontSize: '0.7rem',
+                fontSize: '0.62rem',
                 color: 'var(--primary)',
                 display: 'block',
-                marginBottom: '16px',
-                position: 'relative',
-                zIndex: 1
-              }}
-            >
-              {f.num}
-            </span>
-            <h3
-              style={{
-                fontFamily: 'var(--font)',
-                fontWeight: 700,
-                fontSize: '1.2rem',
-                color: 'var(--text)',
                 marginBottom: '12px',
                 position: 'relative',
                 zIndex: 1
               }}
             >
-              {f.name}
+              {item.role}
+            </span>
+            <h3
+              style={{
+                fontFamily: 'var(--font)',
+                fontWeight: 700,
+                fontSize: '1.05rem',
+                color: 'var(--text)',
+                marginBottom: '10px',
+                position: 'relative',
+                zIndex: 1
+              }}
+            >
+              {item.name}
             </h3>
             <p
               style={{
                 fontFamily: 'var(--font)',
                 color: 'var(--muted)',
-                fontSize: '0.9rem',
+                fontSize: '0.85rem',
                 lineHeight: 1.6,
                 position: 'relative',
                 zIndex: 1
               }}
             >
-              {f.desc}
+              {item.desc}
             </p>
           </div>
         ))}
       </div>
 
+      {/* Optional Tailwind callout */}
+      <div
+        className='tech-callout'
+        style={{
+          marginTop: '24px',
+          textAlign: 'center'
+        }}
+      >
+        <p
+          style={{
+            display: 'inline-block',
+            fontFamily: 'var(--font)',
+            color: 'var(--muted)',
+            fontSize: '0.85rem',
+            padding: '12px 24px',
+            border: '1px dashed var(--border)',
+            borderRadius: 'var(--radius)',
+            letterSpacing: '0.02em'
+          }}
+        >
+          <span style={{ color: 'var(--primary)', fontWeight: 600 }}>+ Optional:</span> Tailwind CSS v4 — zero-config utility classes, added at scaffold time
+        </p>
+      </div>
+
       {/* Responsive grid */}
       <style>{`
         @media (max-width: 1023px) {
-          [style*="grid-template-columns: repeat(3"] {
+          [style*="grid-template-columns: repeat(4"] {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
         @media (max-width: 639px) {
-          [style*="grid-template-columns: repeat(3"] {
+          [style*="grid-template-columns: repeat(4"] {
             grid-template-columns: 1fr !important;
           }
         }

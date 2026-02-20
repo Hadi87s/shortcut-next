@@ -6,29 +6,29 @@ import SectionLabel from '@/components/landing/SectionLabel'
 
 const faqs = [
   {
+    question: 'What exactly does the scaffolded project contain?',
+    answer:
+      'A working login and signup page under /app/(auth)/, a protected dashboard with sidebar navigation under /app/(dashboard)/, CASL middleware that guards every route, MUI theme overrides, Auth and Settings contexts, an Axios client with token refresh interceptors, and i18n for English and Arabic. All wired together before you write a line of code.'
+  },
+  {
     question: 'Do I need to install anything globally?',
     answer:
-      'No. Just run npx shortcut-next@latest and the CLI handles everything — project scaffolding, git init, and dependency installation.'
+      'No. npx runs the latest version without a global install. The CLI scaffolds the project, installs dependencies with your chosen package manager, and initializes a git repository automatically.'
   },
   {
-    question: 'Can I use this without Tailwind?',
+    question: 'How does the CASL authorization system work?',
     answer:
-      'Absolutely. The base preset gives you a full MUI stack without Tailwind. Choose the tailwind preset only if you want utility classes.'
+      'Roles map to abilities in a single file at lib/abilities/roles.ts. A route map at lib/abilities/routeMap.ts lists every protected path with the required action and subject. Next.js middleware decodes the JWT on every request and checks the user role against that map — no per-page auth guards needed.'
   },
   {
-    question: 'How does the authorization system work?',
+    question: 'Can I add Tailwind to the base preset later?',
     answer:
-      'It uses CASL for role-based access control. Define permissions in a single file, and the middleware enforces them automatically on every route.'
+      'Tailwind v4 is a scaffolding-time choice because it needs PostCSS config and a globals.css import. To add it manually: install @tailwindcss/postcss, create postcss.config.mjs, and prepend @import "tailwindcss" to globals.css — the same three steps the CLI performs for the tailwind preset.'
   },
   {
-    question: 'Is this production-ready?',
+    question: 'Is the JWT handling production-safe?',
     answer:
-      'Yes. The template includes token refresh, error boundaries, proper TypeScript types, and security best practices out of the box.'
-  },
-  {
-    question: 'Can I customize the MUI theme?',
-    answer:
-      'Every component has its own override file. Change colors, spacing, border-radius, and component styles without touching MUI internals.'
+      'Tokens are stored in localStorage and mirrored to cookies so server components can read them via SSR. The Axios client intercepts 401 responses, attempts a token refresh, retries the original request, and triggers logout only if the refresh also fails. The middleware uses jose to verify and decode the JWT without exposing secrets to the client.'
   }
 ]
 
@@ -45,18 +45,70 @@ export default function FAQ() {
     if (prefersReduced || !containerRef.current) return
 
     const ctx = gsap.context(() => {
+      const items = containerRef.current?.querySelectorAll('[data-faq-item]')
+
+      // Apply will-change before animation
+      items?.forEach(item => {
+        if (item instanceof HTMLElement) {
+          item.style.willChange = 'transform, opacity'
+        }
+      })
+
+      // Enhanced entrance with 3D perspective
       gsap.from('[data-faq-item]', {
-        y: 25,
-        scale: 0.97,
+        y: 30,
+        rotationX: -5,
+        scale: 0.95,
         autoAlpha: 0,
-        stagger: 0.1,
-        duration: 0.5,
-        ease: 'power2.out',
+        stagger: {
+          amount: 0.5,
+          from: 'start',
+          ease: 'power2.out'
+        },
+        duration: 0.7,
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top 80%',
-          once: true
+          once: true,
+          onComplete: () => {
+            items?.forEach(item => {
+              if (item instanceof HTMLElement) {
+                item.style.willChange = 'auto'
+              }
+            })
+          }
         }
+      })
+
+      // Animate title
+      const title = containerRef.current?.querySelector('h2')
+      if (title) {
+        gsap.from(title, {
+          y: 30,
+          autoAlpha: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 85%',
+            once: true
+          }
+        })
+      }
+
+      // Parallax effect on FAQ items
+      items?.forEach((item, i) => {
+        gsap.to(item, {
+          y: (i - items.length / 2) * -5,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        })
       })
     }, containerRef)
 
@@ -93,7 +145,12 @@ export default function FAQ() {
           if (prefersReduced) {
             currentItem.style.borderLeft = '3px solid transparent'
           } else {
-            gsap.to(currentItem, { borderLeftColor: 'transparent', borderLeftWidth: '3px', duration: 0.3, ease: 'power2.inOut' })
+            gsap.to(currentItem, {
+              borderLeftColor: 'transparent',
+              borderLeftWidth: '3px',
+              duration: 0.3,
+              ease: 'power2.inOut'
+            })
           }
         }
         if (currentQuestion) {
@@ -137,7 +194,12 @@ export default function FAQ() {
         if (prefersReduced) {
           item.style.borderLeft = '3px solid var(--primary)'
         } else {
-          gsap.to(item, { borderLeftColor: 'var(--primary)', borderLeftWidth: '3px', duration: 0.3, ease: 'power2.inOut' })
+          gsap.to(item, {
+            borderLeftColor: 'var(--primary)',
+            borderLeftWidth: '3px',
+            duration: 0.3,
+            ease: 'power2.inOut'
+          })
         }
       }
       if (question) {
@@ -175,7 +237,7 @@ export default function FAQ() {
             margin: 0
           }}
         >
-          Common questions
+          What developers ask first
         </h2>
       </div>
 
@@ -184,7 +246,9 @@ export default function FAQ() {
           <div
             key={i}
             data-faq-item
-            ref={(el) => { itemRefs.current[i] = el }}
+            ref={el => {
+              itemRefs.current[i] = el
+            }}
             style={{
               borderBottom: '1px solid var(--border)',
               borderLeft: '3px solid transparent',
@@ -209,7 +273,9 @@ export default function FAQ() {
               }}
             >
               <span
-                ref={(el) => { questionRefs.current[i] = el }}
+                ref={el => {
+                  questionRefs.current[i] = el
+                }}
                 style={{
                   fontWeight: 600,
                   fontSize: '1rem',
@@ -220,7 +286,9 @@ export default function FAQ() {
                 {faq.question}
               </span>
               <span
-                ref={(el) => { iconRefs.current[i] = el }}
+                ref={el => {
+                  iconRefs.current[i] = el
+                }}
                 style={{
                   fontSize: '1.4rem',
                   color: 'var(--muted)',
@@ -235,7 +303,9 @@ export default function FAQ() {
               </span>
             </button>
             <div
-              ref={(el) => { answerRefs.current[i] = el }}
+              ref={el => {
+                answerRefs.current[i] = el
+              }}
               style={{
                 height: 0,
                 overflow: 'hidden'

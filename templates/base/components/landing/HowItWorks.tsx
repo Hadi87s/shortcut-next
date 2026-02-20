@@ -9,19 +9,19 @@ const steps = [
     number: 'STEP 01',
     title: 'Run the CLI',
     description:
-      'Execute npx shortcut-next@latest and follow the interactive prompts. Choose your preset and package manager.'
+      'Launch the interactive prompt. Answer three questions: project name, template preset, and package manager. The CLI handles the rest — git init, dependency install, project structure.'
   },
   {
     number: 'STEP 02',
-    title: 'Customize your stack',
+    title: 'Choose your preset',
     description:
-      'Pick between the base MUI stack or add Tailwind v4. Configure roles, themes, and i18n to match your project.'
+      'Pick the base MUI stack or add Tailwind v4. Dependencies install automatically with a clean initial commit ready to push.'
   },
   {
     number: 'STEP 03',
-    title: 'Start building',
+    title: 'Open your editor and ship',
     description:
-      'Your project is scaffolded with auth, theming, forms, and data fetching — all production-ready.'
+      'Your project has a working login page, a protected dashboard, JWT handling, CASL middleware, and MUI theming — ready for your first feature commit.'
   }
 ]
 
@@ -34,26 +34,64 @@ export default function HowItWorks() {
     if (prefersReduced || !containerRef.current) return
 
     const ctx = gsap.context(() => {
-      // Cards slide + scale entrance
-      gsap.from('[data-step]', {
-        x: -30,
-        scale: 0.95,
-        autoAlpha: 0,
-        stagger: 0.2,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 75%',
-          once: true
+      const steps = containerRef.current?.querySelectorAll('[data-step]')
+
+      // Apply will-change before animations
+      steps?.forEach(step => {
+        if (step instanceof HTMLElement) {
+          step.style.willChange = 'transform, opacity'
         }
       })
 
-      // Progressive line fill on scroll
+      // Enhanced cards entrance with 3D depth
+      gsap.from('[data-step]', {
+        x: -50,
+        y: 30,
+        rotationY: -10,
+        scale: 0.9,
+        autoAlpha: 0,
+        stagger: {
+          amount: 0.6,
+          ease: 'power2.inOut'
+        },
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 75%',
+          once: true,
+          onComplete: () => {
+            steps?.forEach(step => {
+              if (step instanceof HTMLElement) {
+                step.style.willChange = 'auto'
+              }
+            })
+          }
+        }
+      })
+
+      // Animate step numbers with bounce
+      const stepNumbers = containerRef.current?.querySelectorAll('[data-step-number]')
+      stepNumbers?.forEach((num, i) => {
+        gsap.from(num, {
+          scale: 0,
+          rotation: -180,
+          duration: 0.8,
+          ease: 'back.out(2)',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 75%',
+            once: true
+          },
+          delay: i * 0.2 + 0.3
+        })
+      })
+
+      // Progressive line fill with glow effect
       if (lineRef.current) {
         gsap.fromTo(
           lineRef.current,
-          { scaleY: 0 },
+          { scaleY: 0, filter: 'drop-shadow(0 0 4px rgba(91,116,255,0.8))' },
           {
             scaleY: 1,
             ease: 'none',
@@ -61,10 +99,75 @@ export default function HowItWorks() {
               trigger: containerRef.current,
               start: 'top 70%',
               end: 'bottom 40%',
-              scrub: true
+              scrub: 1,
+              onUpdate: self => {
+                // Fade out glow as scroll progresses
+                if (lineRef.current) {
+                  const glowIntensity = 0.8 * (1 - self.progress)
+                  lineRef.current.style.filter = `drop-shadow(0 0 4px rgba(91,116,255,${glowIntensity}))`
+                }
+              }
             }
           }
         )
+      }
+
+      // Animate dots with pulse
+      const dots = containerRef.current?.querySelectorAll('[data-step-dot]')
+      dots?.forEach((dot, i) => {
+        // Entrance animation
+        gsap.from(dot, {
+          scale: 0,
+          duration: 0.5,
+          ease: 'back.out(3)',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 75%',
+            once: true
+          },
+          delay: i * 0.2 + 0.5
+        })
+
+        // Continuous subtle pulse
+        gsap.to(dot, {
+          scale: 1.3,
+          opacity: 0.7,
+          duration: 1.5,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          delay: i * 0.3
+        })
+      })
+
+      // Parallax on steps
+      steps?.forEach((step, i) => {
+        gsap.to(step, {
+          y: (i - 1) * -10,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        })
+      })
+
+      // Animate title
+      const title = containerRef.current?.querySelector('h2')
+      if (title) {
+        gsap.from(title, {
+          y: 30,
+          autoAlpha: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 85%',
+            once: true
+          }
+        })
       }
     }, containerRef)
 
@@ -93,7 +196,7 @@ export default function HowItWorks() {
             margin: 0
           }}
         >
-          Three steps to launch
+          Interactive setup. Instant structure.
         </h2>
       </div>
 
@@ -142,6 +245,7 @@ export default function HowItWorks() {
           >
             {/* Glowing dot with pulse animation */}
             <div
+              data-step-dot
               style={{
                 position: 'absolute',
                 left: '-40px',
@@ -150,13 +254,12 @@ export default function HowItWorks() {
                 height: '7px',
                 borderRadius: '50%',
                 background: 'var(--primary)',
-                boxShadow: '0 0 12px var(--primary)',
-                animation: 'glowPulse 2s ease-in-out infinite',
-                animationDelay: `${i * 0.5}s`
+                boxShadow: '0 0 12px var(--primary)'
               }}
             />
 
             <p
+              data-step-number
               style={{
                 fontFamily: 'var(--font)',
                 fontSize: '0.65rem',

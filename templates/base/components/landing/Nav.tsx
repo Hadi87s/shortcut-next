@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
+import MagneticButton from '@/components/landing/MagneticButton'
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null)
@@ -49,7 +50,7 @@ export default function Nav() {
         trigger: document.documentElement,
         start: 'top top',
         end: 'bottom bottom',
-        onUpdate: (self) => {
+        onUpdate: self => {
           if (progressRef.current) {
             progressRef.current.style.width = `${self.progress * 100}%`
           }
@@ -103,7 +104,7 @@ export default function Nav() {
       ref={navRef}
       style={{
         position: 'fixed',
-        top: 0,
+        top: -2,
         left: 0,
         right: 0,
         zIndex: 1000,
@@ -143,57 +144,23 @@ export default function Nav() {
             gap: '0px'
           }}
         >
-          <span
+          <p
             style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: 'var(--primary)',
-              display: 'inline-block',
-              marginRight: '6px'
+              fontFamily: 'var(--font)',
+              fontWeight: 800,
+              fontSize: '1.7rem',
+              color: 'var(--text)',
+              margin: '0 0 8px'
             }}
-          />
-          shortcut
-        </div>
-
-        {/* Nav Links - hidden on mobile */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '32px'
-          }}
-          className="nav-links"
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}
-              style={{
-                fontFamily: 'var(--font)',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: 'var(--muted)',
-                textDecoration: 'none',
-                transition: 'color 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--primary)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--muted)'
-              }}
-            >
-              {link}
-            </a>
-          ))}
+          >
+            <span style={{ color: 'var(--primary)' }}>.</span>shortcut
+          </p>
         </div>
 
         {/* CTA Button */}
-        <a
-          href="#get-started"
+        <MagneticButton
+          as='a'
+          href='/login'
           style={{
             fontFamily: 'var(--font)',
             fontSize: '0.75rem',
@@ -205,18 +172,11 @@ export default function Nav() {
             padding: '8px 20px',
             cursor: 'pointer',
             textDecoration: 'none',
-            letterSpacing: '0.02em',
-            transition: 'opacity 0.2s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.opacity = '0.85'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.opacity = '1'
+            letterSpacing: '0.02em'
           }}
         >
           Get Started
-        </a>
+        </MagneticButton>
       </div>
 
       {/* Scroll progress bar */}
