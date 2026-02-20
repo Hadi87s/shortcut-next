@@ -1,14 +1,7 @@
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
 import localFont from 'next/font/local'
 import './globals.css'
 import AppProviders from '@/providers/AppProviders'
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  variable: '--font-poppins',
-  weight: ['300', '400', '500', '600', '700']
-})
 
 const montserratArabic = localFont({
   src: [
@@ -22,10 +15,11 @@ const montserratArabic = localFont({
     { path: '../public/fonts/Montserrat-Arabic-ExtraBold.ttf', weight: '800' },
     { path: '../public/fonts/Montserrat-Arabic-Black.ttf', weight: '900' }
   ],
-  variable: '--font-montserrat-arabic'
+  variable: '--font-montserrat'
 })
+
 export const metadata: Metadata = {
-  title: 'Shortcut Nextjs Template',
+  title: 'Shortcut Next',
   description: 'Stop starting projects from scratch, start in the middle and save time!'
 }
 
@@ -36,7 +30,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='en' dir='ltr'>
-      <body className={`${poppins.variable} ${montserratArabic.variable} antialiased`}>
+      <body className={`${montserratArabic.variable} antialiased`}>
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

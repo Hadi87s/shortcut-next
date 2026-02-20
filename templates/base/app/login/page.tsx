@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@iconify/react'
+import BrandLogo from '@/components/landing/BrandLogo'
 import LoginForm from '@/components/auth/LoginForm'
 import SignupForm from '@/components/auth/SignupForm'
 import LanguageDropdown from '@/components/common/LanguageDropdown'
@@ -255,9 +256,7 @@ export default function LoginPage() {
               justifyContent: 'space-between'
             }}
           >
-            <Typography variant='h5' fontWeight={800} color='primary.main'>
-              Logo
-            </Typography>
+            <BrandLogo size='sm' />
             <LanguageDropdown />
           </Box>
 

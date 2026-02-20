@@ -1,2 +1,86 @@
-:root { --bg:#0b0b0f; --fg:#e3e3e7; }
-body { background:var(--bg); color:var(--fg); }
+:root {
+  /* System palette — matches core/theme/palette */
+  --bg: #0b1020;
+  --surface: #0f1724;
+  --surface-2: #162032;
+  --border: rgba(255, 255, 255, 0.12);
+  --primary: #5B74FF;
+  --primary-light: #7C8FFF;
+  --primary-dark: #2F46CF;
+  --secondary: #00D0FF;
+  --success: #11C28B;
+  --warning: #FFB703;
+  --error: #FF4D4F;
+  --text: #fff;
+  --muted: rgba(234, 234, 255, 0.5);
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  /* Font */
+  --font: var(--font-montserrat), system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Scroll indicator animation */
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50% { transform: scaleY(0.5); opacity: 0.4; }
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--primary), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* Float animation for dynamic elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+/* Glow pulse for accents */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px var(--primary); }
+  50% { box-shadow: 0 0 24px var(--primary), 0 0 48px rgba(91,116,255,0.3); }
+}
+
+/* FAQ content */
+.faq-content {
+  overflow: hidden;
+}
