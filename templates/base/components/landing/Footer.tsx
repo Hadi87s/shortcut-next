@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback } from 'react'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
 const GitHubIcon = () => (
   <svg width='13' height='13' viewBox='0 0 16 16' fill='currentColor' style={{ flexShrink: 0 }}>
@@ -14,28 +15,12 @@ const NpmIcon = () => (
   </svg>
 )
 
-const resourceLinks = [
-  { label: 'GitHub', href: 'https://github.com/Hadi87s/shortcut-next', external: true, Icon: GitHubIcon },
-  { label: 'npm', href: 'https://www.npmjs.com/package/shortcut-next', external: true, Icon: NpmIcon },
-  { label: 'Issues', href: 'https://github.com/Hadi87s/shortcut-next/issues', external: true, Icon: GitHubIcon },
-  { label: 'Changelog', href: 'https://github.com/Hadi87s/shortcut-next/releases', external: true, Icon: GitHubIcon }
-]
-
-const templateLinks = [
-  { label: 'Features', href: '#features', external: false },
-  { label: 'Tech Stack', href: '#tech-stack', external: false },
-  { label: 'How It Works', href: '#how-it-works', external: false },
-  { label: 'FAQ', href: '#faq', external: false }
-]
-
-const techBadges = [
-  'Next.js 15',
-  'MUI v7',
-  'CASL',
-  'TanStack Query',
-  'TypeScript',
-  'i18next'
-]
+const ICON_MAP: Record<string, React.FC> = {
+  GitHub: GitHubIcon,
+  npm: NpmIcon,
+  Issues: GitHubIcon,
+  Changelog: GitHubIcon
+}
 
 export default function Footer() {
   const handleMouseEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -126,7 +111,7 @@ export default function Footer() {
                 margin: '0 0 8px'
               }}
             >
-              <span style={{ color: 'var(--primary)' }}>.</span>shortcut
+              <span style={{ color: 'var(--primary)' }}>.</span>{lc.footer.brand.name.slice(1)}
             </p>
             <p
               style={{
@@ -139,12 +124,12 @@ export default function Footer() {
                 maxWidth: '280px'
               }}
             >
-              A CLI tool that scaffolds production-ready Next.js 15 apps with MUI, auth, CASL RBAC, i18n, and a full data layer — wired in under 30 seconds.
+              {lc.footer.brand.desc}
             </p>
 
             {/* Tech badges */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              {techBadges.map(badge => (
+              {lc.footer.techBadges.map(badge => (
                 <span
                   key={badge}
                   style={{
@@ -179,7 +164,7 @@ export default function Footer() {
           <div>
             <p style={colHeadingStyle}>Template</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {templateLinks.map(link => (
+              {lc.footer.templateLinks.map(link => (
                 <a
                   key={link.label}
                   href={link.href}
@@ -198,21 +183,24 @@ export default function Footer() {
           <div>
             <p style={colHeadingStyle}>Resources</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {resourceLinks.map(link => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target={link.external ? '_blank' : undefined}
-                  rel={link.external ? 'noopener noreferrer' : undefined}
-                  style={{ ...linkStyle, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <link.Icon />
-                  <span>{link.label}</span>
-                  <span data-underline style={underlineStyle} />
-                </a>
-              ))}
+              {lc.footer.resourceLinks.map(link => {
+                const Icon = ICON_MAP[link.label]
+                return (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target={link.external ? '_blank' : undefined}
+                    rel={link.external ? 'noopener noreferrer' : undefined}
+                    style={{ ...linkStyle, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {Icon && <Icon />}
+                    <span>{link.label}</span>
+                    <span data-underline style={underlineStyle} />
+                  </a>
+                )
+              })}
             </div>
           </div>
 
@@ -236,7 +224,7 @@ export default function Footer() {
                   lineHeight: 1.5
                 }}
               >
-                Run this in your terminal:
+                {lc.footer.getStarted.heading}
               </p>
               <code
                 style={{
@@ -250,7 +238,7 @@ export default function Footer() {
                 }}
               >
                 <span style={{ color: 'var(--muted)' }}>$ </span>
-                npx shortcut-next@latest
+                {lc.footer.getStarted.command}
               </code>
               <p
                 style={{
@@ -261,7 +249,7 @@ export default function Footer() {
                   lineHeight: 1.5
                 }}
               >
-                No global install required.
+                {lc.footer.getStarted.note}
               </p>
             </div>
           </div>
@@ -287,7 +275,7 @@ export default function Footer() {
               margin: 0
             }}
           >
-            &copy; {new Date().getFullYear()} shortcut-next &middot; MIT License
+            &copy; {new Date().getFullYear()} {lc.footer.copyright}
           </p>
           <p
             style={{
@@ -298,7 +286,7 @@ export default function Footer() {
               margin: 0
             }}
           >
-            Built with Next.js &middot; Deployed on Vercel
+            {lc.footer.builtWith}
           </p>
         </div>
       </div>

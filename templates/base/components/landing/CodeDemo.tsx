@@ -3,12 +3,16 @@
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
-const bullets = [
-  'JWT auth context with token refresh built in',
-  'CASL middleware guards routes before they render',
-  'Arabic + English i18n with automatic RTL layout'
-]
+const bullets = lc.codeDemo.bullets
+
+const TOKEN_COLOR: Record<string, string> = {
+  muted: 'var(--muted)',
+  primary: 'var(--primary)',
+  secondary: 'var(--secondary)',
+  text: 'var(--text)'
+}
 
 export default function CodeDemo() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -32,13 +36,13 @@ export default function CodeDemo() {
         rotationY: -5,
         duration: 1,
         ease: 'power3.out',
+        onComplete: () => {
+          if (leftRef.current) leftRef.current.style.willChange = 'auto'
+        },
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
-          once: true,
-          onComplete: () => {
-            if (leftRef.current) leftRef.current.style.willChange = 'auto'
-          }
+          once: true
         }
       })
 
@@ -48,13 +52,13 @@ export default function CodeDemo() {
         rotationY: 5,
         duration: 1,
         ease: 'power3.out',
+        onComplete: () => {
+          if (rightRef.current) rightRef.current.style.willChange = 'auto'
+        },
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
-          once: true,
-          onComplete: () => {
-            if (rightRef.current) rightRef.current.style.willChange = 'auto'
-          }
+          once: true
         }
       })
 
@@ -193,7 +197,7 @@ export default function CodeDemo() {
         padding: '120px 24px'
       }}
     >
-      <SectionLabel>QUICK START</SectionLabel>
+      <SectionLabel>{lc.codeDemo.label}</SectionLabel>
 
       <div
         style={{
@@ -222,7 +226,7 @@ export default function CodeDemo() {
               lineHeight: 1.1
             }}
           >
-            From zero to dashboard in under 30 seconds
+            {lc.codeDemo.heading}
           </h2>
           <p
             style={{
@@ -233,7 +237,7 @@ export default function CodeDemo() {
               fontSize: '1rem'
             }}
           >
-            The CLI asks three questions: project name, template preset, and package manager. Auth middleware, theme, providers, forms, and i18n — all configured and wired before you open your editor.
+            {lc.codeDemo.body}
           </p>
           <ul
             style={{
@@ -317,32 +321,19 @@ export default function CodeDemo() {
                 overflowX: 'auto'
               }}
             >
-              <div className='code-line' style={{ visibility: 'hidden' }}>
-                <span style={{ color: 'var(--muted)' }}># Install and scaffold</span>
-              </div>
-              <div className='code-line' style={{ visibility: 'hidden' }}>
-                <span style={{ color: 'var(--muted)' }}>$ </span>
-                <span style={{ color: 'var(--primary)' }}>npx</span>{' '}
-                <span style={{ color: 'var(--text)' }}>shortcut-next@latest</span>{' '}
-                <span style={{ color: 'var(--secondary)' }}>my-app</span>
-              </div>
-              <div className='code-line' style={{ visibility: 'hidden', height: '1.8em' }} />
-              <div className='code-line' style={{ visibility: 'hidden' }}>
-                <span style={{ color: 'var(--muted)' }}># Start developing</span>
-              </div>
-              <div className='code-line' style={{ visibility: 'hidden' }}>
-                <span style={{ color: 'var(--muted)' }}>$ </span>
-                <span style={{ color: 'var(--primary)' }}>cd</span>{' '}
-                <span style={{ color: 'var(--secondary)' }}>my-app</span>{' '}
-                <span style={{ color: 'var(--muted)' }}>&amp;&amp;</span>{' '}
-                <span style={{ color: 'var(--primary)' }}>npm</span>{' '}
-                <span style={{ color: 'var(--text)' }}>run dev</span>
-              </div>
-              <div className='code-line' style={{ visibility: 'hidden', height: '1.8em' }} />
-              <div className='code-line' style={{ visibility: 'hidden' }}>
-                <span style={{ color: 'var(--muted)' }}># Your app is ready at </span>
-                <span style={{ color: 'var(--secondary)' }}>localhost:3000</span>
-              </div>
+              {lc.codeDemo.terminalLines.map((line, i) => (
+                <div
+                  key={i}
+                  className='code-line'
+                  style={{ visibility: 'hidden', ...(line.blank ? { height: '1.8em' } : {}) }}
+                >
+                  {line.tokens.map((token, j) => (
+                    <span key={j} style={{ color: TOKEN_COLOR[token.color ?? 'text'] }}>
+                      {token.text}
+                    </span>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>

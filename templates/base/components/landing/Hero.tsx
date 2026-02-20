@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import MagneticButton from '@/components/landing/MagneticButton'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -15,11 +16,11 @@ export default function Hero() {
   const ringsRef = useRef<(HTMLDivElement | null)[]>([])
   const [copied, setCopied] = useState(false)
 
-  const titleText = 'Stop Starting From Scratch'
+  const titleText = lc.hero.title
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText('npx shortcut-next@latest')
+      await navigator.clipboard.writeText(lc.hero.command)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
@@ -323,7 +324,7 @@ export default function Hero() {
           visibility: 'hidden'
         }}
       >
-        NEXT.JS SCAFFOLDING CLI
+        {lc.hero.eyebrow}
       </p>
 
       {/* Title */}
@@ -363,7 +364,7 @@ export default function Hero() {
           visibility: 'hidden'
         }}
       >
-        One command scaffolds a complete Next.js 15 app: MUI v7, CASL RBAC, TanStack Query, i18n with RTL, and a protected dashboard — production-wired, not tutorial-grade.
+        {lc.hero.subtitle}
       </p>
 
       {/* CTA Row */}
@@ -384,7 +385,7 @@ export default function Hero() {
       >
         <MagneticButton
           as='a'
-          href='#get-started'
+          href={lc.hero.primaryCta.href}
           style={{
             fontFamily: 'var(--font)',
             fontSize: '0.85rem',
@@ -401,12 +402,12 @@ export default function Hero() {
             gap: '8px'
           }}
         >
-          Get Started <span aria-hidden='true'>&rarr;</span>
+          {lc.hero.primaryCta.label} <span aria-hidden='true'>&rarr;</span>
         </MagneticButton>
         <MagneticButton
           as='a'
-          href='https://github.com/Hadi87s/shortcut-next'
-          target='_blank'
+          href={lc.hero.secondaryCta.href}
+          target={lc.hero.secondaryCta.target}
           rel='noopener noreferrer'
           style={{
             fontFamily: 'var(--font)',
@@ -424,7 +425,7 @@ export default function Hero() {
             gap: '8px'
           }}
         >
-          View on GitHub
+          {lc.hero.secondaryCta.label}
         </MagneticButton>
       </div>
 
@@ -459,7 +460,7 @@ export default function Hero() {
           }}
         >
           <span style={{ color: 'var(--muted)' }}>$ </span>
-          npx shortcut-next@latest
+          {lc.hero.command}
         </code>
         <button
           onClick={handleCopy}
@@ -536,7 +537,7 @@ export default function Hero() {
             textTransform: 'uppercase'
           }}
         >
-          SCROLL
+          {lc.hero.scrollLabel}
         </span>
         <div
           className='scroll-line'

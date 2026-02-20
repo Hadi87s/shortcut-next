@@ -1,34 +1,20 @@
-import { Typography } from '@mui/material'
-import { Box } from 'lucide-react'
-import React from 'react'
+'use client'
 
-const BrandLogo = () => {
+import { Box, Typography } from '@mui/material'
+
+type Props = { size?: 'sm' | 'md' | 'lg' }
+
+const fontSizes = { sm: '1.1rem', md: '1.4rem', lg: '1.7rem' }
+
+export default function BrandLogo({ size = 'md' }: Props) {
   return (
-    <Box
-      style={{
-        fontFamily: 'var(--font)',
-        fontWeight: 800,
-        fontSize: '1.1rem',
-        color: 'var(--text)',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0px'
-      }}
-    >
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Typography
         component='span'
-        style={{
-          fontFamily: 'var(--font)',
-          fontWeight: 800,
-          fontSize: '1.7rem',
-          color: 'var(--text)',
-          margin: '0 0 8px'
-        }}
+        sx={{ fontWeight: 800, fontSize: fontSizes[size], color: 'text.primary', lineHeight: 1 }}
       >
-        <span style={{ color: 'var(--primary)' }}>.</span>shortcut
+        <Box component='span' sx={{ color: 'primary.main' }}>.</Box>shortcut
       </Typography>
     </Box>
   )
 }
-
-export default BrandLogo

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
 export default function InstallBanner() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -11,8 +12,8 @@ export default function InstallBanner() {
   const [copied, setCopied] = useState(false)
   const [hasTyped, setHasTyped] = useState(false)
 
-  const command = 'npx shortcut-next@latest'
-  const displayText = 'npx shortcut-next@latest'
+  const command = lc.installBanner.command
+  const displayText = lc.installBanner.displayText
 
   const handleCopy = async () => {
     try {

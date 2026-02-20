@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
+import BrandLogo from '@/components/landing/BrandLogo'
 import MagneticButton from '@/components/landing/MagneticButton'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null)
@@ -97,8 +99,6 @@ export default function Nav() {
     }
   }, [])
 
-  const navLinks = ['Features', 'How It Works', 'Docs']
-
   return (
     <nav
       ref={navRef}
@@ -133,34 +133,12 @@ export default function Nav() {
         }}
       >
         {/* Logo */}
-        <div
-          style={{
-            fontFamily: 'var(--font)',
-            fontWeight: 800,
-            fontSize: '1.1rem',
-            color: 'var(--text)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0px'
-          }}
-        >
-          <p
-            style={{
-              fontFamily: 'var(--font)',
-              fontWeight: 800,
-              fontSize: '1.7rem',
-              color: 'var(--text)',
-              margin: '0 0 8px'
-            }}
-          >
-            <span style={{ color: 'var(--primary)' }}>.</span>shortcut
-          </p>
-        </div>
+        <BrandLogo size='md' />
 
         {/* CTA Button */}
         <MagneticButton
           as='a'
-          href='/login'
+          href={lc.nav.cta.href}
           style={{
             fontFamily: 'var(--font)',
             fontSize: '0.75rem',
@@ -175,7 +153,7 @@ export default function Nav() {
             letterSpacing: '0.02em'
           }}
         >
-          Get Started
+          {lc.nav.cta.label}
         </MagneticButton>
       </div>
 

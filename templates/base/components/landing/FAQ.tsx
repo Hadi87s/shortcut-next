@@ -3,34 +3,9 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
-const faqs = [
-  {
-    question: 'What exactly does the scaffolded project contain?',
-    answer:
-      'A working login and signup page under /app/(auth)/, a protected dashboard with sidebar navigation under /app/(dashboard)/, CASL middleware that guards every route, MUI theme overrides, Auth and Settings contexts, an Axios client with token refresh interceptors, and i18n for English and Arabic. All wired together before you write a line of code.'
-  },
-  {
-    question: 'Do I need to install anything globally?',
-    answer:
-      'No. npx runs the latest version without a global install. The CLI scaffolds the project, installs dependencies with your chosen package manager, and initializes a git repository automatically.'
-  },
-  {
-    question: 'How does the CASL authorization system work?',
-    answer:
-      'Roles map to abilities in a single file at lib/abilities/roles.ts. A route map at lib/abilities/routeMap.ts lists every protected path with the required action and subject. Next.js middleware decodes the JWT on every request and checks the user role against that map — no per-page auth guards needed.'
-  },
-  {
-    question: 'Can I add Tailwind to the base preset later?',
-    answer:
-      'Tailwind v4 is a scaffolding-time choice because it needs PostCSS config and a globals.css import. To add it manually: install @tailwindcss/postcss, create postcss.config.mjs, and prepend @import "tailwindcss" to globals.css — the same three steps the CLI performs for the tailwind preset.'
-  },
-  {
-    question: 'Is the JWT handling production-safe?',
-    answer:
-      'Tokens are stored in localStorage and mirrored to cookies so server components can read them via SSR. The Axios client intercepts 401 responses, attempts a token refresh, retries the original request, and triggers logout only if the refresh also fails. The middleware uses jose to verify and decode the JWT without exposing secrets to the client.'
-  }
-]
+const faqs = lc.faq.items
 
 export default function FAQ() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -67,17 +42,17 @@ export default function FAQ() {
         },
         duration: 0.7,
         ease: 'power3.out',
+        onComplete: () => {
+          items?.forEach(item => {
+            if (item instanceof HTMLElement) {
+              item.style.willChange = 'auto'
+            }
+          })
+        },
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top 80%',
-          once: true,
-          onComplete: () => {
-            items?.forEach(item => {
-              if (item instanceof HTMLElement) {
-                item.style.willChange = 'auto'
-              }
-            })
-          }
+          once: true
         }
       })
 
@@ -177,9 +152,10 @@ export default function FAQ() {
         if (prefersReduced) {
           answer.style.height = 'auto'
         } else {
-          gsap.set(answer, { height: 'auto' })
+          answer.style.height = 'auto'
           const measured = answer.offsetHeight
-          gsap.fromTo(answer, { height: 0 }, { height: measured, duration: 0.35, ease: 'power2.inOut' })
+          answer.style.height = '0px'
+          gsap.to(answer, { height: measured, duration: 0.35, ease: 'power2.inOut' })
         }
       }
       if (icon) {
@@ -226,7 +202,7 @@ export default function FAQ() {
     >
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <SectionLabel>FAQ</SectionLabel>
+          <SectionLabel>{lc.faq.label}</SectionLabel>
         </div>
         <h2
           style={{
@@ -237,7 +213,7 @@ export default function FAQ() {
             margin: 0
           }}
         >
-          What developers ask first
+          {lc.faq.heading}
         </h2>
       </div>
 
@@ -253,7 +229,6 @@ export default function FAQ() {
               borderBottom: '1px solid var(--border)',
               borderLeft: '3px solid transparent',
               padding: '20px 0 20px 16px',
-              visibility: 'hidden',
               transition: 'none'
             }}
           >

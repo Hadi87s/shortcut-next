@@ -3,49 +3,9 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
-const stackItems = [
-  {
-    role: 'FRAMEWORK',
-    name: 'Next.js 15',
-    desc: 'App Router, Server Components, Layouts, and middleware — the full feature set, not a pages-directory fallback.'
-  },
-  {
-    role: 'COMPONENT LIBRARY',
-    name: 'Material UI v7',
-    desc: 'Theming, dark mode, RTL layout, and per-component overrides all pre-configured. Use the design system immediately.'
-  },
-  {
-    role: 'AUTHORIZATION',
-    name: 'CASL',
-    desc: 'Attribute-based access control with a four-role hierarchy. Middleware enforces it. Client hooks expose it.'
-  },
-  {
-    role: 'SERVER STATE',
-    name: 'TanStack Query v5',
-    desc: 'Caching, background refetch, and loading states configured with sensible defaults. No manual fetch boilerplate.'
-  },
-  {
-    role: 'FORMS',
-    name: 'React Hook Form',
-    desc: 'Strongly-typed, performant forms. Used on the login and signup pages out of the box with full validation wiring.'
-  },
-  {
-    role: 'INTERNATIONALIZATION',
-    name: 'i18next',
-    desc: 'English and Arabic with automatic RTL detection. Language preference is persisted to localStorage.'
-  },
-  {
-    role: 'HTTP CLIENT',
-    name: 'Axios',
-    desc: 'Interceptors handle JWT injection, 401 token refresh, and auto-logout. One Axios instance, fully configured.'
-  },
-  {
-    role: 'TYPE SAFETY',
-    name: 'TypeScript',
-    desc: 'Full coverage: CASL ability types, role enums, API response shapes, and Next.js 15 server component props.'
-  }
-]
+const stackItems = lc.techStack.cards
 
 export default function TechStack() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -226,7 +186,7 @@ export default function TechStack() {
           alignItems: 'center'
         }}
       >
-        <SectionLabel>TECH STACK</SectionLabel>
+        <SectionLabel>{lc.techStack.label}</SectionLabel>
         <h2
           style={{
             fontFamily: 'var(--font)',
@@ -238,7 +198,7 @@ export default function TechStack() {
             marginTop: '8px'
           }}
         >
-          Nine libraries. One command.
+          {lc.techStack.heading}
         </h2>
         <p
           style={{
@@ -250,7 +210,7 @@ export default function TechStack() {
             marginTop: '16px'
           }}
         >
-          Every dependency in the generated project is chosen for real production use. Here&apos;s what you get and why it&apos;s there.
+          {lc.techStack.subheading}
         </p>
       </div>
 
@@ -363,7 +323,7 @@ export default function TechStack() {
             letterSpacing: '0.02em'
           }}
         >
-          <span style={{ color: 'var(--primary)', fontWeight: 600 }}>+ Optional:</span> Tailwind CSS v4 — zero-config utility classes, added at scaffold time
+          <span style={{ color: 'var(--primary)', fontWeight: 600 }}>+ Optional:</span> {lc.techStack.callout}
         </p>
       </div>
 

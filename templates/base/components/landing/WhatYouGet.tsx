@@ -4,41 +4,28 @@ import { useEffect, useRef, useState } from 'react'
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
+import { landingContent as lc, type TreeNode } from '@/components/landing/landingContent'
 
-const included = [
-  {
-    title: 'Login page',
-    desc: 'React Hook Form with validation. JWT stored in localStorage and mirrored to cookies for SSR.'
-  },
-  {
-    title: 'Protected dashboard layout',
-    desc: 'Collapsible sidebar with nested routes and responsive design. Only accessible to authenticated users.'
-  },
-  {
-    title: 'CASL authorization',
-    desc: 'Route map + middleware check on every request. Add a protected route by editing one file.'
-  },
-  {
-    title: 'Auth context',
-    desc: 'login(), logout() with token storage, user state, and auto-redirect on session expiry.'
-  },
-  {
-    title: 'Settings context',
-    desc: 'Theme mode (dark/light), UI direction (LTR/RTL), and language — persisted to localStorage.'
-  },
-  {
-    title: 'MUI theme system',
-    desc: 'core/theme/overrides/ with one file per MUI component. Change global tokens without touching internals.'
-  },
-  {
-    title: 'Axios API client',
-    desc: 'Request interceptor injects the access token. Response interceptor handles 401 refresh and cascade logout.'
-  },
-  {
-    title: 'MSW mock layer',
-    desc: 'Mock Service Worker pre-configured for local development. Swap real endpoints in when ready.'
-  }
-]
+const included = lc.whatYouGet.includedItems
+
+function collectDirIds(nodes: TreeNode[]): string[] {
+  return nodes.flatMap(n =>
+    n.type === 'dir' ? [n.id, ...collectDirIds(n.children ?? [])] : []
+  )
+}
+
+function renderTree(nodes: TreeNode[]): React.ReactNode {
+  return nodes.map((node, i) => (
+    <TreeItem
+      key={node.id}
+      itemId={node.id}
+      label={<FileLabel name={node.name} type={node.type} comment={node.comment} />}
+      sx={i > 0 ? { marginTop: '6px' } : undefined}
+    >
+      {node.children && renderTree(node.children)}
+    </TreeItem>
+  ))
+}
 
 function FileLabel({
   name,
@@ -109,14 +96,9 @@ export default function WhatYouGet() {
   const leftRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
-  const [expandedItems, setExpandedItems] = useState<string[]>([
-    'app',
-    'dashboard-group',
-    'lib-abilities',
-    'core',
-    'core-context',
-    'providers'
-  ])
+  const [expandedItems, setExpandedItems] = useState<string[]>(() =>
+    collectDirIds(lc.whatYouGet.fileTree)
+  )
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -132,13 +114,13 @@ export default function WhatYouGet() {
         rotationY: -5,
         duration: 1,
         ease: 'power3.out',
+        onComplete: () => {
+          if (leftRef.current) leftRef.current.style.willChange = 'auto'
+        },
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
-          once: true,
-          onComplete: () => {
-            if (leftRef.current) leftRef.current.style.willChange = 'auto'
-          }
+          once: true
         }
       })
 
@@ -148,13 +130,13 @@ export default function WhatYouGet() {
         rotationY: 5,
         duration: 1,
         ease: 'power3.out',
+        onComplete: () => {
+          if (rightRef.current) rightRef.current.style.willChange = 'auto'
+        },
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
-          once: true,
-          onComplete: () => {
-            if (rightRef.current) rightRef.current.style.willChange = 'auto'
-          }
+          once: true
         }
       })
 
@@ -229,7 +211,7 @@ export default function WhatYouGet() {
         padding: '120px 24px'
       }}
     >
-      <SectionLabel>WHAT YOU GET</SectionLabel>
+      <SectionLabel>{lc.whatYouGet.label}</SectionLabel>
 
       <div
         className='what-you-get-layout'
@@ -253,7 +235,7 @@ export default function WhatYouGet() {
               marginBottom: '16px'
             }}
           >
-            A working app, not a starting point.
+            {lc.whatYouGet.heading}
           </h2>
           <p
             style={{
@@ -264,7 +246,7 @@ export default function WhatYouGet() {
               marginBottom: '28px'
             }}
           >
-            Open your editor to a project that already does something. Every file below is scaffolded and wired on the first run.
+            {lc.whatYouGet.body}
           </p>
 
           <div
@@ -298,7 +280,7 @@ export default function WhatYouGet() {
                   letterSpacing: '0.04em'
                 }}
               >
-                project structure
+                {lc.whatYouGet.terminalLabel}
               </span>
             </div>
 
@@ -309,51 +291,7 @@ export default function WhatYouGet() {
                 onExpandedItemsChange={(_, items) => setExpandedItems(items)}
                 sx={treeSx}
               >
-                {/* app/ */}
-                <TreeItem itemId='app' label={<FileLabel name='app/' type='dir' comment='Next.js App Router root' />}>
-                  <TreeItem itemId='dashboard-group' label={<FileLabel name='(dashboard)/' type='dir' comment='protected route group' />}>
-                    <TreeItem itemId='dashboard-dir' label={<FileLabel name='dashboard/' type='dir' />}>
-                      <TreeItem itemId='dashboard-page' label={<FileLabel name='page.tsx' type='file' comment='→ Dashboard home' />} />
-                    </TreeItem>
-                    <TreeItem itemId='dashboard-layout' label={<FileLabel name='layout.tsx' type='file' comment='→ Protected sidebar layout' />} />
-                  </TreeItem>
-                  <TreeItem itemId='home-dir' label={<FileLabel name='home/' type='dir' />}>
-                    <TreeItem itemId='home-page' label={<FileLabel name='page.tsx' type='file' comment='→ Home / landing page' />} />
-                  </TreeItem>
-                  <TreeItem itemId='login-dir' label={<FileLabel name='login/' type='dir' />}>
-                    <TreeItem itemId='login-page' label={<FileLabel name='page.tsx' type='file' comment='→ Login with React Hook Form' />} />
-                  </TreeItem>
-                  <TreeItem itemId='unauthorized-dir' label={<FileLabel name='unauthorized/' type='dir' />}>
-                    <TreeItem itemId='unauthorized-page' label={<FileLabel name='page.tsx' type='file' comment='→ CASL redirect target' />} />
-                  </TreeItem>
-                  <TreeItem itemId='root-layout' label={<FileLabel name='layout.tsx' type='file' comment='→ Root layout + all providers' />} />
-                </TreeItem>
-
-                {/* lib/abilities/ */}
-                <TreeItem itemId='lib-abilities' label={<FileLabel name='lib/abilities/' type='dir' comment='CASL authorization' />} sx={{ marginTop: '6px' }}>
-                  <TreeItem itemId='roles' label={<FileLabel name='roles.ts' type='file' comment='→ Role → ability definitions' />} />
-                  <TreeItem itemId='routeMap' label={<FileLabel name='routeMap.ts' type='file' comment='→ Route → permission mapping' />} />
-                  <TreeItem itemId='routeMatcher' label={<FileLabel name='routeMatcher.ts' type='file' comment='→ Pattern matching logic' />} />
-                  <TreeItem itemId='checkAuth' label={<FileLabel name='checkAuthorization.ts' type='file' comment='→ Auth orchestration' />} />
-                </TreeItem>
-
-                {/* core/ */}
-                <TreeItem itemId='core' label={<FileLabel name='core/' type='dir' comment='infrastructure layer' />} sx={{ marginTop: '6px' }}>
-                  <TreeItem itemId='core-clients' label={<FileLabel name='clients/' type='dir' />}>
-                    <TreeItem itemId='apiClient' label={<FileLabel name='apiClient.ts' type='file' comment='→ Axios with token refresh' />} />
-                  </TreeItem>
-                  <TreeItem itemId='core-context' label={<FileLabel name='context/' type='dir' />}>
-                    <TreeItem itemId='authContext' label={<FileLabel name='AuthContext.tsx' type='file' comment='→ login / logout / token state' />} />
-                    <TreeItem itemId='settingsContext' label={<FileLabel name='SettingsContext.tsx' type='file' comment='→ theme, language, direction' />} />
-                  </TreeItem>
-                  <TreeItem itemId='core-theme' label={<FileLabel name='theme/overrides/' type='dir' comment='→ per-component MUI overrides' />} />
-                </TreeItem>
-
-                {/* providers/ */}
-                <TreeItem itemId='providers' label={<FileLabel name='providers/' type='dir' comment='React context composition' />} sx={{ marginTop: '6px' }}>
-                  <TreeItem itemId='appProviders' label={<FileLabel name='AppProviders.tsx' type='file' comment='→ Auth → Settings → Theme → Query' />} />
-                  <TreeItem itemId='i18nProvider' label={<FileLabel name='I18nProvider.tsx' type='file' comment='→ i18next initialization' />} />
-                </TreeItem>
+                {renderTree(lc.whatYouGet.fileTree)}
               </SimpleTreeView>
             </div>
           </div>

@@ -3,27 +3,9 @@
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
-const steps = [
-  {
-    number: 'STEP 01',
-    title: 'Run the CLI',
-    description:
-      'Launch the interactive prompt. Answer three questions: project name, template preset, and package manager. The CLI handles the rest — git init, dependency install, project structure.'
-  },
-  {
-    number: 'STEP 02',
-    title: 'Choose your preset',
-    description:
-      'Pick the base MUI stack or add Tailwind v4. Dependencies install automatically with a clean initial commit ready to push.'
-  },
-  {
-    number: 'STEP 03',
-    title: 'Open your editor and ship',
-    description:
-      'Your project has a working login page, a protected dashboard, JWT handling, CASL middleware, and MUI theming — ready for your first feature commit.'
-  }
-]
+const steps = lc.howItWorks.steps
 
 export default function HowItWorks() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -34,10 +16,10 @@ export default function HowItWorks() {
     if (prefersReduced || !containerRef.current) return
 
     const ctx = gsap.context(() => {
-      const steps = containerRef.current?.querySelectorAll('[data-step]')
+      const stepsEls = containerRef.current?.querySelectorAll('[data-step]')
 
       // Apply will-change before animations
-      steps?.forEach(step => {
+      stepsEls?.forEach(step => {
         if (step instanceof HTMLElement) {
           step.style.willChange = 'transform, opacity'
         }
@@ -56,17 +38,17 @@ export default function HowItWorks() {
         },
         duration: 0.9,
         ease: 'power3.out',
+        onComplete: () => {
+          stepsEls?.forEach(step => {
+            if (step instanceof HTMLElement) {
+              step.style.willChange = 'auto'
+            }
+          })
+        },
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top 75%',
-          once: true,
-          onComplete: () => {
-            steps?.forEach(step => {
-              if (step instanceof HTMLElement) {
-                step.style.willChange = 'auto'
-              }
-            })
-          }
+          once: true
         }
       })
 
@@ -141,7 +123,7 @@ export default function HowItWorks() {
       })
 
       // Parallax on steps
-      steps?.forEach((step, i) => {
+      stepsEls?.forEach((step, i) => {
         gsap.to(step, {
           y: (i - 1) * -10,
           ease: 'none',
@@ -185,7 +167,7 @@ export default function HowItWorks() {
     >
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <SectionLabel>HOW IT WORKS</SectionLabel>
+          <SectionLabel>{lc.howItWorks.label}</SectionLabel>
         </div>
         <h2
           style={{
@@ -196,7 +178,7 @@ export default function HowItWorks() {
             margin: 0
           }}
         >
-          Interactive setup. Instant structure.
+          {lc.howItWorks.heading}
         </h2>
       </div>
 
@@ -239,8 +221,7 @@ export default function HowItWorks() {
             data-step
             style={{
               position: 'relative',
-              marginBottom: i < steps.length - 1 ? '48px' : 0,
-              visibility: 'hidden'
+              marginBottom: i < steps.length - 1 ? '48px' : 0
             }}
           >
             {/* Glowing dot with pulse animation */}
@@ -291,7 +272,7 @@ export default function HowItWorks() {
                 margin: '4px 0 0'
               }}
             >
-              {step.description}
+              {step.desc}
             </p>
           </div>
         ))}

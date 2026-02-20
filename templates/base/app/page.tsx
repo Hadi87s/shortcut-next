@@ -14,6 +14,7 @@ import Stats from '@/components/landing/Stats'
 import FAQ from '@/components/landing/FAQ'
 import CTA from '@/components/landing/CTA'
 import Footer from '@/components/landing/Footer'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
 function ParallaxDivider({ direction = 'left' }: { direction?: 'left' | 'right' }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -143,22 +144,24 @@ export default function Page() {
 
   return (
     <>
-      <Nav />
+      {lc.nav.visible && <Nav />}
 
       {/* Hero - Fixed position, fades away on scroll */}
-      <div
-        ref={heroWrapperRef}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          zIndex: 1
-        }}
-      >
-        <Hero />
-      </div>
+      {lc.hero.visible && (
+        <div
+          ref={heroWrapperRef}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100vh',
+            zIndex: 1
+          }}
+        >
+          <Hero />
+        </div>
+      )}
 
       {/* Main content - higher z-index to cover hero */}
       <main
@@ -172,59 +175,77 @@ export default function Page() {
       >
         <ParallaxDivider direction='left' />
 
-        <ParallaxSection speed={-30}>
-          <InstallBanner />
-        </ParallaxSection>
+        {lc.installBanner.visible && (
+          <ParallaxSection speed={-30}>
+            <InstallBanner />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='right' />
 
-        <ParallaxSection speed={-20}>
-          <Features />
-        </ParallaxSection>
+        {lc.features.visible && (
+          <ParallaxSection speed={-20}>
+            <Features />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='left' />
 
-        <ParallaxSection speed={-35}>
-          <CodeDemo />
-        </ParallaxSection>
+        {lc.codeDemo.visible && (
+          <ParallaxSection speed={-35}>
+            <CodeDemo />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='right' />
 
-        <ParallaxSection speed={-25}>
-          <TechStack />
-        </ParallaxSection>
+        {lc.techStack.visible && (
+          <ParallaxSection speed={-25}>
+            <TechStack />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='left' />
 
-        <ParallaxSection speed={-20}>
-          <WhatYouGet />
-        </ParallaxSection>
+        {lc.whatYouGet.visible && (
+          <ParallaxSection speed={-20}>
+            <WhatYouGet />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='right' />
 
-        <ParallaxSection speed={-15}>
-          <HowItWorks />
-        </ParallaxSection>
+        {lc.howItWorks.visible && (
+          <ParallaxSection speed={-15}>
+            <HowItWorks />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='left' />
 
-        <ParallaxSection speed={-25}>
-          <Stats />
-        </ParallaxSection>
+        {lc.stats.visible && (
+          <ParallaxSection speed={-25}>
+            <Stats />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='right' />
 
-        <ParallaxSection speed={-20}>
-          <FAQ />
-        </ParallaxSection>
+        {lc.faq.visible && (
+          <ParallaxSection speed={-20}>
+            <FAQ />
+          </ParallaxSection>
+        )}
 
         <ParallaxDivider direction='left' />
 
-        <ParallaxSection speed={-10}>
-          <CTA />
-        </ParallaxSection>
+        {lc.cta.visible && (
+          <ParallaxSection speed={-10}>
+            <CTA />
+          </ParallaxSection>
+        )}
 
-        <Footer />
+        {lc.footer.visible && <Footer />}
       </main>
     </>
   )

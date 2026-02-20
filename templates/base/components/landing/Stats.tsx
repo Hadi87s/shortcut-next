@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
 export default function Stats() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -56,10 +57,7 @@ export default function Stats() {
             trigger: sectionRef.current,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: true,
-            onComplete: () => {
-              if (ref instanceof HTMLElement) ref.style.willChange = 'auto'
-            }
+            scrub: true
           }
         })
       })
@@ -85,14 +83,15 @@ export default function Stats() {
             })
           }
 
+          const stat0 = lc.stats.items[0]
           gsap.to(counter1, {
-            val: 9,
+            val: stat0.animateTo ?? 0,
             duration: 2.2,
             ease: 'power2.out',
             onUpdate: () => {
               if (num1Ref.current) {
                 const current = Math.round(counter1.val)
-                num1Ref.current.textContent = current + '+'
+                num1Ref.current.textContent = current + stat0.suffix
               }
             },
             onComplete: () => {
@@ -118,15 +117,16 @@ export default function Stats() {
             })
           }
 
+          const stat1 = lc.stats.items[1]
           gsap.to(counter2, {
-            val: 4,
+            val: stat1.animateTo ?? 0,
             duration: 2.2,
             ease: 'power2.out',
             delay: 0.2,
             onUpdate: () => {
               if (num2Ref.current) {
                 const current = Math.round(counter2.val)
-                num2Ref.current.textContent = String(current)
+                num2Ref.current.textContent = current + stat1.suffix
               }
             },
             onComplete: () => {
@@ -222,21 +222,21 @@ export default function Stats() {
       >
         <div ref={col1Ref}>
           <span ref={num1Ref} style={numberStyle}>
-            0+
+            {lc.stats.items[0].display}
           </span>
-          <p style={labelStyle}>INTEGRATED PACKAGES</p>
+          <p style={labelStyle}>{lc.stats.items[0].label}</p>
         </div>
         <div ref={col2Ref}>
           <span ref={num2Ref} style={numberStyle}>
-            0
+            {lc.stats.items[1].display}
           </span>
-          <p style={labelStyle}>BUILT-IN RBAC ROLES</p>
+          <p style={labelStyle}>{lc.stats.items[1].label}</p>
         </div>
         <div ref={col3Ref}>
           <span ref={num3Ref} style={{ ...numberStyle, visibility: 'hidden' }}>
-            &lt;30s
+            {lc.stats.items[2].display}
           </span>
-          <p style={labelStyle}>TO RUNNING DEV SERVER</p>
+          <p style={labelStyle}>{lc.stats.items[2].label}</p>
         </div>
       </div>
     </section>

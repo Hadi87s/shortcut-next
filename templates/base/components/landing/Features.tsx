@@ -3,39 +3,9 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
+import { landingContent as lc } from '@/components/landing/landingContent'
 
-const features = [
-  {
-    num: '01',
-    name: 'MUI v7 Design System',
-    desc: 'Dark mode, light mode, RTL, and per-component theme overrides in /theme/. Switch palette tokens globally without touching component code.'
-  },
-  {
-    num: '02',
-    name: 'CASL Role-Based Auth',
-    desc: 'Four roles: admin, manager, agent, viewer. Middleware enforces permissions on every route. Add a protected route by editing one file.'
-  },
-  {
-    num: '03',
-    name: 'Protected Dashboard Layout',
-    desc: 'Collapsible sidebar, nested route groups, responsive layout shell — wired to auth so only permitted roles see each page.'
-  },
-  {
-    num: '04',
-    name: 'i18n with RTL Support',
-    desc: 'English and Arabic out of the box. Language auto-detected from the browser; layout direction flips automatically.'
-  },
-  {
-    num: '05',
-    name: 'TanStack Query + Axios',
-    desc: 'Server state and caching configured with sensible defaults. Axios interceptors handle JWT refresh and auto-logout on 401/403.'
-  },
-  {
-    num: '06',
-    name: 'React Hook Form + TypeScript',
-    desc: 'Strongly-typed forms throughout. Full TypeScript coverage including CASL types, role enums, and API response shapes.'
-  }
-]
+const features = lc.features.cards
 
 export default function Features() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -200,7 +170,7 @@ export default function Features() {
           alignItems: 'center'
         }}
       >
-        <SectionLabel>FEATURES</SectionLabel>
+        <SectionLabel>{lc.features.label}</SectionLabel>
         <h2
           style={{
             fontFamily: 'var(--font)',
@@ -212,7 +182,7 @@ export default function Features() {
             marginTop: '8px'
           }}
         >
-          A complete app, not a starter kit.
+          {lc.features.heading}
         </h2>
       </div>
 
