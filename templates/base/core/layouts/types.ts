@@ -1,41 +1,56 @@
-// ** Type Imports
 import { PaletteMode } from '@mui/material'
 
 export type Mode = PaletteMode | 'semi-dark'
-
 export type ThemeColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'
 
-export type NavSectionTitle = {
+type BadgeColor = 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
+
+export type SidebarSection = {
+  sectionTitle: string
+  items: (SidebarNavLink | SidebarNavGroup | SidebarNavMore)[]
   auth?: boolean
   action?: string
   subject?: string
-  sectionTitle: string
+  icon?: string
+  tooltip?: string
+  path?: string
+  defaultCollapsed?: boolean
 }
 
-export type NavGroup = {
-  icon?: string
+export type SidebarNavGroup = {
   title: string
+  icon?: string
   auth?: boolean
   action?: string
   subject?: string
   badgeContent?: string
-  children?: (NavGroup | NavLink)[]
-  badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
+  badgeColor?: BadgeColor
+  children?: (SidebarNavGroup | SidebarNavLink)[]
 }
 
-export type NavLink = {
-  icon?: string
-  path?: string
+export type SidebarNavLink = {
   title: string
+  path?: string
+  icon?: string
   auth?: boolean
   action?: string
   subject?: string
   disabled?: boolean
   badgeContent?: string
+  badgeColor?: BadgeColor
   externalLink?: boolean
   openInNewTab?: boolean
-  badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
 }
 
-export type VerticalNavItemsType = (NavLink | NavGroup | NavSectionTitle)[]
-export type HorizontalNavItemsType = (NavLink | NavGroup)[]
+export type SidebarNavMore = {
+  title: string
+  isMore: boolean
+  auth?: boolean
+  action?: string
+  subject?: string
+  path?: string
+  icon?: string
+  tooltip?: string
+}
+
+export type SidebarNavItems = (SidebarNavLink | SidebarNavGroup | SidebarSection | SidebarNavMore)[]
