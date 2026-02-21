@@ -2,7 +2,10 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import localFont from 'next/font/local'
 import './globals.css'
+import '@copilotkit/react-ui/styles.css'
 import AppProviders from '@/providers/AppProviders'
+import { CopilotKit } from '@copilotkit/react-core'
+import CopilotWidget from '@/components/copilotkit/CopilotWidget'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -37,7 +40,10 @@ export default async function RootLayout({
   return (
     <html lang='en' dir='ltr'>
       <body className={`${poppins.variable} ${montserratArabic.variable} antialiased`}>
-        <AppProviders>{children}</AppProviders>
+        <CopilotKit runtimeUrl='/api/copilotkit'>
+          <AppProviders>{children}</AppProviders>
+          <CopilotWidget />
+        </CopilotKit>
       </body>
     </html>
   )
