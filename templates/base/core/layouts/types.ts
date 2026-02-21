@@ -54,3 +54,5 @@ export type SidebarNavMore = {
 }
 
 export type SidebarNavItems = (SidebarNavLink | SidebarNavGroup | SidebarSection | SidebarNavMore)[]
+export type NavItem = SidebarNavItems[number]
+export type ItemKind = 'section' | 'more' | 'group' | 'link'
