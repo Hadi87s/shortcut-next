@@ -51,7 +51,7 @@ const navigation = (): SidebarNavItems => [
         title: 'Settings',
         path: '/dashboard/settings',
         icon: 'lucide:settings',
-        subject: 'Settings',
+        subject: 'Users',
         action: 'manage'
       }
     ]

@@ -15,28 +15,6 @@ interface Props {
   item: SidebarSection
 }
 
-const sectionItemsVariants = {
-  open: {
-    height: 'auto' as const,
-    opacity: 1,
-    transition: {
-      height: { type: 'tween' as const, duration: 0.25, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] },
-      opacity: { duration: 0.2 },
-      staggerChildren: 0.06,
-      delayChildren: 0.05
-    }
-  },
-  closed: {
-    height: 0,
-    opacity: 0,
-    transition: {
-      height: { type: 'tween' as const, duration: 0.2, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] },
-      opacity: { duration: 0.15 },
-      staggerChildren: 0.03
-    }
-  }
-}
-
 export default function SidebarSectionItem({ item }: Props) {
   const { isCollapsed } = useSidebar()
   const { settings } = useSettings()
@@ -50,10 +28,8 @@ export default function SidebarSectionItem({ item }: Props) {
     if (item.path) router.push(item.path)
   }
 
-  // Single stable Box root — mirrors the NavGroup pattern exactly.
-  // Section header fades in/out via AnimatePresence; no early return to avoid tree-swap.
-  // When collapsed: items render directly so icons are visible in the narrow sidebar.
-  // When expanded:  items are in the animated collapsible panel.
+  const itemsHidden = !isCollapsed && !sectionOpen
+
   return (
     <Box>
       {/* Section header — animated in/out so the title fades cleanly on collapse */}
@@ -78,7 +54,7 @@ export default function SidebarSectionItem({ item }: Props) {
                 pt: 2,
                 pb: 0.5,
                 cursor: 'pointer',
-                userSelect: 'none',
+                userSelect: 'none'
               }}
             >
               {/* Collapse arrow — appears on hover or when section is closed */}
@@ -102,7 +78,7 @@ export default function SidebarSectionItem({ item }: Props) {
                   flex: 1,
                   textTransform: 'uppercase',
                   letterSpacing: '0.8px',
-                  color: 'text.disabled',
+                  color: 'text.disabled'
                 }}
               >
                 {item.sectionTitle}
@@ -127,19 +103,23 @@ export default function SidebarSectionItem({ item }: Props) {
                 </Tooltip>
               )}
             </Box>
-
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Items — always mounted so NavLink label AnimatePresence exits fire on collapse */}
-      <motion.div
-        animate={!isCollapsed && !sectionOpen ? 'closed' : 'open'}
-        variants={sectionItemsVariants}
-        style={{ overflow: 'hidden' }}
+      {/* Items — grid-template-rows trick: animates between 0fr↔1fr for smooth height without JS measurement */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateRows: itemsHidden ? '0fr' : '1fr',
+          opacity: itemsHidden ? 0 : 1,
+          transition: 'grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease'
+        }}
       >
-        <NavItems items={item.items as any} depth={0} stagger={!isCollapsed && sectionOpen} />
-      </motion.div>
+        <Box sx={{ overflow: 'hidden' }}>
+          <NavItems items={item.items as any} depth={0} stagger={false} />
+        </Box>
+      </Box>
     </Box>
   )
 }

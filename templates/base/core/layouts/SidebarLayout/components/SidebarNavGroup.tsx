@@ -17,28 +17,6 @@ interface Props {
   depth?: number
 }
 
-const childrenVariants = {
-  open: {
-    height: 'auto' as const,
-    opacity: 1,
-    transition: {
-      height: { type: 'tween' as const, duration: 0.25, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] },
-      opacity: { duration: 0.2 },
-      staggerChildren: 0.06,
-      delayChildren: 0.05
-    }
-  },
-  closed: {
-    height: 0,
-    opacity: 0,
-    transition: {
-      height: { type: 'tween' as const, duration: 0.2, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] },
-      opacity: { duration: 0.15 },
-      staggerChildren: 0.03
-    }
-  }
-}
-
 function hasActivePath(children: SidebarNavGroup['children'], pathname: string): boolean {
   return (
     children?.some(child => {
@@ -67,11 +45,8 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
   }, [pathname, activeChild])
 
   const indentPx = 8 + depth * 16
+  const childrenHidden = !isCollapsed && !isOpen
 
-  // Single stable Box root — no early return.
-  // AnimatePresence manages show/hide of the group header so the exit animation fires.
-  // When collapsed: children render directly (icons visible in narrow sidebar, no hidden items).
-  // When expanded: children are in the animated collapsible panel controlled by isOpen.
   return (
     <Box>
       {/* Group header — animated in/out so the label can slide-and-fade on collapse */}
@@ -112,11 +87,7 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
               )}
 
               {/* Label grows to push chevron to the right edge */}
-              <SidebarAnimatedLabel
-                variant='body2'
-                fontWeight={activeChild ? 600 : 400}
-                grow
-              >
+              <SidebarAnimatedLabel variant='body2' fontWeight={activeChild ? 600 : 400} grow>
                 {item.title}
               </SidebarAnimatedLabel>
 
@@ -132,18 +103,19 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
         )}
       </AnimatePresence>
 
-      {/* Children area — always mounted so NavLink label AnimatePresence exits fire on collapse */}
-      <motion.div
-        animate={!isCollapsed && !isOpen ? 'closed' : 'open'}
-        variants={childrenVariants}
-        style={{ overflow: 'hidden' }}
+      {/* Children — grid-template-rows trick: animates between 0fr↔1fr for smooth height without JS measurement */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateRows: childrenHidden ? '0fr' : '1fr',
+          opacity: childrenHidden ? 0 : 1,
+          transition: 'grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease'
+        }}
       >
-        <NavItems
-          items={item.children as any}
-          depth={isCollapsed ? depth : depth + 1}
-          stagger={!isCollapsed && isOpen}
-        />
-      </motion.div>
+        <Box sx={{ overflow: 'hidden' }}>
+          <NavItems items={item.children as any} depth={isCollapsed ? depth : depth + 1} stagger={false} />
+        </Box>
+      </Box>
     </Box>
   )
 }
