@@ -1,18 +1,19 @@
 # Shortcut Next
 
-Stop starting from scratch. Scaffold a production-ready **Next.js 15+** project with **MUI**, **React Hook Form**, **TanStack Query**, role-based authorization, i18n, and dark mode — all wired up and ready to go.
+Stop starting from scratch. Scaffold a production-ready **Next.js 16** project with **MUI**, **React Hook Form**, **TanStack Query**, role-based authorization, i18n, dark mode, and an AI chat assistant — all wired up and ready to go.
 
 ---
 
 ## What You Get
 
-- **Next.js 15** with App Router and TypeScript (strict mode)
+- **Next.js 16** with App Router and TypeScript (strict mode)
 - **MUI v7** — fully themed with 30+ customized components, dark mode, and RTL support
 - **React Hook Form** + Yup validation
 - **TanStack Query** for data fetching and caching
 - **CASL authorization** — role-based access control out of the box
 - **i18n** — English and Arabic with auto-detection
 - **Tailwind CSS v4** (optional preset)
+- **CopilotKit** — floating AI chat assistant powered by OpenAI, built in
 - **MSW** — mock API responses during development
 
 ---
@@ -68,13 +69,18 @@ npm run format     # Prettier
 
 ```text
 app/
-├── layout.tsx              # Root layout (fonts, providers)
+├── layout.tsx              # Root layout (fonts, providers, CopilotKit)
 ├── page.tsx                # Landing page (public)
 ├── login/page.tsx          # Login / Signup page
 ├── home/page.tsx           # Authenticated home page
 ├── unauthorized/page.tsx   # Access denied page
-└── (dashboard)/
-    └── dashboard/page.tsx  # Dashboard with role-aware cards
+├── (dashboard)/
+│   └── dashboard/page.tsx  # Dashboard with role-aware cards
+└── api/copilotkit/
+    └── route.ts            # CopilotKit AI runtime endpoint
+
+components/copilotkit/
+└── CopilotWidget.tsx       # Floating AI chat popup
 
 core/
 ├── clients/apiClient.ts    # Axios instance (token refresh, auto-logout)
@@ -223,10 +229,87 @@ secondary: {
 
 ## Environment Variables
 
-Create a `.env` file in your project root:
+The `.env` file in your project root:
 
 ```env
 NEXT_PUBLIC_URL=https://your-backend-url.com
+
+# CopilotKit AI Chat
+OPENAI_API_KEY=your-openai-api-key-here
+NEXT_PUBLIC_COPILOTKIT_RUNTIME_URL=/api/copilotkit
+OPENAI_MODEL=gpt-4o-mini
+```
+
+---
+
+## CopilotKit AI Chat
+
+Every scaffolded project includes a **floating AI chat assistant** powered by [CopilotKit](https://docs.copilotkit.ai) and OpenAI. The chat popup appears in the bottom-right corner of the app.
+
+### Setup
+
+Set your OpenAI API key in `.env`:
+
+```env
+OPENAI_API_KEY=your-openai-api-key-here
+```
+
+Obtain a key from [platform.openai.com](https://platform.openai.com/api-keys).
+
+### Changing the Model
+
+Update `OPENAI_MODEL` in `.env`:
+
+```env
+OPENAI_MODEL=gpt-4o-mini   # default
+# OPENAI_MODEL=gpt-4o
+# OPENAI_MODEL=gpt-3.5-turbo
+```
+
+### Customizing the Assistant
+
+Edit `components/copilotkit/CopilotWidget.tsx`:
+
+```tsx
+<CopilotPopup
+  instructions='You are a helpful assistant specialized in customer support.'
+  labels={{
+    title: 'Support Assistant',
+    placeholder: 'Describe your issue...',
+    initial: 'Hi! How can I help you today?',
+  }}
+/>
+```
+
+### Using a Different AI Provider
+
+Replace `OpenAIAdapter` in `app/api/copilotkit/route.ts`:
+
+```ts
+// Anthropic
+import { AnthropicAdapter } from '@copilotkit/runtime'
+const serviceAdapter = new AnthropicAdapter()
+
+// Groq
+import { GroqAdapter } from '@copilotkit/runtime'
+const serviceAdapter = new GroqAdapter({ model: 'llama3-8b-8192' })
+```
+
+### Adding AI-Aware Actions
+
+In any client component, use `useCopilotAction` to give the assistant access to app state:
+
+```tsx
+import { useCopilotAction } from '@copilotkit/react-core'
+
+useCopilotAction({
+  name: 'navigateTo',
+  description: 'Navigate the user to a page',
+  parameters: [{ name: 'path', type: 'string', description: 'The route path' }],
+  handler: async ({ path }) => {
+    router.push(path)
+  },
+})
 ```
 
 ---
