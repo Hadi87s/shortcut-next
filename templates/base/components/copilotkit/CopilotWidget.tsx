@@ -9,7 +9,7 @@ export default function CopilotWidget() {
       labels={{
         title: 'AI Assistant',
         placeholder: 'Ask me anything...',
-        initialMessage: 'Hello! How can I help you today?'
+        initial: 'Hello! How can I help you today?'
       }}
     />
   )

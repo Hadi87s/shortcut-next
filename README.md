@@ -1,12 +1,12 @@
 # Shortcut Next
 
-Stop starting from scratch. Scaffold a production-ready **Next.js 15+** project with **MUI**, **React Hook Form**, **TanStack Query**, role-based authorization, i18n, dark mode, and an AI chat assistant — all wired up and ready to go.
+Stop starting from scratch. Scaffold a production-ready **Next.js 16** project with **MUI**, **React Hook Form**, **TanStack Query**, role-based authorization, i18n, dark mode, and an AI chat assistant — all wired up and ready to go.
 
 ---
 
 ## What You Get
 
-- **Next.js 15** with App Router and TypeScript (strict mode)
+- **Next.js 16** with App Router and TypeScript (strict mode)
 - **MUI v7** — fully themed with 30+ customized components, dark mode, and RTL support
 - **React Hook Form** + Yup validation
 - **TanStack Query** for data fetching and caching
@@ -276,7 +276,7 @@ Edit `components/copilotkit/CopilotWidget.tsx`:
   labels={{
     title: 'Support Assistant',
     placeholder: 'Describe your issue...',
-    initialMessage: 'Hi! How can I help you today?',
+    initial: 'Hi! How can I help you today?',
   }}
 />
 ```

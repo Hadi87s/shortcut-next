@@ -40,7 +40,7 @@ export default async function RootLayout({
   return (
     <html lang='en' dir='ltr'>
       <body className={`${poppins.variable} ${montserratArabic.variable} antialiased`}>
-        <CopilotKit runtimeUrl='/api/copilotkit'>
+        <CopilotKit runtimeUrl={process.env.NEXT_PUBLIC_COPILOTKIT_RUNTIME_URL}>
           <AppProviders>{children}</AppProviders>
           <CopilotWidget />
         </CopilotKit>
