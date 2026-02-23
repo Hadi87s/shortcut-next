@@ -64,7 +64,14 @@ export default function SidebarLogo({ appName = 'Shortcut Next' }: SidebarLogoPr
       </AnimatePresence>
 
       {isMobile && (
-        <IconButton onClick={() => setIsMobileOpen(false)} size='small' sx={{ flexShrink: 0, ml: 'auto' }}>
+        <IconButton
+          onClick={e => {
+            e.stopPropagation()
+            setIsMobileOpen(false)
+          }}
+          size='small'
+          sx={{ flexShrink: 0, ml: 'auto' }}
+        >
           <X size={18} />
         </IconButton>
       )}

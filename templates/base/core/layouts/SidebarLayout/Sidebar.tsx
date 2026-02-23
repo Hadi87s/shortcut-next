@@ -74,7 +74,8 @@ export function Sidebar({ navItems, logo, appName, footer }: SidebarProps) {
         sx={{
           '& .MuiDrawer-paper': {
             width: SIDEBAR_WIDTH,
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            borderRadius: 0
           }
         }}
       >
