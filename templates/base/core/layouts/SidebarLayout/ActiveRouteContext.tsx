@@ -6,20 +6,20 @@ import { usePathname } from 'next/navigation'
 import { SidebarUtils } from './utils/SidebarUtils'
 import type { SidebarNavItems } from '@/core/layouts/types'
 
-const NavActiveContext = createContext<string | null>(null)
+const ActiveRouteContext = createContext<string | null>(null)
 
-interface NavActiveProviderProps {
+interface ActiveRouteProviderProps {
   children: ReactNode
   navItems: SidebarNavItems
 }
 
-export function NavActiveProvider({ children, navItems }: NavActiveProviderProps) {
+export function ActiveRouteProvider({ children, navItems }: ActiveRouteProviderProps) {
   const pathname = usePathname()
   const activePath = useMemo(() => SidebarUtils.findActivePath(navItems, pathname), [navItems, pathname])
 
-  return <NavActiveContext.Provider value={activePath}>{children}</NavActiveContext.Provider>
+  return <ActiveRouteContext.Provider value={activePath}>{children}</ActiveRouteContext.Provider>
 }
 
-export const useNavActivePath = () => useContext(NavActiveContext)
+export const useActiveRoute = () => useContext(ActiveRouteContext)
 
-export default NavActiveContext
+export default ActiveRouteContext

@@ -6,8 +6,9 @@ import { Box, IconButton, Stack, useMediaQuery, useTheme } from '@mui/material'
 import { Menu } from 'lucide-react'
 import { SidebarProvider, useSidebar } from './SidebarContext'
 import { Sidebar, SIDEBAR_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from './Sidebar'
-import { NavActiveProvider } from './NavActiveContext'
+import { ActiveRouteProvider } from './ActiveRouteContext'
 import type { SidebarNavItems } from '@/core/layouts/types'
+import useLanguage from '@/core/hooks/useLanguage'
 
 interface SidebarLayoutProps {
   children: ReactNode
@@ -22,6 +23,8 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
   const { isCollapsed, isMobileOpen, toggleMobileOpen, setIsCollapsed, setIsMobileOpen } = useSidebar()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const { language } = useLanguage()
+  const isRtl = language === 'ar'
   const mergedNavItems = [...navItems, ...(dynamicNavItems ?? [])]
 
   // Reset sidebar states when switching between mobile and desktop
@@ -36,7 +39,7 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
   const sidebarWidth = isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH
 
   return (
-    <NavActiveProvider navItems={mergedNavItems}>
+    <ActiveRouteProvider navItems={mergedNavItems}>
       <Stack
         direction='row'
         sx={{
@@ -54,7 +57,7 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
             sx={{
               position: 'fixed',
               top: 12,
-              left: 12,
+              ...(isRtl ? { right: 12 } : { left: 12 }),
               zIndex: theme.zIndex.drawer - 1,
               '&:hover': { bgcolor: 'background.default' }
             }}
@@ -70,8 +73,9 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
             minWidth: 0,
             mt: 3,
             px: 3,
-            marginLeft: isMobile ? 0 : `${sidebarWidth}px`,
-            transition: theme.transitions.create('margin-left', {
+            marginLeft: isMobile || isRtl ? 0 : `${sidebarWidth}px`,
+            marginRight: isMobile || !isRtl ? 0 : `${sidebarWidth}px`,
+            transition: theme.transitions.create(isRtl ? 'margin-right' : 'margin-left', {
               duration: 300,
               easing: theme.transitions.easing.easeInOut
             })
@@ -80,7 +84,7 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
           {children}
         </Box>
       </Stack>
-    </NavActiveProvider>
+    </ActiveRouteProvider>
   )
 }
 

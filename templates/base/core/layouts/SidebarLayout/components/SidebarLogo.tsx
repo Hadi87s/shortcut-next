@@ -42,7 +42,7 @@ export default function SidebarLogo({ appName = 'Shortcut Next' }: SidebarLogoPr
     >
       <Tooltip title={appName} placement='right' disableHoverListener={!isCollapsed} disableInteractive>
         <Stack flexDirection='row' alignItems='center' justifyContent='center' flexShrink={0} width={36} height={36}>
-          <Icon icon='local:shortcut-next' width={56} height={56} color='currentColor' />
+          <Icon icon='local:shortcut-next' width={36} height={36} color='currentColor' />
         </Stack>
       </Tooltip>
 

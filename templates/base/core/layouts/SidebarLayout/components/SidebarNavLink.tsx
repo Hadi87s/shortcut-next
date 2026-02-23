@@ -2,14 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 import { Badge, Tooltip } from '@mui/material'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useSidebar } from '../SidebarContext'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
 import { NavTooltipAnchor, NavItemRow, NavIconWrapper } from '../ui/SidebarStyledComponents'
 import type { SidebarNavLink } from '@/core/layouts/types'
 import Icon from '@/components/icon/Icon'
 import useLanguage from '@/core/hooks/useLanguage'
-import { useNavActivePath } from '../NavActiveContext'
+import { useActiveRoute } from '../ActiveRouteContext'
 
 interface Props {
   item: SidebarNavLink
@@ -22,7 +22,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
   const { language } = useLanguage()
   const isRtl = language === 'ar'
 
-  const activePath = useNavActivePath()
+  const activePath = useActiveRoute()
   const isActive = item.path ? item.path === activePath : false
 
   const indentPx = 8 + depth * 16
@@ -36,8 +36,6 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
     }
   }
 
-  // Single stable return — unconditional Tooltip avoids tree-swap that would
-  // prevent AnimatePresence from firing exit animations on the label.
   return (
     <Tooltip
       title={item.title}
@@ -47,7 +45,6 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
       disableFocusListener={!isCollapsed}
       disableTouchListener={!isCollapsed}
     >
-      {/* NavTooltipAnchor renders as a block-level span so Tooltip can attach its ref */}
       <NavTooltipAnchor>
         <NavItemRow
           direction='row'
@@ -69,8 +66,6 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
           sx={{
             px: isCollapsed ? '18px' : 1,
             color: 'text.primary',
-            // No indent when collapsed — icon stays at natural px:1 position.
-            // Sidebar narrows around it; no layout jump.
             ...(isCollapsed ? {} : { pl: `${indentPx}px` })
           }}
         >
@@ -82,9 +77,6 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
             </NavIconWrapper>
           )}
 
-          {/* Label + badge — AnimatePresence fires exit so the label slides-and-fades
-              smoothly. flexShrink:0 holds natural width; sidebar overflow:hidden clips
-              from the right rather than squishing the text. */}
           <AnimatePresence initial={false}>
             {!isCollapsed && (
               <SidebarAnimatedLabel key='label' variant='body2' fontWeight={isActive ? 600 : 400}>
@@ -95,7 +87,15 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
 
           <AnimatePresence initial={false}>
             {!isCollapsed && item.badgeContent && (
-              <Badge key='badge' badgeContent={item.badgeContent} color={item.badgeColor ?? 'primary'} />
+              <motion.div
+                key='badge'
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0, transition: { duration: 0.18, ease: 'easeOut' } }}
+                exit={{ opacity: 0, x: -8, transition: { duration: 0.15, ease: 'easeIn' } }}
+                style={{ flexShrink: 0 }}
+              >
+                <Badge badgeContent={item.badgeContent} color={item.badgeColor ?? 'primary'} />
+              </motion.div>
             )}
           </AnimatePresence>
         </NavItemRow>

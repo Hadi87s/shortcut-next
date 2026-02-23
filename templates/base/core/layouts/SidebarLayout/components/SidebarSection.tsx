@@ -33,7 +33,6 @@ export default function SidebarSectionItem({ item }: Props) {
 
   return (
     <Box>
-      {/* Section header — animated in/out so the title fades cleanly on collapse */}
       <AnimatePresence initial={false}>
         {!isCollapsed && (
           <motion.div
@@ -59,7 +58,6 @@ export default function SidebarSectionItem({ item }: Props) {
                 }
               }}
             >
-              {/* Collapse arrow — appears on hover or when section is closed */}
               <motion.div
                 animate={{
                   opacity: hovered || !sectionOpen ? 1 : 0,
@@ -71,7 +69,6 @@ export default function SidebarSectionItem({ item }: Props) {
                 <ChevronDown size={12} color='currentColor' style={{ color: 'inherit' }} />
               </motion.div>
 
-              {/* Section title — plain Typography; parent motion.div handles the fade */}
               <Typography
                 variant='caption'
                 fontWeight={600}
@@ -86,7 +83,6 @@ export default function SidebarSectionItem({ item }: Props) {
                 {item.sectionTitle}
               </Typography>
 
-              {/* Optional action button on the right */}
               {item.icon && item.path && (
                 <Tooltip title={item.tooltip ?? ''} placement={isRtl ? 'left' : 'right'} arrow>
                   <IconButton
@@ -109,7 +105,6 @@ export default function SidebarSectionItem({ item }: Props) {
         )}
       </AnimatePresence>
 
-      {/* Items — grid-template-rows trick: animates between 0fr↔1fr for smooth height without JS measurement */}
       <NavCollapseGrid isHidden={itemsHidden}>
         <Box sx={{ overflow: 'hidden' }}>
           <NavItems items={item.items as any} depth={0} stagger={false} />

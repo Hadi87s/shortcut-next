@@ -46,7 +46,6 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
 
   return (
     <Box>
-      {/* Group header — animated in/out so the label can slide-and-fade on collapse */}
       <AnimatePresence initial={false}>
         {!isCollapsed && (
           <motion.div
@@ -81,7 +80,6 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
                 </NavIconWrapper>
               )}
 
-              {/* Label grows to push chevron to the right edge */}
               <SidebarAnimatedLabel variant='body2' fontWeight={activeChild ? 600 : 400} grow>
                 {item.title}
               </SidebarAnimatedLabel>
@@ -98,10 +96,9 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
         )}
       </AnimatePresence>
 
-      {/* Children — grid-template-rows trick: animates between 0fr↔1fr for smooth height without JS measurement */}
       <NavCollapseGrid isHidden={childrenHidden}>
         <Box sx={{ overflow: 'hidden' }}>
-          <NavItems items={item.children as any} depth={isCollapsed ? depth : depth + 1} stagger={false} />
+          <NavItems items={item.children ?? []} depth={isCollapsed ? depth : depth + 1} stagger={false} />
         </Box>
       </NavCollapseGrid>
     </Box>

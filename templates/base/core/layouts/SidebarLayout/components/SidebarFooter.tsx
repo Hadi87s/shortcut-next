@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { Box, Button, Card, CardContent, Divider, Typography } from '@mui/material'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useSidebar } from '../SidebarContext'
 import { hexToRGBA } from '@/core/utils/hex-to-rgba'
 
@@ -53,20 +54,23 @@ export default function SidebarFooter({ footer }: SidebarFooterProps) {
   const { isCollapsed } = useSidebar()
 
   return (
-    <Box
-      sx={{
-        flexShrink: 0,
-        overflow: 'hidden',
-        maxHeight: isCollapsed ? 0 : 300,
-        opacity: isCollapsed ? 0 : 1,
-        // No delay when collapsing, delay when expanding so sidebar finishes first
-        transition: isCollapsed
-          ? 'max-height 0.2s ease, opacity 0.15s ease'
-          : 'max-height 0.25s ease 0.3s, opacity 0.2s ease 0.35s'
-      }}
-    >
-      <Divider />
-      <Box sx={{ pt: 1 }}>{footer ?? <DefaultPromoCard />}</Box>
-    </Box>
+    <AnimatePresence initial={false}>
+      {!isCollapsed && (
+        <motion.div
+          key='sidebar-footer'
+          initial={{ height: 0, opacity: 0 }}
+          animate={{
+            height: 180,
+            opacity: 1,
+            transition: { height: { duration: 0.25, delay: 0.3 }, opacity: { duration: 0.2, delay: 0.35 } }
+          }}
+          exit={{ height: 0, opacity: 0, transition: { height: { duration: 0.2 }, opacity: { duration: 0.15 } } }}
+          style={{ overflow: 'hidden', flexShrink: 0 }}
+        >
+          <Divider />
+          <Box sx={{ pt: 1 }}>{footer ?? <DefaultPromoCard />}</Box>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

@@ -25,12 +25,8 @@ export default function SidebarNavMoreItem({ item }: Props) {
     if (item.path) router.push(item.path)
   }
 
-  // When collapsed: show item.tooltip (if any) or item.title as tooltip.
-  // When expanded: show item.tooltip only (empty string = no tooltip shown).
   const tooltipTitle = isCollapsed ? (item.tooltip ?? item.title) : (item.tooltip ?? '')
 
-  // Single stable return — unconditional Tooltip avoids tree-swap that would
-  // prevent AnimatePresence from firing exit animations on the label.
   return (
     <Tooltip
       title={tooltipTitle}
@@ -40,7 +36,6 @@ export default function SidebarNavMoreItem({ item }: Props) {
       disableFocusListener={!tooltipTitle}
       disableTouchListener={!tooltipTitle}
     >
-      {/* NavTooltipAnchor renders as a block-level span so Tooltip can attach its ref */}
       <NavTooltipAnchor>
         <NavItemRow
           direction='row'
@@ -65,7 +60,6 @@ export default function SidebarNavMoreItem({ item }: Props) {
             {item.icon ? <Icon icon={item.icon} width={20} height={20} /> : <MoreHorizontal size={20} />}
           </NavIconWrapper>
 
-          {/* Label slides-and-fades smoothly because AnimatePresence always exists in the tree */}
           <AnimatePresence initial={false}>
             {!isCollapsed && (
               <SidebarAnimatedLabel key='label' variant='body2'>

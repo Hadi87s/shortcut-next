@@ -38,7 +38,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
 }
 
 export function useSidebar(): SidebarContextValue {
-  const ctx = useContext(SidebarContext)
-  if (!ctx) throw new Error('useSidebar must be used within SidebarProvider')
-  return ctx
+  const sidebarContext = useContext(SidebarContext)
+  if (!sidebarContext) throw new Error('useSidebar must be used within SidebarProvider')
+  return sidebarContext
 }

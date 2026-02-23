@@ -4,7 +4,12 @@ import { fetchDynamicRoutes } from '@/navigation/dynamicRoutes'
 import themeConfig from '@/core/configs/themeConfig'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const dynamicNavItems = await fetchDynamicRoutes()
+  let dynamicNavItems: Awaited<ReturnType<typeof fetchDynamicRoutes>> = []
+  try {
+    dynamicNavItems = await fetchDynamicRoutes()
+  } catch (error) {
+    console.error('Failed to fetch dynamic nav routes:', error)
+  }
 
   return (
     <div className='dashboard-layout'>
