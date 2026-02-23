@@ -1,5 +1,5 @@
 import { useAbility } from '@/core/hooks/useAbility'
-import { ItemKind, NavItem, SidebarNavGroup, SidebarNavLink, SidebarSection } from '../../types'
+import { ItemKind, NavItem, SidebarNavGroup, SidebarNavItems, SidebarNavLink, SidebarSection } from '../../types'
 import { Actions, Subjects } from '@/lib/abilities'
 
 export class SidebarUtils {
