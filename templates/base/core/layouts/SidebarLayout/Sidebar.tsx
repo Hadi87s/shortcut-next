@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { Drawer, IconButton, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material'
-import { SidebarScrollArea } from './SidebarStyledComponents'
+import { SidebarScrollArea } from './ui/SidebarStyledComponents'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useSidebar } from './SidebarContext'
@@ -36,7 +36,7 @@ interface SidebarProps {
 function SidebarContent({ navItems, logo, appName, footer }: SidebarProps) {
   return (
     <Stack
-      direction="column"
+      direction='column'
       sx={{
         height: '100%',
         overflow: 'hidden',

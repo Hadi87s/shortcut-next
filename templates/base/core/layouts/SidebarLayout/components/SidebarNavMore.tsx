@@ -7,7 +7,7 @@ import { MoreHorizontal } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
-import { NavTooltipAnchor, NavItemRow, NavIconWrapper } from '../SidebarStyledComponents'
+import { NavTooltipAnchor, NavItemRow, NavIconWrapper } from '../ui/SidebarStyledComponents'
 import type { SidebarNavMore } from '@/core/layouts/types'
 import useLanguage from '@/core/hooks/useLanguage'
 

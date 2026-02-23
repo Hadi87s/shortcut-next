@@ -9,7 +9,7 @@ import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
 import NavItems from './NavItems'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
-import { NavItemRow, NavIconWrapper, NavCollapseGrid } from '../SidebarStyledComponents'
+import { NavItemRow, NavIconWrapper, NavCollapseGrid } from '../ui/SidebarStyledComponents'
 import type { SidebarNavGroup } from '@/core/layouts/types'
 
 interface Props {
