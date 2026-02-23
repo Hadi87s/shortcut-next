@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
-import { useSettings } from '@/core/hooks/useSettings'
 import NavItems from './NavItems'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
 import type { SidebarNavGroup } from '@/core/layouts/types'
+import themeConfig from '@/core/configs/themeConfig'
 
 interface Props {
   item: SidebarNavGroup
@@ -34,9 +34,6 @@ function hasActivePath(children: SidebarNavGroup['children'], pathname: string):
 export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
   const pathname = usePathname()
   const { isCollapsed } = useSidebar()
-  const { settings } = useSettings()
-  const isRtl = settings.direction === 'rtl'
-
   const activeChild = hasActivePath(item.children, pathname)
   const [isOpen, setIsOpen] = useState(activeChild)
 
@@ -58,24 +55,29 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
             animate={{ opacity: 1, transition: { duration: 0.18, ease: 'easeOut' } }}
             exit={{ opacity: 0, transition: { duration: 0.15, ease: 'easeIn' } }}
           >
-            <Box
+            <Stack
+              direction='row'
+              alignItems='center'
+              gap={1.5}
               onClick={() => setIsOpen(v => !v)}
               role='button'
               tabIndex={0}
-              onKeyDown={e => e.key === 'Enter' && setIsOpen(v => !v)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar' || e.code === 'Space') {
+                  e.preventDefault()
+                  setIsOpen(v => !v)
+                }
+              }}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1.5,
                 px: 1,
                 py: 0.875,
                 mx: 1,
                 mb: 0.5,
-                borderRadius: 2,
+                borderRadius: themeConfig.common.sidebarRadius,
                 cursor: 'pointer',
                 color: activeChild ? 'primary.main' : 'text.secondary',
                 bgcolor: activeChild ? 'action.selected' : 'transparent',
-                ...(isRtl ? { pr: `${indentPx}px` } : { pl: `${indentPx}px` }),
+                pl: `${indentPx}px`,
                 transition: 'background-color 0.15s ease, color 0.15s ease',
                 '&:hover': { bgcolor: 'action.hover', color: 'text.primary' }
               }}
@@ -98,12 +100,11 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
               >
                 <ChevronDown size={16} />
               </motion.div>
-            </Box>
+            </Stack>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Children — grid-template-rows trick: animates between 0fr↔1fr for smooth height without JS measurement */}
       <Box
         sx={{
           display: 'grid',

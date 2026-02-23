@@ -1,62 +1,58 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { IconButton, Stack, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useSidebar } from '../SidebarContext'
+import { Icon } from '@iconify/react'
+import { useRouter } from 'next/navigation'
+import useLanguage from '@/core/hooks/useLanguage'
 
 interface SidebarLogoProps {
   logo?: ReactNode
   appName?: string
 }
 
-export default function SidebarLogo({ logo, appName = 'Shortcut Next' }: SidebarLogoProps) {
+export default function SidebarLogo({ appName = 'Shortcut Next' }: SidebarLogoProps) {
   const { isCollapsed, setIsMobileOpen } = useSidebar()
   const theme = useTheme()
+  const router = useRouter()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const { language } = useLanguage()
+  const xDir = language === 'ar' ? 16 : -16
 
   return (
-    <Box
+    <Stack
+      flexDirection='row'
+      alignItems='center'
+      overflow='hidden'
+      flexShrink={0}
       sx={{
         height: 64,
-        display: 'flex',
-        alignItems: 'center',
         gap: 1.5,
         px: 2,
-        flexShrink: 0,
         borderBottom: '1px solid',
         borderColor: 'divider',
-        overflow: 'hidden'
+        cursor: 'pointer'
+      }}
+      onClick={() => {
+        router.push('/')
       }}
     >
-      {/* Logo mark — always visible in both collapsed and expanded states */}
-      <Box
-        sx={{
-          width: 36,
-          height: 36,
-          borderRadius: 2,
-          bgcolor: 'primary.main',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          color: 'primary.contrastText',
-          fontWeight: 700,
-          fontSize: 13
-        }}
-      >
-        {logo ?? 'SN'}
-      </Box>
+      <Tooltip title={appName} placement='right' disableHoverListener={!isCollapsed} disableInteractive>
+        <Stack flexDirection='row' alignItems='center' justifyContent='center' flexShrink={0} width={36} height={36}>
+          <Icon icon='local:shortcut-next' width={56} height={56} color='currentColor' />
+        </Stack>
+      </Tooltip>
 
-      {/* App name — slides in from left on expand, exits left on collapse */}
       <AnimatePresence initial={false}>
         {(!isCollapsed || isMobile) && (
           <motion.div
             key='app-name'
-            initial={{ opacity: 0, x: -16 }}
+            initial={{ opacity: 0, x: xDir }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -16 }}
+            exit={{ opacity: 0, x: xDir }}
             transition={{ duration: 0.18, ease: 'easeInOut' }}
             style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}
           >
@@ -67,12 +63,11 @@ export default function SidebarLogo({ logo, appName = 'Shortcut Next' }: Sidebar
         )}
       </AnimatePresence>
 
-      {/* Mobile close button — only on mobile; desktop toggle is the floating border button */}
       {isMobile && (
         <IconButton onClick={() => setIsMobileOpen(false)} size='small' sx={{ flexShrink: 0, ml: 'auto' }}>
           <X size={18} />
         </IconButton>
       )}
-    </Box>
+    </Stack>
   )
 }

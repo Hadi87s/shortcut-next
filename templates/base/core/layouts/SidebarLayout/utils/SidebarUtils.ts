@@ -15,6 +15,21 @@ export class SidebarUtils {
     return 'link'
   }
 
+  static flattenPaths(items: SidebarNavItems): string[] {
+    const paths: string[] = []
+    for (const item of items) {
+      if ('path' in item && item.path) paths.push(item.path)
+      if ('children' in item && item.children) paths.push(...this.flattenPaths(item.children as SidebarNavItems))
+      if ('items' in item && item.items) paths.push(...this.flattenPaths(item.items as SidebarNavItems))
+    }
+    return paths
+  }
+
+  static findActivePath(items: SidebarNavItems, pathname: string): string | null {
+    const matches = this.flattenPaths(items).filter(p => pathname === p || pathname.startsWith(p + '/'))
+    return matches.sort((a, b) => b.length - a.length)[0] ?? null
+  }
+
   static itemIsPermitted(
     item: NavItem | SidebarNavGroup | SidebarNavLink,
     ability: ReturnType<typeof useAbility>

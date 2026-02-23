@@ -1,13 +1,15 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { Badge, Box, Tooltip } from '@mui/material'
 import { AnimatePresence } from 'framer-motion'
-import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
-import { useSettings } from '@/core/hooks/useSettings'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
 import type { SidebarNavLink } from '@/core/layouts/types'
+import themeConfig from '@/core/configs/themeConfig'
+import Icon from '@/components/icon/Icon'
+import useLanguage from '@/core/hooks/useLanguage'
+import { useNavActivePath } from '../NavActiveContext'
 
 interface Props {
   item: SidebarNavLink
@@ -15,15 +17,13 @@ interface Props {
 }
 
 export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
-  const pathname = usePathname()
   const router = useRouter()
   const { isCollapsed } = useSidebar()
-  const { settings } = useSettings()
-  const isRtl = settings.direction === 'rtl'
+  const { language } = useLanguage()
+  const isRtl = language === 'ar'
 
-  const isActive = item.path
-    ? pathname === item.path || pathname.startsWith(item.path + '/')
-    : false
+  const activePath = useNavActivePath()
+  const isActive = item.path ? item.path === activePath : false
 
   const indentPx = 8 + depth * 16
 
@@ -64,14 +64,14 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
             py: 0.875,
             mx: 1,
             mb: 0.5,
-            borderRadius: 2,
+            borderRadius: themeConfig.common.sidebarRadius,
             cursor: item.disabled ? 'not-allowed' : 'pointer',
             opacity: item.disabled ? 0.5 : 1,
-            color: isActive ? 'primary.main' : 'text.secondary',
+            color: 'text.primary',
             bgcolor: isActive ? 'action.selected' : 'transparent',
             // No indent when collapsed — icon stays at natural px:1 position.
             // Sidebar narrows around it; no layout jump.
-            ...(isCollapsed ? {} : isRtl ? { pr: `${indentPx}px` } : { pl: `${indentPx}px` }),
+            ...(isCollapsed ? {} : { pl: `${indentPx}px` }),
             transition: 'background-color 0.15s ease, color 0.15s ease, padding 0.3s ease',
             '&:hover': {
               bgcolor: item.disabled ? 'transparent' : 'action.hover',
@@ -81,10 +81,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
         >
           {item.icon && (
             <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-              <Badge
-                badgeContent={isCollapsed ? item.badgeContent : undefined}
-                color={item.badgeColor ?? 'primary'}
-              >
+              <Badge badgeContent={isCollapsed ? item.badgeContent : undefined} color={item.badgeColor ?? 'primary'}>
                 <Icon icon={item.icon} width={20} height={20} />
               </Badge>
             </Box>
@@ -95,11 +92,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
               from the right rather than squishing the text. */}
           <AnimatePresence initial={false}>
             {!isCollapsed && (
-              <SidebarAnimatedLabel
-                key='label'
-                variant='body2'
-                fontWeight={isActive ? 600 : 400}
-              >
+              <SidebarAnimatedLabel key='label' variant='body2' fontWeight={isActive ? 600 : 400}>
                 {item.title}
               </SidebarAnimatedLabel>
             )}
@@ -107,11 +100,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
 
           <AnimatePresence initial={false}>
             {!isCollapsed && item.badgeContent && (
-              <Badge
-                key='badge'
-                badgeContent={item.badgeContent}
-                color={item.badgeColor ?? 'primary'}
-              />
+              <Badge key='badge' badgeContent={item.badgeContent} color={item.badgeColor ?? 'primary'} />
             )}
           </AnimatePresence>
         </Box>

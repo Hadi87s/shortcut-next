@@ -6,9 +6,9 @@ import { AnimatePresence } from 'framer-motion'
 import { MoreHorizontal } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
-import { useSettings } from '@/core/hooks/useSettings'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
 import type { SidebarNavMore } from '@/core/layouts/types'
+import useLanguage from '@/core/hooks/useLanguage'
 
 interface Props {
   item: SidebarNavMore
@@ -16,9 +16,9 @@ interface Props {
 
 export default function SidebarNavMoreItem({ item }: Props) {
   const { isCollapsed } = useSidebar()
-  const { settings } = useSettings()
   const router = useRouter()
-  const isRtl = settings.direction === 'rtl'
+  const { language } = useLanguage()
+  const isRtl = language === 'ar'
 
   const handleClick = () => {
     if (item.path) router.push(item.path)
@@ -62,11 +62,7 @@ export default function SidebarNavMoreItem({ item }: Props) {
           }}
         >
           <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-            {item.icon ? (
-              <Icon icon={item.icon} width={20} height={20} />
-            ) : (
-              <MoreHorizontal size={20} />
-            )}
+            {item.icon ? <Icon icon={item.icon} width={20} height={20} /> : <MoreHorizontal size={20} />}
           </Box>
 
           {/* Label slides-and-fades smoothly because AnimatePresence always exists in the tree */}

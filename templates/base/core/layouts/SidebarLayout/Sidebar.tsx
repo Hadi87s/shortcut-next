@@ -5,11 +5,11 @@ import { Box, Drawer, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useSidebar } from './SidebarContext'
-import { useSettings } from '@/core/hooks/useSettings'
 import SidebarLogo from './components/SidebarLogo'
 import NavItems from './components/NavItems'
 import SidebarFooter from './components/SidebarFooter'
 import type { SidebarNavItems } from '@/core/layouts/types'
+import useLanguage from '@/core/hooks/useLanguage'
 
 export const SIDEBAR_WIDTH = 260
 export const SIDEBAR_COLLAPSED_WIDTH = 72
@@ -33,9 +33,6 @@ interface SidebarProps {
 }
 
 function SidebarContent({ navItems, logo, appName, footer }: SidebarProps) {
-  const { settings } = useSettings()
-  const isRtl = settings.direction === 'rtl'
-
   return (
     <Box
       sx={{
@@ -44,8 +41,7 @@ function SidebarContent({ navItems, logo, appName, footer }: SidebarProps) {
         height: '100%',
         overflow: 'hidden',
         bgcolor: 'background.paper',
-        borderRight: isRtl ? 'none' : '1px solid',
-        borderLeft: isRtl ? '1px solid' : 'none',
+        borderRight: '1px solid',
         borderColor: 'divider'
       }}
     >
@@ -75,10 +71,10 @@ function SidebarContent({ navItems, logo, appName, footer }: SidebarProps) {
 
 export function Sidebar({ navItems, logo, appName, footer }: SidebarProps) {
   const { isCollapsed, isMobileOpen, setIsMobileOpen, toggleCollapsed } = useSidebar()
-  const { settings } = useSettings()
   const theme = useTheme()
+  const { language } = useLanguage()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const isRtl = settings.direction === 'rtl'
+  const isRtl = language === 'ar'
 
   if (isMobile) {
     return (
@@ -125,7 +121,7 @@ export function Sidebar({ navItems, logo, appName, footer }: SidebarProps) {
           sx={{
             position: 'absolute',
             top: 30,
-            [isRtl ? 'left' : 'right']: -12,
+            right: -12,
             transform: 'translateY(-50%)',
             width: 24,
             height: 24,

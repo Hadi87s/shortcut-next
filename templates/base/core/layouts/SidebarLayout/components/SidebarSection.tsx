@@ -7,9 +7,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
-import { useSettings } from '@/core/hooks/useSettings'
 import NavItems from './NavItems'
 import type { SidebarSection } from '@/core/layouts/types'
+import useLanguage from '@/core/hooks/useLanguage'
 
 interface Props {
   item: SidebarSection
@@ -17,9 +17,9 @@ interface Props {
 
 export default function SidebarSectionItem({ item }: Props) {
   const { isCollapsed } = useSidebar()
-  const { settings } = useSettings()
   const router = useRouter()
-  const isRtl = settings.direction === 'rtl'
+  const { language } = useLanguage()
+  const isRtl = language === 'ar'
   const [sectionOpen, setSectionOpen] = useState(!(item.defaultCollapsed ?? false))
   const [hovered, setHovered] = useState(false)
 

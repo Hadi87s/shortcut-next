@@ -3,11 +3,15 @@
 import type { ReactNode } from 'react'
 import { Box, Button, Card, CardContent, Divider, Typography } from '@mui/material'
 import { useSidebar } from '../SidebarContext'
+import { hexToRGBA } from '@/core/utils/hex-to-rgba'
 
 interface SidebarFooterProps {
   footer?: ReactNode
 }
 
+// ?: Change this component into whatever you want to show in the sidebar footer.
+// ?: By default, it shows a simple promo card for Shortcut Next,
+// ?: but you can replace it with anything (e.g. links, user profile, etc.)
 function DefaultPromoCard() {
   return (
     <Card
@@ -18,10 +22,7 @@ function DefaultPromoCard() {
         border: '1px solid',
         borderColor: 'primary.main',
         borderRadius: 2,
-        bgcolor: theme =>
-          theme.palette.mode === 'dark'
-            ? 'rgba(91, 116, 255, 0.08)'
-            : 'rgba(91, 116, 255, 0.05)'
+        bgcolor: theme => hexToRGBA(theme.palette.primary.main, 0.1)
       }}
     >
       <CardContent sx={{ p: '12px !important' }}>

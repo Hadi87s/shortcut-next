@@ -1,12 +1,14 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import { Box, IconButton, useMediaQuery, useTheme } from '@mui/material'
 import { Menu } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { SidebarProvider, useSidebar } from './SidebarContext'
 import { Sidebar, SIDEBAR_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from './Sidebar'
-import { useSettings } from '@/core/hooks/useSettings'
+import NavActiveContext from './NavActiveContext'
+import { SidebarUtils } from './utils/SidebarUtils'
 import type { SidebarNavItems } from '@/core/layouts/types'
 
 interface SidebarLayoutProps {
@@ -20,12 +22,11 @@ interface SidebarLayoutProps {
 
 function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName, footer }: SidebarLayoutProps) {
   const { isCollapsed, isMobileOpen, toggleMobileOpen, setIsCollapsed, setIsMobileOpen } = useSidebar()
-  const { settings } = useSettings()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const isRtl = settings.direction === 'rtl'
-
+  const pathname = usePathname()
   const mergedNavItems = [...navItems, ...(dynamicNavItems ?? [])]
+  const activePath = useMemo(() => SidebarUtils.findActivePath(mergedNavItems, pathname), [mergedNavItems, pathname])
 
   // Reset sidebar states when switching between mobile and desktop
   useEffect(() => {
@@ -39,53 +40,54 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
   const sidebarWidth = isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        minHeight: '100vh',
-        bgcolor: 'background.default'
-      }}
-    >
-      <Sidebar navItems={mergedNavItems} logo={logo} appName={appName} footer={footer} />
-
-      {/* Mobile hamburger — only show when the drawer is closed */}
-      {isMobile && !isMobileOpen && (
-        <IconButton
-          onClick={toggleMobileOpen}
-          size='small'
-          sx={{
-            position: 'fixed',
-            top: 12,
-            [isRtl ? 'right' : 'left']: 12,
-            zIndex: theme.zIndex.drawer - 1,
-            bgcolor: 'background.paper',
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 2,
-            '&:hover': { bgcolor: 'background.default' }
-          }}
-        >
-          <Menu size={18} />
-        </IconButton>
-      )}
-
-      {/* Content area — shifts to accommodate the sidebar on desktop */}
+    <NavActiveContext.Provider value={activePath}>
       <Box
-        component='main'
         sx={{
-          flexGrow: 1,
-          minWidth: 0,
-          mt: 2,
-          [isRtl ? 'marginRight' : 'marginLeft']: isMobile ? 0 : `${sidebarWidth}px`,
-          transition: theme.transitions.create(isRtl ? 'margin-right' : 'margin-left', {
-            duration: 300,
-            easing: theme.transitions.easing.easeInOut
-          })
+          display: 'flex',
+          minHeight: '100vh',
+          bgcolor: 'background.default'
         }}
       >
-        {children}
+        <Sidebar navItems={mergedNavItems} logo={logo} appName={appName} footer={footer} />
+
+        {/* Mobile hamburger — only show when the drawer is closed */}
+        {isMobile && !isMobileOpen && (
+          <IconButton
+            onClick={toggleMobileOpen}
+            size='small'
+            sx={{
+              position: 'fixed',
+              top: 12,
+              left: 12,
+              zIndex: theme.zIndex.drawer - 1,
+              bgcolor: 'background.paper',
+              border: '1px solid',
+              borderColor: 'divider',
+              '&:hover': { bgcolor: 'background.default' }
+            }}
+          >
+            <Menu size={18} />
+          </IconButton>
+        )}
+
+        <Box
+          component='main'
+          sx={{
+            flexGrow: 1,
+            minWidth: 0,
+            mt: 3,
+            px: 3,
+            marginLeft: isMobile ? 0 : `${sidebarWidth}px`,
+            transition: theme.transitions.create('margin-left', {
+              duration: 300,
+              easing: theme.transitions.easing.easeInOut
+            })
+          }}
+        >
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </NavActiveContext.Provider>
   )
 }
 

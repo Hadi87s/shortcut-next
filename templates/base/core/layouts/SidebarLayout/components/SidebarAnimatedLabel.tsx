@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { Typography, type TypographyProps } from '@mui/material'
 import { motion } from 'framer-motion'
+import useLanguage from '@/core/hooks/useLanguage'
 
 interface SidebarAnimatedLabelProps {
   children: ReactNode
@@ -10,11 +11,6 @@ interface SidebarAnimatedLabelProps {
   fontWeight?: number
   noWrap?: boolean
   sx?: TypographyProps['sx']
-  /**
-   * true  → flex:1, minWidth:0  (use in NavGroup / Section — label grows to push chevron right)
-   * false → flexShrink:0        (use in NavLink / NavMore  — label holds natural width so
-   *                               sidebar overflow:hidden clips cleanly from the right)
-   */
   grow?: boolean
 }
 
@@ -24,13 +20,16 @@ export default function SidebarAnimatedLabel({
   fontWeight,
   noWrap = true,
   sx,
-  grow = false,
+  grow = false
 }: SidebarAnimatedLabelProps) {
+  const { language } = useLanguage()
+  const xDir = language === 'ar' ? 8 : -8
+
   return (
     <motion.div
-      initial={{ opacity: 0, x: -8 }}
+      initial={{ opacity: 0, x: xDir }}
       animate={{ opacity: 1, x: 0, transition: { duration: 0.18, ease: 'easeOut' } }}
-      exit={{ opacity: 0, x: -8, transition: { duration: 0.15, ease: 'easeIn' } }}
+      exit={{ opacity: 0, x: xDir, transition: { duration: 0.15, ease: 'easeIn' } }}
       style={grow ? { flex: 1, minWidth: 0, overflow: 'hidden' } : { flexShrink: 0, overflow: 'hidden' }}
     >
       <Typography variant={variant} fontWeight={fontWeight} noWrap={noWrap} sx={sx}>

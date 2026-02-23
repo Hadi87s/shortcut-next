@@ -10,6 +10,7 @@ import { useSettings } from '@/core/hooks/useSettings'
 import Spinner from '@/components/loaders/Spinner'
 import { AuthProvider } from '@/core/context/AuthContext'
 import MSWProvider from '@/providers/MSWProvider'
+import '@/core/icons/customIcons'
 
 function InnerProviders({ children, client }: { children: React.ReactNode; client: QueryClient }) {
   const { settings } = useSettings()

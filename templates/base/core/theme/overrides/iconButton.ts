@@ -8,9 +8,7 @@ const IconButton = () => {
         root: ({ theme }: OwnerStateThemeType) => ({
           borderRadius: 8,
           transition: 'all 0.15s ease-in-out',
-          '&:hover': {
-            borderRadius: 8
-          },
+          '&:hover': { borderRadius: 8 },
           '&.MuiIconButton-colorPrimary:hover': {
             boxShadow: `0 0 0 4px ${hexToRGBA(theme.palette.primary.main, 0.16)}`
           },
