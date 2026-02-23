@@ -1,12 +1,12 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Badge, Box, Tooltip } from '@mui/material'
+import { Badge, Tooltip } from '@mui/material'
 import { AnimatePresence } from 'framer-motion'
 import { useSidebar } from '../SidebarContext'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
+import { NavTooltipAnchor, NavItemRow, NavIconWrapper } from '../SidebarStyledComponents'
 import type { SidebarNavLink } from '@/core/layouts/types'
-import themeConfig from '@/core/configs/themeConfig'
 import Icon from '@/components/icon/Icon'
 import useLanguage from '@/core/hooks/useLanguage'
 import { useNavActivePath } from '../NavActiveContext'
@@ -47,44 +47,39 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
       disableFocusListener={!isCollapsed}
       disableTouchListener={!isCollapsed}
     >
-      {/* span required so Tooltip can attach its ref */}
-      <span style={{ display: 'block' }}>
-        <Box
+      {/* NavTooltipAnchor renders as a block-level span so Tooltip can attach its ref */}
+      <NavTooltipAnchor>
+        <NavItemRow
+          direction='row'
+          alignItems='center'
+          gap={1.5}
+          isActive={isActive}
+          isDisabled={item.disabled}
           onClick={handleClick}
           role='button'
           tabIndex={item.disabled ? -1 : 0}
-          onKeyDown={e => e.key === 'Enter' && handleClick()}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar' || e.code === 'Space') {
+              e.preventDefault()
+              handleClick()
+            }
+          }}
           aria-current={isActive ? 'page' : undefined}
           aria-disabled={item.disabled}
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1.5,
             px: isCollapsed ? '18px' : 1,
-            py: 0.875,
-            mx: 1,
-            mb: 0.5,
-            borderRadius: themeConfig.common.sidebarRadius,
-            cursor: item.disabled ? 'not-allowed' : 'pointer',
-            opacity: item.disabled ? 0.5 : 1,
             color: 'text.primary',
-            bgcolor: isActive ? 'action.selected' : 'transparent',
             // No indent when collapsed — icon stays at natural px:1 position.
             // Sidebar narrows around it; no layout jump.
-            ...(isCollapsed ? {} : { pl: `${indentPx}px` }),
-            transition: 'background-color 0.15s ease, color 0.15s ease, padding 0.3s ease',
-            '&:hover': {
-              bgcolor: item.disabled ? 'transparent' : 'action.hover',
-              color: item.disabled ? undefined : 'text.primary'
-            }
+            ...(isCollapsed ? {} : { pl: `${indentPx}px` })
           }}
         >
           {item.icon && (
-            <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+            <NavIconWrapper>
               <Badge badgeContent={isCollapsed ? item.badgeContent : undefined} color={item.badgeColor ?? 'primary'}>
                 <Icon icon={item.icon} width={20} height={20} />
               </Badge>
-            </Box>
+            </NavIconWrapper>
           )}
 
           {/* Label + badge — AnimatePresence fires exit so the label slides-and-fades
@@ -103,8 +98,8 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
               <Badge key='badge' badgeContent={item.badgeContent} color={item.badgeColor ?? 'primary'} />
             )}
           </AnimatePresence>
-        </Box>
-      </span>
+        </NavItemRow>
+      </NavTooltipAnchor>
     </Tooltip>
   )
 }

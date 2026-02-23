@@ -1,12 +1,13 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Box, Tooltip } from '@mui/material'
+import { Tooltip } from '@mui/material'
 import { AnimatePresence } from 'framer-motion'
 import { MoreHorizontal } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
+import { NavTooltipAnchor, NavItemRow, NavIconWrapper } from '../SidebarStyledComponents'
 import type { SidebarNavMore } from '@/core/layouts/types'
 import useLanguage from '@/core/hooks/useLanguage'
 
@@ -39,31 +40,30 @@ export default function SidebarNavMoreItem({ item }: Props) {
       disableFocusListener={!tooltipTitle}
       disableTouchListener={!tooltipTitle}
     >
-      {/* span required so Tooltip can attach its ref */}
-      <span style={{ display: 'block' }}>
-        <Box
+      {/* NavTooltipAnchor renders as a block-level span so Tooltip can attach its ref */}
+      <NavTooltipAnchor>
+        <NavItemRow
+          direction='row'
+          alignItems='center'
+          gap={1.5}
           onClick={handleClick}
           role='button'
           tabIndex={0}
-          onKeyDown={e => e.key === 'Enter' && handleClick()}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar' || e.code === 'Space') {
+              e.preventDefault()
+              handleClick()
+            }
+          }}
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1.5,
             px: isCollapsed ? '18px' : 1,
-            py: 0.875,
-            mx: 1,
-            mb: 0.5,
             borderRadius: 2,
-            cursor: 'pointer',
-            color: 'text.secondary',
-            transition: 'background-color 0.15s ease, color 0.15s ease, padding 0.3s ease',
-            '&:hover': { bgcolor: 'action.hover', color: 'text.primary' }
+            color: 'text.secondary'
           }}
         >
-          <Box sx={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          <NavIconWrapper>
             {item.icon ? <Icon icon={item.icon} width={20} height={20} /> : <MoreHorizontal size={20} />}
-          </Box>
+          </NavIconWrapper>
 
           {/* Label slides-and-fades smoothly because AnimatePresence always exists in the tree */}
           <AnimatePresence initial={false}>
@@ -73,8 +73,8 @@ export default function SidebarNavMoreItem({ item }: Props) {
               </SidebarAnimatedLabel>
             )}
           </AnimatePresence>
-        </Box>
-      </span>
+        </NavItemRow>
+      </NavTooltipAnchor>
     </Tooltip>
   )
 }

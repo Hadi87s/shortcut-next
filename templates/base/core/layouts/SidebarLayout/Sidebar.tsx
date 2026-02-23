@@ -1,7 +1,8 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { Box, Drawer, IconButton, Tooltip, useMediaQuery, useTheme } from '@mui/material'
+import { Drawer, IconButton, Stack, Tooltip, useMediaQuery, useTheme } from '@mui/material'
+import { SidebarScrollArea } from './SidebarStyledComponents'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useSidebar } from './SidebarContext'
@@ -34,10 +35,9 @@ interface SidebarProps {
 
 function SidebarContent({ navItems, logo, appName, footer }: SidebarProps) {
   return (
-    <Box
+    <Stack
+      direction="column"
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
         height: '100%',
         overflow: 'hidden',
         bgcolor: 'background.paper',
@@ -47,25 +47,12 @@ function SidebarContent({ navItems, logo, appName, footer }: SidebarProps) {
     >
       <SidebarLogo logo={logo} appName={appName} />
 
-      <Box
-        sx={{
-          flexGrow: 1,
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          py: 1,
-          '&::-webkit-scrollbar': { width: 4 },
-          '&::-webkit-scrollbar-track': { bgcolor: 'transparent' },
-          '&::-webkit-scrollbar-thumb': {
-            borderRadius: 2,
-            bgcolor: 'action.disabled'
-          }
-        }}
-      >
+      <SidebarScrollArea>
         <NavItems items={navItems} />
-      </Box>
+      </SidebarScrollArea>
 
       <SidebarFooter footer={footer} />
-    </Box>
+    </Stack>
   )
 }
 

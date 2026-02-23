@@ -1,14 +1,12 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import type { ReactNode } from 'react'
-import { Box, IconButton, useMediaQuery, useTheme } from '@mui/material'
+import { Box, IconButton, Stack, useMediaQuery, useTheme } from '@mui/material'
 import { Menu } from 'lucide-react'
-import { usePathname } from 'next/navigation'
 import { SidebarProvider, useSidebar } from './SidebarContext'
 import { Sidebar, SIDEBAR_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from './Sidebar'
-import NavActiveContext from './NavActiveContext'
-import { SidebarUtils } from './utils/SidebarUtils'
+import { NavActiveProvider } from './NavActiveContext'
 import type { SidebarNavItems } from '@/core/layouts/types'
 
 interface SidebarLayoutProps {
@@ -24,9 +22,7 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
   const { isCollapsed, isMobileOpen, toggleMobileOpen, setIsCollapsed, setIsMobileOpen } = useSidebar()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const pathname = usePathname()
   const mergedNavItems = [...navItems, ...(dynamicNavItems ?? [])]
-  const activePath = useMemo(() => SidebarUtils.findActivePath(mergedNavItems, pathname), [mergedNavItems, pathname])
 
   // Reset sidebar states when switching between mobile and desktop
   useEffect(() => {
@@ -40,10 +36,10 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
   const sidebarWidth = isCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH
 
   return (
-    <NavActiveContext.Provider value={activePath}>
-      <Box
+    <NavActiveProvider navItems={mergedNavItems}>
+      <Stack
+        direction='row'
         sx={{
-          display: 'flex',
           minHeight: '100vh',
           bgcolor: 'background.default'
         }}
@@ -60,9 +56,6 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
               top: 12,
               left: 12,
               zIndex: theme.zIndex.drawer - 1,
-              bgcolor: 'background.paper',
-              border: '1px solid',
-              borderColor: 'divider',
               '&:hover': { bgcolor: 'background.default' }
             }}
           >
@@ -86,8 +79,8 @@ function SidebarLayoutInner({ children, navItems, dynamicNavItems, logo, appName
         >
           {children}
         </Box>
-      </Box>
-    </NavActiveContext.Provider>
+      </Stack>
+    </NavActiveProvider>
   )
 }
 

@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation'
 import { Box, IconButton, Tooltip, Typography } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
-import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
 import NavItems from './NavItems'
+import { SectionHeaderRow, NavCollapseGrid } from '../SidebarStyledComponents'
 import type { SidebarSection } from '@/core/layouts/types'
 import useLanguage from '@/core/hooks/useLanguage'
+import Icon from '@/components/icon/Icon'
 
 interface Props {
   item: SidebarSection
@@ -42,19 +43,20 @@ export default function SidebarSectionItem({ item }: Props) {
             exit={{ opacity: 0, transition: { duration: 0.15, ease: 'easeIn' } }}
             style={{ overflow: 'hidden' }}
           >
-            <Box
+            <SectionHeaderRow
+              direction='row'
+              alignItems='center'
+              gap={0.75}
               onClick={() => setSectionOpen(v => !v)}
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.75,
-                px: 2,
-                pt: 2,
-                pb: 0.5,
-                cursor: 'pointer',
-                userSelect: 'none'
+              role='button'
+              tabIndex={0}
+              onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar' || e.code === 'Space') {
+                  e.preventDefault()
+                  setSectionOpen(v => !v)
+                }
               }}
             >
               {/* Collapse arrow — appears on hover or when section is closed */}
@@ -102,24 +104,17 @@ export default function SidebarSectionItem({ item }: Props) {
                   </IconButton>
                 </Tooltip>
               )}
-            </Box>
+            </SectionHeaderRow>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Items — grid-template-rows trick: animates between 0fr↔1fr for smooth height without JS measurement */}
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateRows: itemsHidden ? '0fr' : '1fr',
-          opacity: itemsHidden ? 0 : 1,
-          transition: 'grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease'
-        }}
-      >
+      <NavCollapseGrid isHidden={itemsHidden}>
         <Box sx={{ overflow: 'hidden' }}>
           <NavItems items={item.items as any} depth={0} stagger={false} />
         </Box>
-      </Box>
+      </NavCollapseGrid>
     </Box>
   )
 }
