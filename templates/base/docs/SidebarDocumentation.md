@@ -205,9 +205,22 @@ Dynamic routes let you fetch navigation items from an API at request time and me
 
 ### How it works
 
-`navigation/dynamicRoutes.ts` exports an async skeleton function. It is called in the server component `app/(dashboard)/layout.tsx`, and the result is passed as `dynamicNavItems` to `SidebarLayout`, which merges them:
+`navigation/dynamicRoutes.ts` exports an async skeleton function. It is called in the server component `app/(dashboard)/layout.tsx`, wrapped in a try/catch so a fetch failure falls back to an empty array and never crashes the layout:
 
 ```typescript
+// app/(dashboard)/layout.tsx
+let dynamicNavItems: Awaited<ReturnType<typeof fetchDynamicRoutes>> = []
+try {
+  dynamicNavItems = await fetchDynamicRoutes()
+} catch (error) {
+  console.error('Failed to fetch dynamic nav routes:', error)
+}
+```
+
+The result is then passed as `dynamicNavItems` to `SidebarLayout`, which merges it with static items:
+
+```typescript
+// inside SidebarLayout
 const mergedNavItems = [...navItems, ...(dynamicNavItems ?? [])]
 ```
 
@@ -246,23 +259,6 @@ export async function fetchDynamicRoutes(): Promise<SidebarNavItems> {
 | Revalidate every N seconds | `next: { revalidate: 60 }` |
 | Static at build time | `cache: 'force-cache'` (default) |
 
-### Error handling
-
-Wrap the fetch so a network failure does not crash the layout:
-
-```typescript
-export async function fetchDynamicRoutes(): Promise<SidebarNavItems> {
-  try {
-    const res = await fetch('https://your-api.com/navigation', { cache: 'no-store' })
-    if (!res.ok) return []
-    const data = await res.json()
-    return data.map(/* ... */)
-  } catch {
-    return []
-  }
-}
-```
-
 ---
 
 ## Badges
@@ -274,7 +270,7 @@ Both `SidebarNavLink` and `SidebarNavGroup` support badges.
 | `badgeContent` | `string` | Text inside the badge: `'3'`, `'New'`, `'!'` |
 | `badgeColor`   | `BadgeColor` | `'default'` `'primary'` `'secondary'` `'success'` `'error'` `'warning'` `'info'` |
 
-When the sidebar is collapsed the badge attaches to the icon. When expanded it appears to the right of the label.
+When the sidebar is **collapsed** the badge attaches to the icon. When **expanded** it animates in to the right of the label (Framer Motion `AnimatePresence` + `motion.div`), and animates out when the sidebar collapses.
 
 ```typescript
 {
@@ -307,3 +303,37 @@ Use `externalLink: true` on a `SidebarNavLink` to open the path outside the Next
 | `externalLink: true` | Uses `window.open` instead of `router.push` |
 | `openInNewTab: true` | Opens in a new tab (`'_blank'`) |
 | `openInNewTab` omitted | Opens in the same tab (`'_self'`) |
+
+---
+
+## RTL Support
+
+The sidebar is fully RTL-aware. When the active language is Arabic (`'ar'`), all directional elements flip automatically — no extra configuration required.
+
+| Element | LTR | RTL |
+| ------- | --- | --- |
+| Desktop sidebar | Fixed to the **left** | Fixed to the **right** |
+| Mobile drawer anchor | **Left** edge | **Right** edge |
+| Collapse toggle chevron | Points left (collapse) / right (expand) | Points right (collapse) / left (expand) |
+| Mobile hamburger button | `left: 12px` | `right: 12px` |
+| Main content offset | `marginLeft: sidebarWidth` | `marginRight: sidebarWidth` |
+| Label slide-in direction | Slides in from the **left** | Slides in from the **right** |
+| Tooltip placement | **Right** of icon | **Left** of icon |
+
+RTL is driven by the `useLanguage` hook (`language === 'ar'`). Switching the app language at runtime updates all sidebar directions instantly.
+
+---
+
+## Animations
+
+All sidebar animations are implemented with **Framer Motion** — no CSS transitions are used for show/hide behavior.
+
+| Element | Animation |
+| ------- | --------- |
+| Sidebar width (expand/collapse) | `motion.div` with `tween` variants (`0.3s`, cubic-easing) |
+| Nav labels | `SidebarAnimatedLabel` — fade + slide on enter/exit via `AnimatePresence` |
+| Expanded badges | `motion.div` — fade + slide, coordinated with `AnimatePresence` |
+| Group header row | `motion.div` — fades in/out when sidebar collapses/expands |
+| Footer | `motion.div` — height + opacity animate in with a delay so the sidebar finishes expanding first; collapses immediately with no delay |
+
+`AnimatePresence initial={false}` is used throughout so animations only fire on subsequent toggles, not on the initial page render.
