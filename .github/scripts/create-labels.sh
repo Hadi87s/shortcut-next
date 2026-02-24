@@ -13,3 +13,5 @@ gh label create "config" --color "fbca04" --description "Configuration changes" 
 gh label create "tests" --color "c5def5" --description "Test changes" --repo $REPO
 gh label create "bug" --color "d73a4a" --description "Bug fixes" --repo $REPO
 gh label create "enhancement" --color "84b6eb" --description "Enhancements" --repo $REPO
+gh label create "cli" --color "e4e669" --description "CLI source changes" --repo $REPO
+gh label create "automated" --color "bfd4f2" --description "Automated PRs (Dependabot, bots)" --repo $REPO
