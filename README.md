@@ -11,6 +11,7 @@ Stop starting from scratch. Scaffold a production-ready **Next.js 15+** project 
 - **React Hook Form** + Yup validation
 - **TanStack Query** for data fetching and caching
 - **CASL authorization** — role-based access control out of the box
+- **Sidebar layout** — collapsible, role-filtered navigation with Cmd+K search, pinned favorites, right-click context menu, and persistent state
 - **i18n** — English and Arabic with auto-detection
 - **Tailwind CSS v4** (optional preset)
 - **MSW** — mock API responses during development
@@ -88,6 +89,21 @@ lib/abilities/              # CASL authorization (see below)
 providers/AppProviders.tsx   # Composes all context providers
 proxy.ts                    # Middleware (auth + route protection)
 ```
+
+---
+
+## Sidebar
+
+The generated project ships with a fully-featured collapsible sidebar layout, wired directly into the CASL authorization system.
+
+- Nav items filtered per-role at render time — unauthorized items are silently removed
+- Supports links, collapsible groups, labeled sections, and overflow rows
+- **Cmd+K** (macOS) / **Ctrl+K** (Windows/Linux) opens a quick-navigation palette
+- Right-click any link to open in a new tab, copy its URL, or pin it to a persistent favorites section
+- Collapse state persisted to `localStorage` — survives page reloads
+- Framer Motion animations throughout, full RTL support, responsive mobile drawer
+
+Full API reference in `docs/SidebarDocumentation.md`.
 
 ---
 
