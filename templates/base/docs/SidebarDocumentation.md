@@ -43,6 +43,8 @@ import { Rocket } from 'lucide-react'
 
 To replace the footer promo card pass a custom `ReactNode` to `footer`, or pass `null` to remove it entirely.
 
+The logo area also shows an OS-aware keyboard shortcut hint (`⌘K` on macOS, `Ctrl+K` on Windows/Linux) when the sidebar is expanded. This hint is detected client-side via `navigator.userAgent` and hidden during SSR to avoid hydration mismatches.
+
 ---
 
 ## Navigation Item Types
@@ -92,7 +94,7 @@ type SidebarNavGroup = {
 }
 ```
 
-The group auto-opens when any child route is active. In collapsed sidebar mode it renders as an icon-only row.
+The group auto-opens when any child route is active. When the sidebar is **collapsed**, the group header row disappears entirely and its children are rendered flat — each link shows its own icon and badge directly. This keeps all navigation accessible in collapsed mode without an extra nesting level.
 
 ```typescript
 {
@@ -263,14 +265,16 @@ export async function fetchDynamicRoutes(): Promise<SidebarNavItems> {
 
 ## Badges
 
-Both `SidebarNavLink` and `SidebarNavGroup` support badges.
+`SidebarNavLink` supports badges.
 
 | Field          | Type     | Description |
 |----------------|----------|-------------|
 | `badgeContent` | `string` | Text inside the badge: `'3'`, `'New'`, `'!'` |
 | `badgeColor`   | `BadgeColor` | `'default'` `'primary'` `'secondary'` `'success'` `'error'` `'warning'` `'info'` |
 
-When the sidebar is **collapsed** the badge attaches to the icon. When **expanded** it animates in to the right of the label (Framer Motion `AnimatePresence` + `motion.div`), and animates out when the sidebar collapses.
+When the sidebar is **collapsed** the badge attaches to the link's icon. When **expanded** it animates in to the right of the label (Framer Motion `AnimatePresence` + `motion.div`), and animates out when the sidebar collapses.
+
+When a `SidebarNavGroup` is collapsed the group header row disappears and children render their own icons — each child link shows its own badge directly on its icon with no rollup.
 
 ```typescript
 {
@@ -306,6 +310,87 @@ Use `externalLink: true` on a `SidebarNavLink` to open the path outside the Next
 
 ---
 
+## Cmd+K Command Palette
+
+Pressing `Cmd+K` (macOS) or `Ctrl+K` (Windows/Linux) opens a search dialog that lets users jump to any navigation link instantly.
+
+- Flattens the entire nav tree (links inside groups, sections, and nested groups) into a searchable list
+- Filters by title as you type — case-insensitive substring match
+- `ArrowUp` / `ArrowDown` to move through results, `Enter` to navigate, `Escape` to close
+- Clicking any result navigates via `router.push` and closes the dialog
+
+The keyboard listener is registered in `SidebarLayout/index.tsx` on mount and removed on unmount. A small `⌘K` / `Ctrl+K` hint is shown below the app name in the sidebar header as a visual reminder — it is OS-aware and determined client-side.
+
+The `CommandPalette` component is located at `SidebarLayout/components/CommandPalette.tsx` and receives `navItems` from the layout. Navigation flattening is handled by `SidebarUtils.flattenNavItems()`.
+
+---
+
+## Pinned Favorites
+
+Users can pin any navigation link to a persistent "Pinned" section that appears at the top of the sidebar, above all other nav items.
+
+### Pinning items
+
+Right-click any nav link and select **"Pin to sidebar"** from the context menu. Right-clicking again and selecting **"Unpin"** removes it. Hovering a pinned item reveals a small `×` button on the right that also unpins it.
+
+### Persistence
+
+Pinned items are stored in `localStorage` under the key `sidebar-favorites` as a JSON array of `{ path, title, icon? }`. They survive page reloads and browser restarts.
+
+### FavoritesContext
+
+The pinning system is powered by `FavoritesContext.tsx`, which is provided by `FavoritesProvider` in `SidebarLayout/index.tsx`. It exposes:
+
+```typescript
+interface FavoritesContextValue {
+  pinnedItems: FavoriteItem[]           // current pinned list in pin order
+  pinItem: (item: FavoriteItem) => void  // adds to the list (no-op if already pinned)
+  unpinItem: (path: string) => void      // removes by path
+  isPinned: (path: string) => boolean    // check without subscribing to the full list
+}
+```
+
+To access it in a custom component:
+
+```tsx
+import { useFavorites } from '@/core/layouts/SidebarLayout/FavoritesContext'
+
+const { pinnedItems, pinItem, unpinItem, isPinned } = useFavorites()
+```
+
+---
+
+## Right-Click Context Menu
+
+Every nav link and group row responds to right-click with a MUI `Menu` offering contextual actions.
+
+| Action                 | Availability              | Behavior                                              |
+|------------------------|---------------------------|-------------------------------------------------------|
+| Open in new tab        | Links only (has `path`)   | `window.open(path, '_blank')`                         |
+| Copy link              | Links only (has `path`)   | Writes `window.location.origin + path` to clipboard   |
+| Pin to sidebar / Unpin | Links only (has `path`)   | Toggles pin state via `FavoritesContext`              |
+
+Groups show only the "Pin to sidebar" option (disabled, since groups have no `path`). Right-clicking anywhere on the row outside an interactive element (icon button, badge) triggers the menu.
+
+---
+
+## Persistent Collapse State
+
+The sidebar's collapsed/expanded state is automatically persisted to `localStorage` via `SettingsContext`. On the next page load the sidebar restores to whatever state the user left it in.
+
+**Important distinction between collapse actions:**
+
+| Action | Persists? | When used |
+|--------|-----------|-----------|
+| User clicks the `›` / `‹` toggle button | Yes | Explicit user preference |
+| Sidebar resets to expanded on mobile breakpoint | No | Programmatic UI reset — preserves desktop preference |
+
+This means resizing the window to mobile and back will not lose a desktop collapse preference — the toggle button is the only action that writes to settings.
+
+The setting is stored as `sidebarCollapsed: boolean` inside the shared `settings` object in `localStorage` (key `'settings'`).
+
+---
+
 ## RTL Support
 
 The sidebar is fully RTL-aware. When the active language is Arabic (`'ar'`), all directional elements flip automatically — no extra configuration required.
@@ -335,5 +420,7 @@ All sidebar animations are implemented with **Framer Motion** — no CSS transit
 | Expanded badges | `motion.div` — fade + slide, coordinated with `AnimatePresence` |
 | Group header row | `motion.div` — fades in/out when sidebar collapses/expands |
 | Footer | `motion.div` — height + opacity animate in with a delay so the sidebar finishes expanding first; collapses immediately with no delay |
+| Pinned items | `motion.div` — height + opacity animate in/out when items are pinned or unpinned |
+| App name / Cmd+K hint | `motion.div` — fade + slide in/out together with `AnimatePresence` on collapse |
 
 `AnimatePresence initial={false}` is used throughout so animations only fire on subsequent toggles, not on the initial page render.
