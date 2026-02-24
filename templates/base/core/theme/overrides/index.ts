@@ -107,7 +107,7 @@ const Overrides = (settings: Settings) => {
     MuiBreadcrumb,
     MuiButtonGroup,
     MuiToggleButton,
-    MuiIconButton,
+    iconButton,
     textFields
   )
 }

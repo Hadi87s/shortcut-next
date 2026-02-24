@@ -5,9 +5,7 @@ import { useSettings } from './useSettings'
 import { useTranslation } from 'react-i18next'
 import { Locale } from '../configs/i18n'
 
-type Language = 'en' | 'ar'
-
-const normalizeLang = (lng: string): Language => (lng.startsWith('ar') ? 'ar' : 'en')
+const normalizeLang = (lng: string): Locale => (lng.startsWith('ar') ? 'ar' : 'en')
 
 const useLanguage = () => {
   const { settings, saveSettings } = useSettings()

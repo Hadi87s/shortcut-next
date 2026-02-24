@@ -19,6 +19,7 @@ export type Settings = {
   themeColor: ThemeColor
   language: Locale
   toastPosition?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+  sidebarCollapsed?: boolean
 }
 
 export type PageSpecificSettings = {

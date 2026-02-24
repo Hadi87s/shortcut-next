@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { Typography, useTheme } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
