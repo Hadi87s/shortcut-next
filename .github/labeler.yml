@@ -1,0 +1,61 @@
+# Documentation changes
+documentation:
+  - changed-files:
+    - any-glob-to-any-file: '**/*.md'
+
+# Dependency updates
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file: 
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+
+# CI/CD changes
+ci/cd:
+  - changed-files:
+    - any-glob-to-any-file: '.github/**'
+
+# CLI source changes
+cli:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/**'
+      - 'bin/**'
+
+# Template source changes
+feature:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'templates/**/*.ts'
+      - 'templates/**/*.tsx'
+
+# Component changes
+components:
+  - changed-files:
+    - any-glob-to-any-file: 'templates/**/components/**'
+
+# Configuration changes
+config:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.config.*'
+      - '.env*'
+      - 'tsconfig.json'
+
+# Tests
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.test.ts'
+      - '**/*.test.tsx'
+      - '**/*.spec.ts'
+      - '**/*.spec.tsx'
+
+# Bug fixes (based on branch name)
+bug:
+  - head-branch: ['^fix/', '^bugfix/', '^hotfix/']
+
+# New features (based on branch name)
+enhancement:
+  - head-branch: ['^feat/', '^feature/']
