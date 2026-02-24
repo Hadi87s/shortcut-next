@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import { IconButton, Stack, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
@@ -21,6 +22,11 @@ export default function SidebarLogo({ appName = 'Shortcut Next' }: SidebarLogoPr
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const { language } = useLanguage()
   const xDir = language === 'ar' ? 16 : -16
+
+  const [cmdKey, setCmdKey] = useState<string | null>(null)
+  useEffect(() => {
+    setCmdKey(/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent) ? '⌘K' : 'Ctrl+K')
+  }, [])
 
   return (
     <Stack
@@ -59,6 +65,11 @@ export default function SidebarLogo({ appName = 'Shortcut Next' }: SidebarLogoPr
             <Typography variant='subtitle2' fontWeight={700} noWrap>
               {appName}
             </Typography>
+            {cmdKey && (
+              <Typography variant='caption' color='text.disabled' noWrap sx={{ display: 'block' }}>
+                {cmdKey} to search
+              </Typography>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

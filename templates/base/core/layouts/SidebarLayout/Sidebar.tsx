@@ -9,6 +9,7 @@ import { useSidebar } from './SidebarContext'
 import SidebarLogo from './components/SidebarLogo'
 import NavItems from './components/NavItems'
 import SidebarFooter from './components/SidebarFooter'
+import FavoritesSection from './components/FavoritesSection'
 import type { SidebarNavItems } from '@/core/layouts/types'
 import useLanguage from '@/core/hooks/useLanguage'
 
@@ -48,6 +49,7 @@ function SidebarContent({ navItems, logo, appName, footer }: SidebarProps) {
       <SidebarLogo logo={logo} appName={appName} />
 
       <SidebarScrollArea>
+        <FavoritesSection />
         <NavItems items={navItems} />
       </SidebarScrollArea>
 

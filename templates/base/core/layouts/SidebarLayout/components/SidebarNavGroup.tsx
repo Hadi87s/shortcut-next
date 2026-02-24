@@ -8,6 +8,7 @@ import { ChevronDown } from 'lucide-react'
 import { Icon } from '@iconify/react'
 import { useSidebar } from '../SidebarContext'
 import NavItems from './NavItems'
+import NavItemContextMenu from './NavItemContextMenu'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
 import { NavItemRow, NavIconWrapper, NavCollapseGrid } from '../ui/SidebarStyledComponents'
 import type { SidebarNavGroup } from '@/core/layouts/types'
@@ -36,6 +37,7 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
   const { isCollapsed } = useSidebar()
   const activeChild = hasActivePath(item.children, pathname)
   const [isOpen, setIsOpen] = useState(activeChild)
+  const [contextMenu, setContextMenu] = useState<{ top: number; left: number } | null>(null)
 
   useEffect(() => {
     if (activeChild) setIsOpen(true)
@@ -60,6 +62,7 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
               gap={1.5}
               isActive={activeChild}
               onClick={() => setIsOpen(v => !v)}
+              onContextMenu={e => { e.preventDefault(); setContextMenu({ top: e.clientY, left: e.clientX }) }}
               role='button'
               tabIndex={0}
               onKeyDown={e => {
@@ -101,6 +104,12 @@ export default function SidebarNavGroupItem({ item, depth = 0 }: Props) {
           <NavItems items={item.children ?? []} depth={isCollapsed ? depth : depth + 1} stagger={false} />
         </Box>
       </NavCollapseGrid>
+
+      <NavItemContextMenu
+        anchorPosition={contextMenu}
+        onClose={() => setContextMenu(null)}
+        item={{ title: item.title, icon: item.icon }}
+      />
     </Box>
   )
 }

@@ -48,4 +48,20 @@ export class SidebarUtils {
 
     return true
   }
+
+  static flattenNavItems(items: SidebarNavItems): Array<{ path: string; title: string; icon?: string }> {
+    const results: Array<{ path: string; title: string; icon?: string }> = []
+    for (const item of items) {
+      if ('sectionTitle' in item) {
+        results.push(...this.flattenNavItems(item.items as SidebarNavItems))
+      } else if ('isMore' in item) {
+        // skip
+      } else if ('children' in item) {
+        results.push(...this.flattenNavItems(item.children as SidebarNavItems))
+      } else if ('path' in item && item.path && 'title' in item) {
+        results.push({ path: item.path, title: item.title, icon: (item as { icon?: string }).icon })
+      }
+    }
+    return results
+  }
 }

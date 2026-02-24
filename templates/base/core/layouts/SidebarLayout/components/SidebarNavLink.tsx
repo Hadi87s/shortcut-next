@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Badge, Tooltip } from '@mui/material'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSidebar } from '../SidebarContext'
 import SidebarAnimatedLabel from './SidebarAnimatedLabel'
+import NavItemContextMenu from './NavItemContextMenu'
 import { NavTooltipAnchor, NavItemRow, NavIconWrapper } from '../ui/SidebarStyledComponents'
 import type { SidebarNavLink } from '@/core/layouts/types'
 import Icon from '@/components/icon/Icon'
@@ -21,6 +23,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
   const { isCollapsed } = useSidebar()
   const { language } = useLanguage()
   const isRtl = language === 'ar'
+  const [contextMenu, setContextMenu] = useState<{ top: number; left: number } | null>(null)
 
   const activePath = useActiveRoute()
   const isActive = item.path ? item.path === activePath : false
@@ -37,6 +40,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
   }
 
   return (
+    <>
     <Tooltip
       title={item.title}
       placement={isRtl ? 'left' : 'right'}
@@ -53,6 +57,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
           isActive={isActive}
           isDisabled={item.disabled}
           onClick={handleClick}
+          onContextMenu={e => { e.preventDefault(); setContextMenu({ top: e.clientY, left: e.clientX }) }}
           role='button'
           tabIndex={item.disabled ? -1 : 0}
           onKeyDown={e => {
@@ -101,5 +106,11 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
         </NavItemRow>
       </NavTooltipAnchor>
     </Tooltip>
+    <NavItemContextMenu
+      anchorPosition={contextMenu}
+      onClose={() => setContextMenu(null)}
+      item={{ path: item.path, title: item.title, icon: item.icon }}
+    />
+    </>
   )
 }
