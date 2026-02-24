@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/hadi87s/shortcut-next/compare/v1.1.0...v1.2.0) (2026-02-24)
+
+
+### Bug Fixes
+
+* Fix MUI override import, tsConfig rules ([3df3701](https://github.com/hadi87s/shortcut-next/commit/3df3701291eedbee5e1f7838d13a29c80a6d3da2))
+
+
+### Features
+
+* Add Sidebar Layout ([da2a4ae](https://github.com/hadi87s/shortcut-next/commit/da2a4aecab90c15385fb5e008731abdc4a33e813))
+
 # [1.1.0](https://github.com/hadi87s/shortcut-next/compare/v1.0.0...v1.1.0) (2026-02-17)
 
 
