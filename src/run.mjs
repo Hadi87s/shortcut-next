@@ -107,7 +107,7 @@ async function installDeps(pm, cwd) {
 }
 
 async function main() {
-  const cli = cac("shortcut-next");
+  const cli = cac("create-shortcut-next");
   cli
     .option("--preset <name>", "base | tailwind")
     .option("--pm <pm>", "npm | pnpm | yarn | bun")
