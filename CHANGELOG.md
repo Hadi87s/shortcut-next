@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/hadi87s/shortcut-next/compare/v1.2.1...v1.2.2) (2026-02-26)
+
+
+### Bug Fixes
+
+* Update command in README.md ([753ec42](https://github.com/hadi87s/shortcut-next/commit/753ec42b813d8b0f6ed16ffbf4fa83b0f02f81db))
+
 ## [1.2.1](https://github.com/hadi87s/shortcut-next/compare/v1.2.0...v1.2.1) (2026-02-26)
 
 
