@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/hadi87s/shortcut-next/compare/v1.2.0...v1.2.1) (2026-02-26)
+
+
+### Bug Fixes
+
+* Rename command into create-shortcut-next ([3b78c4c](https://github.com/hadi87s/shortcut-next/commit/3b78c4c9c3e4fd6b0c7486e4dc1a9e3ebc90db96))
+
 # [1.2.0](https://github.com/hadi87s/shortcut-next/compare/v1.1.0...v1.2.0) (2026-02-24)
 
 
