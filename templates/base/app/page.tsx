@@ -137,13 +137,13 @@ function WhatsIncludedCard({ copied, handleCopy }: { copied: boolean; handleCopy
           <Typography variant='subtitle2'>{t('HomePage.scaffold.title')}</Typography>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems='center'>
-            <Code>npx shortcut-next@latest</Code>
+            <Code>npx create-shortcut-next@latest</Code>
             <Tooltip title={copied ? t('HomePage.scaffold.copied') : t('HomePage.scaffold.copy')}>
               <Button
                 variant='outlined'
                 size='small'
                 startIcon={<ContentCopyIcon fontSize='small' />}
-                onClick={() => handleCopy('npx shortcut-next@latest')}
+                onClick={() => handleCopy('npx create-shortcut-next@latest')}
               >
                 {copied ? t('HomePage.scaffold.copied') : t('HomePage.scaffold.copy')}
               </Button>

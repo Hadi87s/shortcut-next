@@ -23,7 +23,7 @@ Stop starting from scratch. Scaffold a production-ready **Next.js 15+** project 
 Run this single command and follow the prompts:
 
 ```bash
-npx shortcut-next@latest
+npx create-shortcut-next@latest
 ```
 
 You'll be asked three things:
@@ -37,7 +37,7 @@ That's it. The CLI creates your project, initializes git, and installs dependenc
 ### Skip the Prompts (Optional)
 
 ```bash
-npx shortcut-next@latest my-app --preset tailwind --pm pnpm
+npx create-shortcut-next@latest my-app --preset tailwind --pm pnpm
 ```
 
 | Flag            | Options                        |
