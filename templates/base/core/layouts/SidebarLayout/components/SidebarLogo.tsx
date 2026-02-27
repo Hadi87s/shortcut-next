@@ -62,7 +62,7 @@ export default function SidebarLogo({ appName = 'Shortcut Next' }: SidebarLogoPr
             transition={{ duration: 0.18, ease: 'easeInOut' }}
             style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}
           >
-            <Typography variant='subtitle2' fontWeight={700} noWrap>
+            <Typography variant='subtitle1' fontWeight={700} noWrap>
               {appName}
             </Typography>
             {cmdKey && (

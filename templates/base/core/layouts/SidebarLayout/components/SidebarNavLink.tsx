@@ -20,7 +20,7 @@ interface Props {
 
 export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
   const router = useRouter()
-  const { isCollapsed } = useSidebar()
+  const { isCollapsed, setIsMobileOpen } = useSidebar()
   const { language } = useLanguage()
   const isRtl = language === 'ar'
   const [contextMenu, setContextMenu] = useState<{ top: number; left: number } | null>(null)
@@ -32,6 +32,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
 
   const handleClick = () => {
     if (item.disabled || !item.path) return
+    setIsMobileOpen(false)
     if (item.externalLink) {
       window.open(item.path, item.openInNewTab ? '_blank' : '_self')
     } else {
@@ -84,7 +85,7 @@ export default function SidebarNavLinkItem({ item, depth = 0 }: Props) {
 
           <AnimatePresence initial={false}>
             {!isCollapsed && (
-              <SidebarAnimatedLabel key='label' variant='body2' fontWeight={isActive ? 600 : 400}>
+              <SidebarAnimatedLabel key='label' variant='body2' fontWeight={isActive ? 600 : 400} sx={{color: isActive? 'text.primary' : 'text.secondary'}}>
                 {item.title}
               </SidebarAnimatedLabel>
             )}
