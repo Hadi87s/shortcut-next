@@ -53,7 +53,7 @@
   "type": "module",
   "dependencies": {
     "@clack/prompts": "^1.0.1",
-    "cac": "^6.7.14",
+    "cac": "^7.0.0",
     "execa": "^9.6.0",
     "fs-extra": "^11.3.1",
     "js-cookie": "^3.0.5",
