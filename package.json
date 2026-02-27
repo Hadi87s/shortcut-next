@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hadi87s/shortcut-next.git"
+    "url": "git+https://github.com/Shortcut-Next/shortcut-next.git"
   },
   "bugs": {
-    "url": "https://github.com/hadi87s/shortcut-next/issues"
+    "url": "https://github.com/Shortcut-Next/shortcut-next/issues"
   },
-  "homepage": "https://github.com/hadi87s/shortcut-next#readme",
+  "homepage": "https://github.com/Shortcut-Next/shortcut-next#readme",
   "publishConfig": {
     "access": "public"
   },
