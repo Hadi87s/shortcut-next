@@ -1,4 +1,67 @@
-# Adding Protected Pages
+# Authorization System
+
+This guide covers the full CASL-based authorization system: how it works internally, how to add protected pages, and how to check permissions in components.
+
+---
+
+## How it works
+
+Authorization is enforced at two levels:
+
+1. **Server — Next.js middleware** (`middleware.ts`): runs before every request, checks the JWT cookie, and redirects unauthenticated or forbidden users before any page renders.
+2. **Client — CASL ability hooks**: `useAbility()` and `useCan()` let components show or hide UI based on the current user's permissions.
+
+### Middleware flow
+
+```text
+Request arrives
+  ↓
+Skip static assets (/_next, /api, ...)
+  ↓
+Is it a public route? (/login, /signup, ...) → Allow
+  ↓
+Read `accessToken` cookie → decode JWT → extract `role`
+  ↓
+No token? → Redirect to /login
+  ↓
+Is it an authenticated-only route? (/home) → Allow (any role)
+  ↓
+Find matching entry in routeMap.ts
+  ↓
+No match? → Allow (route exists but has no permission requirement)
+  ↓
+Call canAccess(role, action, subject) via CASL
+  ↓
+Allowed? → Serve page
+Forbidden? → Redirect to /unauthorized
+```
+
+### How CASL fits in
+
+CASL is the library that models permissions. `defineAbilitiesFor(role)` creates an `AppAbility` instance — an object you query with `ability.can(action, subject)`.
+
+The authorization system uses CASL in two ways:
+
+- **Middleware** (server): calls `canAccess(role, action, subject)` which instantiates an ability and checks it synchronously
+- **Components** (client): `useAbility()` returns a memoized CASL ability instance for the current user's role
+
+### JWT requirement
+
+The middleware decodes the `accessToken` cookie using `jose`. Your backend must include a `role` claim in the JWT payload:
+
+```json
+{
+  "sub": "user-id-123",
+  "email": "user@example.com",
+  "role": "manager",
+  "iat": 1700000000,
+  "exp": 1700086400
+}
+```
+
+---
+
+## Adding Protected Pages
 
 This guide explains how to add new pages with authentication and authorization.
 
