@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/Shortcut-Next/shortcut-next/compare/v1.2.2...v1.2.3) (2026-02-27)
+
+
+### Bug Fixes
+
+* Fix old releaser repository links after migration ([aa81dad](https://github.com/Shortcut-Next/shortcut-next/commit/aa81dadb3e05a5653e56fdf6ce7647e17c736918))
+
 ## [1.2.2](https://github.com/hadi87s/shortcut-next/compare/v1.2.1...v1.2.2) (2026-02-26)
 
 
