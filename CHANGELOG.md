@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/Shortcut-Next/shortcut-next/compare/v1.2.3...v1.2.4) (2026-02-28)
+
+
+### Bug Fixes
+
+* Replace Favicon, some sidebar fixes ([df63ab2](https://github.com/Shortcut-Next/shortcut-next/commit/df63ab2ec950285e0fd5a43521611d44f113465c))
+
 ## [1.2.3](https://github.com/Shortcut-Next/shortcut-next/compare/v1.2.2...v1.2.3) (2026-02-27)
 
 
