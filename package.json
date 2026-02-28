@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/Shortcut-Next/shortcut-next/issues"
   },
-  "homepage": "https://github.com/Shortcut-Next/shortcut-next#readme",
+  "homepage": "https://shortcut-documentation.vercel.app/docs",
   "publishConfig": {
     "access": "public"
   },
