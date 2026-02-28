@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/Shortcut-Next/shortcut-next/compare/v1.2.4...v1.2.5) (2026-02-28)
+
+
+### Bug Fixes
+
+* Add docs homepage url ([0fa66d2](https://github.com/Shortcut-Next/shortcut-next/commit/0fa66d2cc61f95fcb9ede1a38f9d6e42d79ca13d))
+
 ## [1.2.4](https://github.com/Shortcut-Next/shortcut-next/compare/v1.2.3...v1.2.4) (2026-02-28)
 
 
