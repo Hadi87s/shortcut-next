@@ -6,6 +6,7 @@ import MagneticButton from '@/components/landing/MagneticButton'
 import { landingContent as lc } from '@/components/landing/landingContent'
 import { useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
+import themeConfig from '@/core/configs/themeConfig'
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -405,7 +406,7 @@ export default function Hero() {
             background: primaryMain,
             color: '#fff',
             border: 'none',
-            borderRadius: 'var(--radius-sm)',
+            borderRadius: themeConfig.borderRadius,
             padding: '14px 28px',
             cursor: 'pointer',
             textDecoration: 'none',
@@ -428,7 +429,7 @@ export default function Hero() {
             background: 'transparent',
             color: textPrimary,
             border: `1px solid ${divider}`,
-            borderRadius: 'var(--radius-sm)',
+            borderRadius: themeConfig.borderRadius,
             padding: '14px 28px',
             cursor: 'pointer',
             textDecoration: 'none',
@@ -447,7 +448,7 @@ export default function Hero() {
         style={{
           background: bgPaper,
           border: `1px solid ${divider}`,
-          borderRadius: 'var(--radius)',
+          borderRadius: themeConfig.borderRadius,
           padding: '24px',
           display: 'flex',
           alignItems: 'center',
@@ -479,7 +480,7 @@ export default function Hero() {
           style={{
             background: 'transparent',
             border: `1px solid ${divider}`,
-            borderRadius: 'var(--radius-sm)',
+            borderRadius: themeConfig.borderRadius,
             padding: '6px 10px',
             cursor: 'pointer',
             color: copied ? primaryMain : textSecondary,

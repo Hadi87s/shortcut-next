@@ -3,6 +3,7 @@
 import { useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { landingContent as lc } from '@/components/landing/landingContent'
+import themeConfig from '@/core/configs/themeConfig'
 
 const ExternalLinkIcon = () => (
   <svg
@@ -183,7 +184,7 @@ export default function Footer() {
               style={{
                 background: bgPaper,
                 border: `1px solid ${divider}`,
-                borderRadius: 'var(--radius)',
+                borderRadius: themeConfig.borderRadius,
                 padding: '16px'
               }}
             >

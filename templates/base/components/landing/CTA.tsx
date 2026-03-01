@@ -7,6 +7,7 @@ import MagneticButton from '@/components/landing/MagneticButton'
 import { landingContent as lc } from '@/components/landing/landingContent'
 import { useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
+import themeConfig from '@/core/configs/themeConfig'
 
 export default function CTA() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -176,7 +177,7 @@ export default function CTA() {
                 background: primaryMain,
                 color: '#fff',
                 padding: '14px 32px',
-                borderRadius: 'var(--radius-sm)',
+                borderRadius: themeConfig.borderRadius,
                 fontFamily: 'var(--font)',
                 fontWeight: 600,
                 fontSize: '0.85rem',
@@ -217,7 +218,7 @@ export default function CTA() {
                 background: 'transparent',
                 color: textPrimary,
                 padding: '14px 32px',
-                borderRadius: 'var(--radius-sm)',
+                borderRadius: themeConfig.borderRadius,
                 fontFamily: 'var(--font)',
                 fontWeight: 600,
                 fontSize: '0.85rem',

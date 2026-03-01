@@ -6,6 +6,7 @@ import SectionLabel from '@/components/landing/SectionLabel'
 import { landingContent as lc } from '@/components/landing/landingContent'
 import { useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
+import themeConfig from '@/core/configs/themeConfig'
 
 const stackItems = lc.techStack.cards
 
@@ -130,7 +131,7 @@ export default function TechStack() {
             style={{
               background: bgPaper,
               border: `1px solid ${divider}`,
-              borderRadius: 'var(--radius)',
+              borderRadius: themeConfig.borderRadius,
               padding: '28px',
               position: 'relative',
               overflow: 'hidden',
@@ -174,7 +175,7 @@ export default function TechStack() {
             fontSize: '0.85rem',
             padding: '12px 24px',
             border: `1px dashed ${divider}`,
-            borderRadius: 'var(--radius)',
+            borderRadius: themeConfig.borderRadius,
             letterSpacing: '0.02em'
           }}
         >

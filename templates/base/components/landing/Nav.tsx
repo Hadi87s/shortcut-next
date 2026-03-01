@@ -7,6 +7,7 @@ import MagneticButton from '@/components/landing/MagneticButton'
 import { landingContent as lc } from '@/components/landing/landingContent'
 import { useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
+import themeConfig from '@/core/configs/themeConfig'
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null)
@@ -152,7 +153,7 @@ export default function Nav() {
             background: primaryMain,
             color: '#fff',
             border: 'none',
-            borderRadius: 'var(--radius-sm)',
+            borderRadius: themeConfig.borderRadius,
             padding: '8px 20px',
             cursor: 'pointer',
             textDecoration: 'none',

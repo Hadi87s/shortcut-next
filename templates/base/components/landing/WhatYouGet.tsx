@@ -7,13 +7,12 @@ import SectionLabel from '@/components/landing/SectionLabel'
 import { landingContent as lc, type TreeNode } from '@/components/landing/landingContent'
 import { useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
+import themeConfig from '@/core/configs/themeConfig'
 
 const included = lc.whatYouGet.includedItems
 
 function collectDirIds(nodes: TreeNode[]): string[] {
-  return nodes.flatMap(n =>
-    n.type === 'dir' ? [n.id, ...collectDirIds(n.children ?? [])] : []
-  )
+  return nodes.flatMap(n => (n.type === 'dir' ? [n.id, ...collectDirIds(n.children ?? [])] : []))
 }
 
 function renderTree(nodes: TreeNode[]): React.ReactNode {
@@ -66,9 +65,7 @@ export default function WhatYouGet() {
   const leftRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
-  const [expandedItems, setExpandedItems] = useState<string[]>(() =>
-    collectDirIds(lc.whatYouGet.fileTree)
-  )
+  const [expandedItems, setExpandedItems] = useState<string[]>(() => collectDirIds(lc.whatYouGet.fileTree))
 
   const theme = useTheme()
   const primaryMain = theme.palette.primary.main
@@ -115,35 +112,53 @@ export default function WhatYouGet() {
       if (rightRef.current) rightRef.current.style.willChange = 'transform, opacity'
 
       gsap.from(leftRef.current, {
-        x: -60, autoAlpha: 0, rotationY: -5, duration: 1, ease: 'power3.out',
-        onComplete: () => { if (leftRef.current) leftRef.current.style.willChange = 'auto' },
+        x: -60,
+        autoAlpha: 0,
+        rotationY: -5,
+        duration: 1,
+        ease: 'power3.out',
+        onComplete: () => {
+          if (leftRef.current) leftRef.current.style.willChange = 'auto'
+        },
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', once: true }
       })
 
       gsap.from(rightRef.current, {
-        x: 60, autoAlpha: 0, rotationY: 5, duration: 1, ease: 'power3.out',
-        onComplete: () => { if (rightRef.current) rightRef.current.style.willChange = 'auto' },
+        x: 60,
+        autoAlpha: 0,
+        rotationY: 5,
+        duration: 1,
+        ease: 'power3.out',
+        onComplete: () => {
+          if (rightRef.current) rightRef.current.style.willChange = 'auto'
+        },
         scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', once: true }
       })
 
       const includedItems = rightRef.current?.querySelectorAll('.included-item')
       if (includedItems && includedItems.length > 0) {
         gsap.from(includedItems, {
-          x: 20, autoAlpha: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out',
+          x: 20,
+          autoAlpha: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: 'power2.out',
           scrollTrigger: { trigger: rightRef.current, start: 'top 70%', once: true }
         })
       }
 
       if (leftRef.current) {
         gsap.to(leftRef.current, {
-          y: -40, rotationY: -2,
+          y: -40,
+          rotationY: -2,
           scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 1.5 }
         })
       }
 
       if (rightRef.current) {
         gsap.to(rightRef.current, {
-          y: 40, rotationY: 2,
+          y: 40,
+          rotationY: 2,
           scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: 1.5 }
         })
       }
@@ -151,7 +166,9 @@ export default function WhatYouGet() {
       const terminal = terminalRef.current
       if (terminal) {
         ScrollTrigger.create({
-          trigger: terminal, start: 'top 80%', once: true,
+          trigger: terminal,
+          start: 'top 80%',
+          once: true,
           onEnter: () => {
             gsap.to(terminal, { boxShadow: `0 20px 60px ${primaryGlow15}`, duration: 1, ease: 'power2.out' })
           }
@@ -166,7 +183,10 @@ export default function WhatYouGet() {
     <section ref={sectionRef} style={{ maxWidth: '1200px', margin: '0 auto', padding: '120px 24px' }}>
       <SectionLabel>{lc.whatYouGet.label}</SectionLabel>
 
-      <div className='what-you-get-layout' style={{ display: 'flex', gap: '64px', alignItems: 'flex-start', marginTop: '32px' }}>
+      <div
+        className='what-you-get-layout'
+        style={{ display: 'flex', gap: '64px', alignItems: 'flex-start', marginTop: '32px' }}
+      >
         {/* Left — file tree */}
         <div ref={leftRef} style={{ flex: 1, minWidth: 0 }}>
           <h2
@@ -182,17 +202,49 @@ export default function WhatYouGet() {
           >
             {lc.whatYouGet.heading}
           </h2>
-          <p style={{ fontFamily: 'var(--font)', color: textSecondary, lineHeight: 1.7, fontSize: '1rem', marginBottom: '28px' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font)',
+              color: textSecondary,
+              lineHeight: 1.7,
+              fontSize: '1rem',
+              marginBottom: '28px'
+            }}
+          >
             {lc.whatYouGet.body}
           </p>
 
-          <div ref={terminalRef} style={{ background: bgPaper, border: `1px solid ${divider}`, borderRadius: 'var(--radius)', overflow: 'hidden' }}>
+          <div
+            ref={terminalRef}
+            style={{
+              background: bgPaper,
+              border: `1px solid ${divider}`,
+              borderRadius: themeConfig.borderRadius,
+              overflow: 'hidden'
+            }}
+          >
             {/* Terminal chrome */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '14px 20px', borderBottom: `1px solid ${divider}` }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '14px 20px',
+                borderBottom: `1px solid ${divider}`
+              }}
+            >
               <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: errorMain }} />
               <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: warningMain }} />
               <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: successMain }} />
-              <span style={{ fontFamily: 'var(--font)', fontSize: '0.72rem', color: textSecondary, marginLeft: '8px', letterSpacing: '0.04em' }}>
+              <span
+                style={{
+                  fontFamily: 'var(--font)',
+                  fontSize: '0.72rem',
+                  color: textSecondary,
+                  marginLeft: '8px',
+                  letterSpacing: '0.04em'
+                }}
+              >
                 {lc.whatYouGet.terminalLabel}
               </span>
             </div>
@@ -223,12 +275,38 @@ export default function WhatYouGet() {
                 borderBottom: i < included.length - 1 ? `1px solid ${divider}` : 'none'
               }}
             >
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: primaryMain, flexShrink: 0, marginTop: '6px' }} />
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: primaryMain,
+                  flexShrink: 0,
+                  marginTop: '6px'
+                }}
+              />
               <div>
-                <p style={{ fontFamily: 'var(--font)', fontWeight: 600, fontSize: '0.95rem', color: textPrimary, margin: 0, marginBottom: '4px' }}>
+                <p
+                  style={{
+                    fontFamily: 'var(--font)',
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                    color: textPrimary,
+                    margin: 0,
+                    marginBottom: '4px'
+                  }}
+                >
                   {item.title}
                 </p>
-                <p style={{ fontFamily: 'var(--font)', fontSize: '0.85rem', color: textSecondary, lineHeight: 1.6, margin: 0 }}>
+                <p
+                  style={{
+                    fontFamily: 'var(--font)',
+                    fontSize: '0.85rem',
+                    color: textSecondary,
+                    lineHeight: 1.6,
+                    margin: 0
+                  }}
+                >
                   {item.desc}
                 </p>
               </div>

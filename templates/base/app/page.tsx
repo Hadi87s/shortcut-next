@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/gsap'
+import { useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
 import Nav from '@/components/landing/Nav'
 import Hero from '@/components/landing/Hero'
 import InstallBanner from '@/components/landing/InstallBanner'
@@ -19,6 +21,7 @@ import { landingContent as lc } from '@/components/landing/landingContent'
 // Decorative "+" marker rendered at the left and right ends of each divider line.
 // Hidden below 1024 px via the .section-marker class.
 function SectionMarker({ side }: { side: 'left' | 'right' }) {
+  const theme = useTheme()
   const offset = 'calc(50% - 600px)'
   // Left-anchored: translate(-50%) centers the marker over the left guide line.
   // Right-anchored: translate(+50%) centers the marker over the right guide line.
@@ -33,7 +36,7 @@ function SectionMarker({ side }: { side: 'left' | 'right' }) {
         transform: `translate(${translateX}, -50%)`,
         fontSize: '1.1rem',
         lineHeight: 1,
-        color: `rgba(var(--primary-rgb), 0.55)`,
+        color: alpha(theme.palette.primary.main, 0.55),
         fontWeight: 300,
         letterSpacing: 0,
         userSelect: 'none',
@@ -47,6 +50,8 @@ function SectionMarker({ side }: { side: 'left' | 'right' }) {
 
 function ParallaxDivider({ direction = 'left' }: { direction?: 'left' | 'right' }) {
   const ref = useRef<HTMLDivElement>(null)
+  const theme = useTheme()
+  const primaryMain = theme.palette.primary.main
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -84,10 +89,10 @@ function ParallaxDivider({ direction = 'left' }: { direction?: 'left' | 'right' 
           maxWidth: '1200px',
           margin: '0 auto',
           height: '1px',
-          background: `linear-gradient(${direction === 'left' ? 'to right' : 'to left'}, var(--primary), transparent)`,
+          background: `linear-gradient(${direction === 'left' ? 'to right' : 'to left'}, ${primaryMain}, transparent)`,
           opacity: 0,
           transformOrigin: direction === 'left' ? 'left center' : 'right center',
-          boxShadow: `0 0 20px ${direction === 'left' ? 'var(--primary)' : 'transparent'}`
+          boxShadow: `0 0 20px ${direction === 'left' ? primaryMain : 'transparent'}`
         }}
       />
     </div>
@@ -98,6 +103,9 @@ function ParallaxDivider({ direction = 'left' }: { direction?: 'left' | 'right' 
 export default function Page() {
   const heroWrapperRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLElement>(null)
+  const theme = useTheme()
+  const primaryMain = theme.palette.primary.main
+  const bgDefault = theme.palette.background.default
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -170,7 +178,7 @@ export default function Page() {
           position: 'relative',
           zIndex: 10,
           marginTop: '100vh',
-          background: 'var(--bg)',
+          background: bgDefault,
           overflowX: 'hidden'
         }}
       >
@@ -183,7 +191,7 @@ export default function Page() {
             bottom: 0,
             left: 'calc(50% - 600px)',
             width: '1px',
-            background: `linear-gradient(to bottom, transparent, rgba(var(--primary-rgb), 0.12) 10%, rgba(var(--primary-rgb), 0.12) 90%, transparent)`,
+            background: `linear-gradient(to bottom, transparent, ${alpha(primaryMain, 0.12)} 10%, ${alpha(primaryMain, 0.12)} 90%, transparent)`,
             pointerEvents: 'none',
             zIndex: 0
           }}
@@ -196,7 +204,7 @@ export default function Page() {
             bottom: 0,
             right: 'calc(50% - 600px)',
             width: '1px',
-            background: `linear-gradient(to bottom, transparent, rgba(var(--primary-rgb), 0.12) 10%, rgba(var(--primary-rgb), 0.12) 90%, transparent)`,
+            background: `linear-gradient(to bottom, transparent, ${alpha(primaryMain, 0.12)} 10%, ${alpha(primaryMain, 0.12)} 90%, transparent)`,
             pointerEvents: 'none',
             zIndex: 0
           }}

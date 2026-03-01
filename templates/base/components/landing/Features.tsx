@@ -6,6 +6,7 @@ import SectionLabel from '@/components/landing/SectionLabel'
 import { landingContent as lc } from '@/components/landing/landingContent'
 import { useTheme } from '@mui/material'
 import { alpha } from '@mui/material/styles'
+import themeConfig from '@/core/configs/themeConfig'
 
 const features = lc.features.cards
 
@@ -125,7 +126,7 @@ export default function Features() {
             style={{
               background: bgPaper,
               border: `1px solid ${divider}`,
-              borderRadius: 'var(--radius)',
+              borderRadius: themeConfig.borderRadius,
               padding: '32px',
               position: 'relative',
               overflow: 'hidden',

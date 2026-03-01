@@ -1,23 +1,4 @@
 :root {
-  /* System palette — matches core/theme/palette */
-  --bg: #0c0c0c;
-  --surface: #161616;
-  --surface-2: #1e1e1e;
-  --border: rgba(255, 255, 255, 0.07);
-  --primary: #f97316;
-  --primary-rgb: 249, 115, 22;
-  --primary-light: #fb923c;
-  --primary-dark: #c2410c;
-  --secondary: #00D0FF;
-  --secondary-rgb: 0, 208, 255;
-  --success: #11C28B;
-  --warning: #FFB703;
-  --error: #FF4D4F;
-  --text: rgba(230, 235, 255, 0.92);
-  --muted: rgba(180, 190, 220, 0.65);
-  --radius: 10px;
-  --radius-sm: 6px;
-
   /* Font */
   --font: var(--font-montserrat), system-ui, -apple-system, sans-serif;
 }

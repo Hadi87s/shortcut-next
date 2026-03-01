@@ -1,31 +1,36 @@
 'use client'
 
+import { useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
+
 type BadgeVariant = 'primary' | 'purple' | 'red' | 'yellow'
 
-const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
-  primary: {
-    background: 'rgba(91,116,255,0.12)',
-    color: '#7C8FFF',
-    borderColor: 'rgba(91,116,255,0.25)'
-  },
-  purple: {
-    background: 'rgba(123,97,255,0.12)',
-    color: '#7b61ff',
-    borderColor: 'rgba(123,97,255,0.25)'
-  },
-  red: {
-    background: 'rgba(255,77,79,0.12)',
-    color: '#FF4D4F',
-    borderColor: 'rgba(255,77,79,0.25)'
-  },
-  yellow: {
-    background: 'rgba(255,183,3,0.12)',
-    color: '#FFB703',
-    borderColor: 'rgba(255,183,3,0.25)'
-  }
-}
-
 export default function Badge({ label, variant = 'primary' }: { label: string; variant?: BadgeVariant }) {
+  const theme = useTheme()
+
+  const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
+    primary: {
+      background: alpha(theme.palette.primary.main, 0.12),
+      color: theme.palette.primary.main,
+      borderColor: alpha(theme.palette.primary.main, 0.25)
+    },
+    purple: {
+      background: alpha(theme.palette.secondary.main, 0.12),
+      color: theme.palette.secondary.main,
+      borderColor: alpha(theme.palette.secondary.main, 0.25)
+    },
+    red: {
+      background: alpha(theme.palette.error.main, 0.12),
+      color: theme.palette.error.main,
+      borderColor: alpha(theme.palette.error.main, 0.25)
+    },
+    yellow: {
+      background: alpha(theme.palette.warning.main, 0.12),
+      color: theme.palette.warning.main,
+      borderColor: alpha(theme.palette.warning.main, 0.25)
+    }
+  }
+
   return (
     <span
       style={{
