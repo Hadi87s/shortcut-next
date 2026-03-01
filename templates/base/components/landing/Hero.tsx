@@ -1,9 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { gsap, ScrollTrigger } from '@/lib/gsap'
+import { gsap } from '@/lib/gsap'
 import MagneticButton from '@/components/landing/MagneticButton'
 import { landingContent as lc } from '@/components/landing/landingContent'
+import { useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -15,6 +17,16 @@ export default function Hero() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const ringsRef = useRef<(HTMLDivElement | null)[]>([])
   const [copied, setCopied] = useState(false)
+
+  const theme = useTheme()
+  const primaryMain = theme.palette.primary.main
+  const secondaryMain = theme.palette.secondary.main
+  const textPrimary = theme.palette.text.primary
+  const textSecondary = theme.palette.text.secondary
+  const divider = theme.palette.divider
+  const bgPaper = theme.palette.background.paper
+  const primaryGlow60 = alpha(primaryMain, 0.6)
+  const primaryGlow30 = alpha(primaryMain, 0.3)
 
   const titleText = lc.hero.title
 
@@ -97,7 +109,7 @@ export default function Hero() {
               // Add glow effect to title when character animation finishes
               if (titleRef.current) {
                 gsap.to(titleRef.current, {
-                  textShadow: '0 0 40px rgba(91,116,255,0.6), 0 0 80px rgba(91,116,255,0.3)',
+                  textShadow: `0 0 40px ${primaryGlow60}, 0 0 80px ${primaryGlow30}`,
                   duration: 0.8,
                   ease: 'power2.out'
                 })
@@ -207,7 +219,7 @@ export default function Hero() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [primaryGlow60, primaryGlow30])
 
   const renderTitle = () => {
     const words = titleText.split(' ')
@@ -254,7 +266,7 @@ export default function Hero() {
           width: '300px',
           height: '300px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(91,116,255,0.15), transparent 70%)',
+          background: `radial-gradient(circle, ${alpha(primaryMain, 0.15)}, transparent 70%)`,
           pointerEvents: 'none'
         }}
       />
@@ -267,7 +279,7 @@ export default function Hero() {
           width: '250px',
           height: '250px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(0,208,255,0.1), transparent 70%)',
+          background: `radial-gradient(circle, ${alpha(secondaryMain, 0.1)}, transparent 70%)`,
           pointerEvents: 'none'
         }}
       />
@@ -281,7 +293,7 @@ export default function Hero() {
           width: '400px',
           height: '400px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(91,116,255,0.08), transparent 70%)',
+          background: `radial-gradient(circle, ${alpha(primaryMain, 0.08)}, transparent 70%)`,
           pointerEvents: 'none'
         }}
       />
@@ -300,7 +312,7 @@ export default function Hero() {
             width: `${size}px`,
             height: `${size}px`,
             borderRadius: '50%',
-            border: '1px solid var(--border)',
+            border: `1px solid ${divider}`,
             opacity: 1 - i * 0.25,
             transform: 'translate(-50%, -50%)',
             pointerEvents: 'none'
@@ -315,7 +327,7 @@ export default function Hero() {
           fontFamily: 'var(--font)',
           fontSize: '0.75rem',
           fontWeight: 600,
-          color: 'var(--primary)',
+          color: primaryMain,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
           marginBottom: '24px',
@@ -336,7 +348,7 @@ export default function Hero() {
           fontSize: 'clamp(3rem, 7vw, 7rem)',
           letterSpacing: '-0.04em',
           lineHeight: 0.95,
-          color: 'var(--text)',
+          color: textPrimary,
           maxWidth: '900px',
           padding: '0 24px',
           marginBottom: '28px',
@@ -353,7 +365,7 @@ export default function Hero() {
         ref={subRef}
         style={{
           fontFamily: 'var(--font)',
-          color: 'var(--muted)',
+          color: textSecondary,
           maxWidth: '520px',
           lineHeight: 1.7,
           fontSize: '1.1rem',
@@ -390,7 +402,7 @@ export default function Hero() {
             fontFamily: 'var(--font)',
             fontSize: '0.85rem',
             fontWeight: 600,
-            background: 'var(--primary)',
+            background: primaryMain,
             color: '#fff',
             border: 'none',
             borderRadius: 'var(--radius-sm)',
@@ -414,8 +426,8 @@ export default function Hero() {
             fontSize: '0.85rem',
             fontWeight: 500,
             background: 'transparent',
-            color: 'var(--text)',
-            border: '1px solid var(--border)',
+            color: textPrimary,
+            border: `1px solid ${divider}`,
             borderRadius: 'var(--radius-sm)',
             padding: '14px 28px',
             cursor: 'pointer',
@@ -433,8 +445,8 @@ export default function Hero() {
       <div
         ref={codeRef}
         style={{
-          background: 'var(--surface)',
-          border: '1px solid var(--border)',
+          background: bgPaper,
+          border: `1px solid ${divider}`,
           borderRadius: 'var(--radius)',
           padding: '24px',
           display: 'flex',
@@ -454,33 +466,33 @@ export default function Hero() {
             fontWeight: 400,
             letterSpacing: '0.04em',
             fontSize: '0.95rem',
-            color: 'var(--text)',
+            color: textPrimary,
             flex: 1,
             userSelect: 'all'
           }}
         >
-          <span style={{ color: 'var(--muted)' }}>$ </span>
+          <span style={{ color: textSecondary }}>$ </span>
           {lc.hero.command}
         </code>
         <button
           onClick={handleCopy}
           style={{
             background: 'transparent',
-            border: '1px solid var(--border)',
+            border: `1px solid ${divider}`,
             borderRadius: 'var(--radius-sm)',
             padding: '6px 10px',
             cursor: 'pointer',
-            color: copied ? 'var(--primary)' : 'var(--muted)',
+            color: copied ? primaryMain : textSecondary,
             fontFamily: 'var(--font)',
             fontSize: '0.7rem',
             transition: 'color 0.2s ease, border-color 0.2s ease',
             flexShrink: 0
           }}
           onMouseEnter={e => {
-            if (!copied) e.currentTarget.style.color = 'var(--text)'
+            if (!copied) e.currentTarget.style.color = textPrimary
           }}
           onMouseLeave={e => {
-            if (!copied) e.currentTarget.style.color = 'var(--muted)'
+            if (!copied) e.currentTarget.style.color = textSecondary
           }}
         >
           {copied ? (
@@ -533,7 +545,7 @@ export default function Hero() {
             fontWeight: 400,
             letterSpacing: '0.15em',
             fontSize: '0.6rem',
-            color: 'var(--muted)',
+            color: textSecondary,
             textTransform: 'uppercase'
           }}
         >
@@ -544,7 +556,7 @@ export default function Hero() {
           style={{
             width: '1px',
             height: '48px',
-            background: 'linear-gradient(to bottom, var(--primary), transparent)'
+            background: `linear-gradient(to bottom, ${primaryMain}, transparent)`
           }}
         />
       </div>

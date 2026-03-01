@@ -37,8 +37,8 @@ export type LandingContent = {
     scrollLabel: string
   }>
   installBanner: Section<{
-    displayText: string
-    command: string
+    row1: string[]
+    row2: string[]
   }>
   features: Section<{
     label: string
@@ -106,7 +106,7 @@ export const landingContent: LandingContent = {
     links: [
       { label: 'Features', href: '#features' },
       { label: 'How It Works', href: '#how-it-works' },
-      { label: 'Docs', href: '#docs' }
+      { label: 'Docs', href: 'https://shortcut-documentation.vercel.app/docs' }
     ],
     cta: { label: 'Get Started', href: '/login' }
   },
@@ -117,22 +117,22 @@ export const landingContent: LandingContent = {
     eyebrow: 'NEXT.JS SCAFFOLDING CLI',
     title: 'Stop Starting From Scratch',
     subtitle:
-      'One command scaffolds a complete Next.js 15 app: MUI v7, CASL RBAC, TanStack Query, i18n with RTL, and a protected dashboard — production-wired, not tutorial-grade.',
+      'One command scaffolds a complete Next.js 15 app — MUI v7, CASL RBAC, TanStack Query, i18n with RTL, and a protected dashboard. A CLI that builds your mid-way project in seconds, not tutorial-grade boilerplate.',
     primaryCta: { label: 'Get Started', href: '#get-started' },
     secondaryCta: {
-      label: 'View on GitHub',
-      href: 'https://github.com/Hadi87s/shortcut-next',
+      label: 'View Documentation',
+      href: 'https://shortcut-documentation.vercel.app/docs',
       target: '_blank'
     },
-    command: 'npx shortcut-next@latest',
+    command: 'npx create-shortcut-next',
     scrollLabel: 'SCROLL'
   },
 
   // ─── Install Banner ────────────────────────────────────────────────────────
   installBanner: {
     visible: true,
-    displayText: 'npx shortcut-next@latest',
-    command: 'npx shortcut-next@latest'
+    row1: ['Next.js 15', 'App Router', 'MUI v7', 'TypeScript', 'CASL RBAC', 'TanStack Query', 'React Hook Form', 'JWT Auth', 'Axios Client'],
+    row2: ['Dark Mode', 'i18n + RTL', 'Protected Routes', 'Role-based Access', 'Dashboard Layout', 'Tailwind v4', 'Auto Logout', 'Token Refresh', 'LocalStorage Sync']
   },
 
   // ─── Features ─────────────────────────────────────────────────────────────
@@ -191,7 +191,7 @@ export const landingContent: LandingContent = {
         tokens: [
           { text: '$ ', color: 'muted' },
           { text: 'npx', color: 'primary' },
-          { text: ' shortcut-next@latest ', color: 'text' },
+          { text: ' create-shortcut-next ', color: 'text' },
           { text: 'my-app', color: 'secondary' }
         ]
       },
@@ -559,11 +559,11 @@ export const landingContent: LandingContent = {
     primaryBtn: {
       label: 'Copy Install Command',
       copiedLabel: 'Copied!',
-      command: 'npx shortcut-next@latest'
+      command: 'npx create-shortcut-next'
     },
     secondaryBtn: {
-      label: 'View on GitHub',
-      href: 'https://github.com/Hadi87s/shortcut-next'
+      label: 'View Documentation',
+      href: 'https://shortcut-documentation.vercel.app/docs'
     }
   },
 
@@ -582,18 +582,16 @@ export const landingContent: LandingContent = {
       { label: 'FAQ', href: '#faq' }
     ],
     resourceLinks: [
-      { label: 'GitHub', href: 'https://github.com/Hadi87s/shortcut-next', external: true },
-      { label: 'npm', href: 'https://www.npmjs.com/package/shortcut-next', external: true },
-      { label: 'Issues', href: 'https://github.com/Hadi87s/shortcut-next/issues', external: true },
-      {
-        label: 'Changelog',
-        href: 'https://github.com/Hadi87s/shortcut-next/releases',
-        external: true
-      }
+      { label: 'Getting Started', href: 'https://shortcut-documentation.vercel.app/docs/getting-started', external: true },
+      { label: 'Authentication', href: 'https://shortcut-documentation.vercel.app/docs/authentication', external: true },
+      { label: 'API Client', href: 'https://shortcut-documentation.vercel.app/docs/api-client', external: true },
+      { label: 'Authorization', href: 'https://shortcut-documentation.vercel.app/docs/authorization', external: true },
+      { label: 'MUI Overrides', href: 'https://shortcut-documentation.vercel.app/docs/mui-overrides', external: true },
+      { label: 'i18n', href: 'https://shortcut-documentation.vercel.app/docs/i18n', external: true }
     ],
     getStarted: {
       heading: 'Run this in your terminal:',
-      command: 'npx shortcut-next@latest',
+      command: 'npx create-shortcut-next',
       note: 'No global install required.'
     },
     copyright: 'shortcut-next · MIT License',

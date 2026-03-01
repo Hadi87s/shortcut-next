@@ -1,18 +1,20 @@
 :root {
   /* System palette — matches core/theme/palette */
-  --bg: #0b1020;
-  --surface: #0f1724;
-  --surface-2: #162032;
-  --border: rgba(255, 255, 255, 0.12);
-  --primary: #5B74FF;
-  --primary-light: #7C8FFF;
-  --primary-dark: #2F46CF;
+  --bg: #0c0c0c;
+  --surface: #161616;
+  --surface-2: #1e1e1e;
+  --border: rgba(255, 255, 255, 0.07);
+  --primary: #f97316;
+  --primary-rgb: 249, 115, 22;
+  --primary-light: #fb923c;
+  --primary-dark: #c2410c;
   --secondary: #00D0FF;
+  --secondary-rgb: 0, 208, 255;
   --success: #11C28B;
   --warning: #FFB703;
   --error: #FF4D4F;
-  --text: #fff;
-  --muted: rgba(234, 234, 255, 0.5);
+  --text: rgba(230, 235, 255, 0.92);
+  --muted: rgba(180, 190, 220, 0.65);
   --radius: 10px;
   --radius-sm: 6px;
 
@@ -77,7 +79,7 @@ body::before {
 /* Glow pulse for accents */
 @keyframes glowPulse {
   0%, 100% { box-shadow: 0 0 12px var(--primary); }
-  50% { box-shadow: 0 0 24px var(--primary), 0 0 48px rgba(91,116,255,0.3); }
+  50% { box-shadow: 0 0 24px var(--primary), 0 0 48px rgba(var(--primary-rgb), 0.3); }
 }
 
 /* FAQ content */

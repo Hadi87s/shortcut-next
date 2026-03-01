@@ -5,11 +5,18 @@ import { gsap, ScrollTrigger } from '@/lib/gsap'
 import BrandLogo from '@/components/landing/BrandLogo'
 import MagneticButton from '@/components/landing/MagneticButton'
 import { landingContent as lc } from '@/components/landing/landingContent'
+import { useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
 
 export default function Nav() {
   const navRef = useRef<HTMLElement>(null)
   const borderRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
+
+  const theme = useTheme()
+  const primaryMain = theme.palette.primary.main
+  const dividerColor = theme.palette.divider
+  const primaryBorderHover = alpha(primaryMain, 0.25)
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -23,13 +30,13 @@ export default function Nav() {
 
         if (scrollY > 80) {
           gsap.to(borderRef.current, {
-            borderColor: 'rgba(91,116,255,0.25)',
+            borderColor: primaryBorderHover,
             duration: 0.3,
             overwrite: true
           })
         } else {
           gsap.to(borderRef.current, {
-            borderColor: 'var(--border)',
+            borderColor: dividerColor,
             duration: 0.3,
             overwrite: true
           })
@@ -70,13 +77,13 @@ export default function Nav() {
 
       if (scrollY > 80) {
         gsap.to(borderRef.current, {
-          borderColor: 'rgba(91,116,255,0.25)',
+          borderColor: primaryBorderHover,
           duration: 0.3,
           overwrite: true
         })
       } else {
         gsap.to(borderRef.current, {
-          borderColor: 'var(--border)',
+          borderColor: dividerColor,
           duration: 0.3,
           overwrite: true
         })
@@ -97,7 +104,7 @@ export default function Nav() {
       ctx.revert()
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [primaryBorderHover, dividerColor])
 
   return (
     <nav
@@ -109,7 +116,6 @@ export default function Nav() {
         right: 0,
         zIndex: 1000,
         height: '64px',
-        background: 'rgba(11,16,32,0.85)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         display: 'flex',
@@ -128,7 +134,7 @@ export default function Nav() {
           alignItems: 'center',
           justifyContent: 'space-between',
           height: '100%',
-          borderBottom: '1px solid var(--border)',
+          borderBottom: `1px solid ${dividerColor}`,
           transition: 'border-color 0.3s ease'
         }}
       >
@@ -143,7 +149,7 @@ export default function Nav() {
             fontFamily: 'var(--font)',
             fontSize: '0.75rem',
             fontWeight: 600,
-            background: 'var(--primary)',
+            background: primaryMain,
             color: '#fff',
             border: 'none',
             borderRadius: 'var(--radius-sm)',
@@ -166,7 +172,7 @@ export default function Nav() {
           left: 0,
           height: '2px',
           width: '0%',
-          background: 'var(--primary)',
+          background: primaryMain,
           transition: 'none',
           zIndex: 1001
         }}

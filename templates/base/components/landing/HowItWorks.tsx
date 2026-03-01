@@ -4,6 +4,8 @@ import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import SectionLabel from '@/components/landing/SectionLabel'
 import { landingContent as lc } from '@/components/landing/landingContent'
+import { useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
 
 const steps = lc.howItWorks.steps
 
@@ -11,69 +13,88 @@ export default function HowItWorks() {
   const containerRef = useRef<HTMLDivElement>(null)
   const lineRef = useRef<HTMLDivElement>(null)
 
+  const theme = useTheme()
+  const primaryMain = theme.palette.primary.main
+  const textPrimary = theme.palette.text.primary
+  const textSecondary = theme.palette.text.secondary
+  const divider = theme.palette.divider
+
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced || !containerRef.current) return
 
     const ctx = gsap.context(() => {
-      const stepsEls = containerRef.current?.querySelectorAll('[data-step]')
+      const stepsEls = gsap.utils.toArray<HTMLElement>('[data-step]', containerRef.current)
+      const dotsEls  = gsap.utils.toArray<HTMLElement>('[data-step-dot]', containerRef.current)
+      const numsEls  = gsap.utils.toArray<HTMLElement>('[data-step-number]', containerRef.current)
+      const title    = containerRef.current?.querySelector('h2')
 
-      // Apply will-change before animations
-      stepsEls?.forEach(step => {
-        if (step instanceof HTMLElement) {
-          step.style.willChange = 'transform, opacity'
-        }
-      })
+      // Set initial states
+      gsap.set(stepsEls, { autoAlpha: 0, y: 24 })
+      gsap.set(dotsEls,  { scale: 0 })
+      gsap.set(numsEls,  { autoAlpha: 0 })
+      if (title) gsap.set(title, { autoAlpha: 0, y: 20 })
 
-      // Enhanced cards entrance with 3D depth
-      gsap.from('[data-step]', {
-        x: -50,
-        y: 30,
-        rotationY: -10,
-        scale: 0.9,
-        autoAlpha: 0,
-        stagger: {
-          amount: 0.6,
-          ease: 'power2.inOut'
-        },
-        duration: 0.9,
-        ease: 'power3.out',
-        onComplete: () => {
-          stepsEls?.forEach(step => {
-            if (step instanceof HTMLElement) {
-              step.style.willChange = 'auto'
-            }
+      // Single ScrollTrigger drives a timeline — everything fires once, in order
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top 78%',
+        once: true,
+        onEnter: () => {
+          const tl = gsap.timeline()
+
+          // Title
+          if (title) {
+            tl.to(title, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' })
+          }
+
+          // Steps fade up with stagger
+          tl.to(stepsEls, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.55,
+            ease: 'power2.out',
+            stagger: 0.12
+          }, title ? '-=0.2' : 0)
+
+          // Dots scale in, timed with their step
+          tl.to(dotsEls, {
+            scale: 1,
+            duration: 0.4,
+            ease: 'back.out(2)',
+            stagger: 0.12
+          }, '<')
+
+          // Step numbers fade in
+          tl.to(numsEls, {
+            autoAlpha: 1,
+            duration: 0.3,
+            ease: 'power1.out',
+            stagger: 0.12
+          }, '<0.1')
+
+          // Start dot pulse only after entrance finishes
+          tl.call(() => {
+            dotsEls.forEach((dot, i) => {
+              gsap.to(dot, {
+                scale: 1.35,
+                opacity: 0.6,
+                duration: 1.6,
+                ease: 'sine.inOut',
+                repeat: -1,
+                yoyo: true,
+                delay: i * 0.4
+              })
+            })
           })
-        },
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 75%',
-          once: true
         }
       })
 
-      // Animate step numbers with bounce
-      const stepNumbers = containerRef.current?.querySelectorAll('[data-step-number]')
-      stepNumbers?.forEach((num, i) => {
-        gsap.from(num, {
-          scale: 0,
-          rotation: -180,
-          duration: 0.8,
-          ease: 'back.out(2)',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 75%',
-            once: true
-          },
-          delay: i * 0.2 + 0.3
-        })
-      })
-
-      // Progressive line fill with glow effect
+      // Timeline fill line — scrub on scroll
       if (lineRef.current) {
         gsap.fromTo(
           lineRef.current,
-          { scaleY: 0, filter: 'drop-shadow(0 0 4px rgba(91,116,255,0.8))' },
+          { scaleY: 0 },
           {
             scaleY: 1,
             ease: 'none',
@@ -81,90 +102,18 @@ export default function HowItWorks() {
               trigger: containerRef.current,
               start: 'top 70%',
               end: 'bottom 40%',
-              scrub: 1,
-              onUpdate: self => {
-                // Fade out glow as scroll progresses
-                if (lineRef.current) {
-                  const glowIntensity = 0.8 * (1 - self.progress)
-                  lineRef.current.style.filter = `drop-shadow(0 0 4px rgba(91,116,255,${glowIntensity}))`
-                }
-              }
+              scrub: 1
             }
           }
         )
       }
-
-      // Animate dots with pulse
-      const dots = containerRef.current?.querySelectorAll('[data-step-dot]')
-      dots?.forEach((dot, i) => {
-        // Entrance animation
-        gsap.from(dot, {
-          scale: 0,
-          duration: 0.5,
-          ease: 'back.out(3)',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 75%',
-            once: true
-          },
-          delay: i * 0.2 + 0.5
-        })
-
-        // Continuous subtle pulse
-        gsap.to(dot, {
-          scale: 1.3,
-          opacity: 0.7,
-          duration: 1.5,
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-          delay: i * 0.3
-        })
-      })
-
-      // Parallax on steps
-      stepsEls?.forEach((step, i) => {
-        gsap.to(step, {
-          y: (i - 1) * -10,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1.5
-          }
-        })
-      })
-
-      // Animate title
-      const title = containerRef.current?.querySelector('h2')
-      if (title) {
-        gsap.from(title, {
-          y: 30,
-          autoAlpha: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 85%',
-            once: true
-          }
-        })
-      }
     }, containerRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [primaryMain])
 
   return (
-    <section
-      ref={containerRef}
-      style={{
-        padding: '100px 24px',
-        maxWidth: '700px',
-        margin: '0 auto'
-      }}
-    >
+    <section ref={containerRef} style={{ padding: '100px 24px', maxWidth: '700px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <SectionLabel>{lc.howItWorks.label}</SectionLabel>
@@ -174,7 +123,7 @@ export default function HowItWorks() {
             fontFamily: 'var(--font)',
             fontWeight: 700,
             fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
-            color: 'var(--text)',
+            color: textPrimary,
             margin: 0
           }}
         >
@@ -182,49 +131,18 @@ export default function HowItWorks() {
         </h2>
       </div>
 
-      <div
-        style={{
-          paddingLeft: '40px',
-          position: 'relative'
-        }}
-      >
-        {/* Vertical timeline line (background) */}
-        <div
-          style={{
-            position: 'absolute',
-            left: '3px',
-            top: '8px',
-            bottom: '8px',
-            width: '1px',
-            background: 'var(--border)'
-          }}
-        />
+      <div style={{ paddingLeft: '40px', position: 'relative' }}>
+        {/* Timeline background line */}
+        <div style={{ position: 'absolute', left: '3px', top: '8px', bottom: '8px', width: '1px', background: divider }} />
 
-        {/* Vertical timeline line (fill overlay) */}
+        {/* Timeline fill line */}
         <div
           ref={lineRef}
-          style={{
-            position: 'absolute',
-            left: '3px',
-            top: '8px',
-            bottom: '8px',
-            width: '1px',
-            background: 'var(--primary)',
-            transformOrigin: 'top',
-            scaleY: 0
-          }}
+          style={{ position: 'absolute', left: '3px', top: '8px', bottom: '8px', width: '1px', background: primaryMain, transformOrigin: 'top' }}
         />
 
         {steps.map((step, i) => (
-          <div
-            key={i}
-            data-step
-            style={{
-              position: 'relative',
-              marginBottom: i < steps.length - 1 ? '48px' : 0
-            }}
-          >
-            {/* Glowing dot with pulse animation */}
+          <div key={i} data-step style={{ position: 'relative', marginBottom: i < steps.length - 1 ? '48px' : 0, visibility: 'hidden' }}>
             <div
               data-step-dot
               style={{
@@ -234,44 +152,20 @@ export default function HowItWorks() {
                 width: '7px',
                 height: '7px',
                 borderRadius: '50%',
-                background: 'var(--primary)',
-                boxShadow: '0 0 12px var(--primary)'
+                background: primaryMain,
+                boxShadow: `0 0 10px ${alpha(primaryMain, 0.6)}`
               }}
             />
-
             <p
               data-step-number
-              style={{
-                fontFamily: 'var(--font)',
-                fontSize: '0.65rem',
-                fontWeight: 600,
-                color: 'var(--primary)',
-                letterSpacing: '0.15em',
-                margin: 0
-              }}
+              style={{ fontFamily: 'var(--font)', fontSize: '0.65rem', fontWeight: 600, color: primaryMain, letterSpacing: '0.15em', margin: 0 }}
             >
               {step.number}
             </p>
-            <h3
-              style={{
-                fontFamily: 'var(--font)',
-                fontWeight: 700,
-                fontSize: '1.2rem',
-                color: 'var(--text)',
-                margin: '8px 0 0'
-              }}
-            >
+            <h3 style={{ fontFamily: 'var(--font)', fontWeight: 700, fontSize: '1.2rem', color: textPrimary, margin: '8px 0 0' }}>
               {step.title}
             </h3>
-            <p
-              style={{
-                fontFamily: 'var(--font)',
-                color: 'var(--muted)',
-                fontSize: '0.9rem',
-                lineHeight: 1.6,
-                margin: '4px 0 0'
-              }}
-            >
+            <p style={{ fontFamily: 'var(--font)', color: textSecondary, fontSize: '0.9rem', lineHeight: 1.6, margin: '4px 0 0' }}>
               {step.desc}
             </p>
           </div>
