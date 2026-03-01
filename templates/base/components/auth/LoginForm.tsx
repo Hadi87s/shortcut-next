@@ -116,15 +116,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ showEmailForm, setShowEmailForm, 
             <motion.div variants={fadeInUp}>
               <Button
                 variant='outlined'
-                size='large'
                 fullWidth
                 startIcon={<Icon icon='mdi:google' />}
                 onClick={() => onSocialLogin('google')}
-                sx={{
-                  borderColor: 'divider',
-                  color: 'text.primary',
-                  '&:hover': { bgcolor: 'action.hover' }
-                }}
               >
                 {t('login.signInWithGoogle', 'Sign in with Google')}
               </Button>
@@ -133,7 +127,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ showEmailForm, setShowEmailForm, 
             <motion.div variants={fadeInUp}>
               <Button
                 variant='outlined'
-                size='large'
                 fullWidth
                 startIcon={<Icon icon='mdi:microsoft' />}
                 onClick={() => onSocialLogin('microsoft')}
@@ -158,7 +151,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ showEmailForm, setShowEmailForm, 
             <motion.div variants={fadeInUp}>
               <Button
                 variant='contained'
-                size='large'
                 fullWidth
                 startIcon={<Mail size={18} />}
                 onClick={() => setShowEmailForm(true)}
@@ -244,14 +236,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ showEmailForm, setShowEmailForm, 
               </motion.div>
 
               <motion.div variants={fadeInUp}>
-                <LoadingButton
-                  loading={isLoading}
-                  type='submit'
-                  variant='contained'
-                  size='large'
-                  fullWidth
-                  sx={{ mt: 2 }}
-                >
+                <LoadingButton loading={isLoading} type='submit' variant='contained' fullWidth sx={{ mt: 2 }}>
                   {!isLoading && t('login.signIn', 'Sign In')}
                 </LoadingButton>
               </motion.div>
@@ -259,8 +244,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ showEmailForm, setShowEmailForm, 
               <motion.div variants={fadeInUp}>
                 <Button
                   variant='text'
+                  size='small'
                   onClick={() => setShowEmailForm(false)}
-                  sx={{ color: 'text.secondary' }}
                   startIcon={
                     <ArrowLeft size={16} style={{ transform: language === 'ar' ? 'rotate(180deg)' : 'none' }} />
                   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Stack, Typography } from '@mui/material'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
@@ -20,7 +20,7 @@ const HeroCard = ({ icon, title, desc, delay = 0 }: { icon: string; title: strin
     transition={{ delay, duration: 0.6 }}
     sx={{
       p: 4,
-      borderRadius: 5,
+      borderRadius: 2,
       bgcolor: theme => (theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.03)'),
       border: theme => `1px solid ${theme.palette.divider}`,
       backdropFilter: 'blur(20px)',
@@ -38,19 +38,13 @@ const HeroCard = ({ icon, title, desc, delay = 0 }: { icon: string; title: strin
       }
     }}
   >
-    <Box
-      sx={{
-        p: 2,
-        borderRadius: 5,
-        bgcolor: 'primary.main',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: theme => `0 8px 16px ${theme.palette.primary.main}40`
-      }}
+    <Avatar
+      variant='rounded'
+
+      sx={{ bgcolor: 'primary.main', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <Icon icon={icon} color='white' fontSize={24} />
-    </Box>
+    </Avatar>
     <Box>
       <Typography variant='h6' fontWeight={800} color='text.primary' gutterBottom>
         {title}

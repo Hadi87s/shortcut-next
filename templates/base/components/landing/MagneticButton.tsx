@@ -41,8 +41,8 @@ export default function MagneticButton({
     const dy = e.clientY - centerY
 
     gsap.to(elRef.current, {
-      x: dx * 0.28,
-      y: dy * 0.28,
+      x: dx * 0.18,
+      y: dy * 0.18,
       duration: 0.3,
       ease: 'power2.out'
     })

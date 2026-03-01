@@ -170,7 +170,8 @@ export default function Page() {
           position: 'relative',
           zIndex: 10,
           marginTop: '100vh',
-          background: 'var(--bg)'
+          background: 'var(--bg)',
+          overflowX: 'hidden'
         }}
       >
         {/* Vertical guide lines — visible only on lg+ screens */}
